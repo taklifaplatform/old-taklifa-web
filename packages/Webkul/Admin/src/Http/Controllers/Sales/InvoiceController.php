@@ -2,13 +2,15 @@
 
 namespace Webkul\Admin\Http\Controllers\Sales;
 
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Event;
-use Webkul\Admin\DataGrids\Sales\OrderInvoiceDataGrid;
-use Webkul\Admin\Http\Controllers\Controller;
+use Webkul\Core\Models\Channel;
 use Webkul\Core\Traits\PDFHandler;
-use Webkul\Sales\Repositories\InvoiceRepository;
+use Illuminate\Support\Facades\Event;
+use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\Sales\Repositories\InvoiceRepository;
+use Webkul\Admin\DataGrids\Sales\OrderInvoiceDataGrid;
 
 class InvoiceController extends Controller
 {
@@ -138,9 +140,17 @@ class InvoiceController extends Controller
     {
         $invoice = $this->invoiceRepository->findOrFail($id);
 
-        return $this->downloadPDF(
-            view('admin::sales.invoices.pdf', compact('invoice'))->render(),
-            'invoice-'.$invoice->created_at->format('d-m-Y')
-        );
+        $channel = Channel::first();
+
+        $html = view('admin::sales.invoices.pdf', [
+            'invoice' => $invoice,
+            'channel' => $channel,
+        ])->toArabicHTML();
+
+        $pdf = app(PDF::class)
+            ->loadHTML($html)
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream();
     }
 }

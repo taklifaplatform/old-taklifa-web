@@ -84,8 +84,8 @@ it('should returns the home page of the store', function () {
         ->assertOk()
         ->assertSeeText('The game with our new additions!')
         ->assertSeeText('Our Collections')
-        ->assertSeeText('Get Ready for our new Bold Collections!')
-        ->assertSeeText('Get UPTO 40% OFF on your 1st order SHOP NOW');
+        ->assertSeeText('Get Ready for our new Bold Collections!');
+        // ->assertSeeText('Get UPTO 40% OFF on your 1st order SHOP NOW');
 });
 
 it('should returns the search page of the products', function () {

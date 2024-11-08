@@ -42,7 +42,7 @@
                 @lang('shop::app.customers.login-form.page-title')
             </h1>
 
-            <p class="mt-4 text-xl text-zinc-500 max-sm:mt-0 max-sm:text-sm">
+            <p class="mt-4 text-xl text-zinc-500 max-sm:mt-0 max-sm:text-sm max-sm:text-wrap">
                 @lang('shop::app.customers.login-form.form-login-text')
             </p>
 

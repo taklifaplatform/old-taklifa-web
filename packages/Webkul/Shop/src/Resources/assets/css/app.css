@@ -429,6 +429,7 @@ img.lazy {
 
     .primary-button {
         @apply flex gap-x-1.5 items-center place-content-center font-medium rounded-xl text-white bg-navyBlue border border-navyBlue px-8 py-4 max-w-max cursor-pointer transition-all hover:opacity-[0.9];
+        font-size: 90%;
     }
 
     .secondary-button {
@@ -522,4 +523,51 @@ img.lazy {
     .skip-to-main-content-link:focus {
         @apply ltr:left-1/2 rtl:right-1/2 ltr:translate-x-1/2 rtl:translate-x-[-50%] opacity-100;
     }
+
+     /** Only mobile */
+     @media (max-width: 768px) {
+        .text-base {
+            text-wrap: nowrap;
+            overflow: hidden;
+        }
+    }
+}
+
+.img-gradient {
+	align-items: center;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+	position: relative; /* Add this line to position the pseudo-element */
+}
+
+.img-gradient::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: linear-gradient(
+		45deg,
+		#ffa95f 5%,
+		#f99c4a 15%,
+		#f47838 30%,
+		#e75157 45%,
+		#d92d7a 70%,
+		#cc2a92 80%,
+		#c32e92 95%
+	);
+	animation: rotate 2s linear infinite;
+	z-index: 1; /* Ensure the pseudo-element is behind the content */
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }

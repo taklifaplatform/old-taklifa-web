@@ -533,6 +533,21 @@ class Core
     }
 
     /**
+     * Return currency symbol from currency code.
+     *
+     * @param  string|\Webkul\Core\Contracts\Currency  $currency
+     * @return string
+     */
+    public function currencySymbol($currency)
+    {
+        $code = $currency instanceof \Webkul\Core\Contracts\Currency ? $currency->code : $currency;
+
+        $formatter = new \NumberFormatter(app()->getLocale().'@currency='.$code, \NumberFormatter::CURRENCY);
+
+        return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
+    }
+
+    /**
      * Format price.
      */
     public function formatPrice(?float $price, ?string $currencyCode = null): string

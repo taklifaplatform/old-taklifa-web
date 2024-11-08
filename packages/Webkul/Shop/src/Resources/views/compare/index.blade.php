@@ -12,22 +12,20 @@
     </x-slot>
 
     <!-- Breadcrumb -->
-    @if ((core()->getConfigData('general.general.breadcrumbs.shop')))
-        <div class="mt-5 flex justify-center max-lg:hidden">
-            {!! view_render_event('bagisto.shop.customers.account.compare.breadcrumbs.before') !!}
+    <div class="flex justify-center mt-5 max-lg:hidden">
+        {!! view_render_event('bagisto.shop.customers.account.compare.breadcrumbs.before') !!}
 
-            <div class="flex items-center gap-x-2.5">
-                <x-shop::breadcrumbs name="compare" />
-            </div>
+		<div class="flex gap-x-2.5 items-center">
+            <x-shop::breadcrumbs name="compare" />
+		</div>
 
-            {!! view_render_event('bagisto.shop.customers.account.compare.breadcrumbs.after') !!}
-        </div>
-    @endif
+        {!! view_render_event('bagisto.shop.customers.account.compare.breadcrumbs.after') !!}
+	</div>
 
     <!-- Compare Component -->
-    <div class="container mt-8 px-[60px] max-lg:px-8 max-md:mt-7 max-md:px-0">
+    <div class="container px-[60px] max-lg:px-8 max-sm:px-4 mt-8">
         <v-compare>
-            <!-- Shimmer Effect -->
+            <!---- Shimmer Effect -->
             <x-shop::shimmer.compare :attributeCount="count($comparableAttributes)" />
         </v-compare>
     </div>
@@ -41,11 +39,11 @@
                 {!! view_render_event('bagisto.shop.customers.account.compare.before') !!}
 
                 <div v-if="! isLoading">
-                    <div class="flex items-center justify-between max-md:px-4">
+                    <div class="flex justify-between items-center">
 
                         {!! view_render_event('bagisto.shop.customers.account.compare.title.before') !!}
 
-                        <h1 class="text-2xl font-medium max-sm:text-base">
+                        <h1 class="text-2xl font-medium">
                             @lang('shop::app.compare.title')
                         </h1>
 
@@ -54,12 +52,11 @@
                         {!! view_render_event('bagisto.shop.customers.account.compare.remove_all.before') !!}
 
                         <div
-                            class="secondary-button flex items-center gap-x-2.5 whitespace-nowrap border-zinc-200 px-5 py-3 font-normal max-md:rounded-lg max-md:px-3 max-md:text-xs max-sm:py-1.5"
+                            class="secondary-button flex gap-x-2.5 items-center py-3 px-5 border-[#E9E9E9] font-normal whitespace-nowrap"
                             v-if="items.length"
                             @click="removeAll"
                         >
-                            <span class="icon-bin text-2xl max-md:hidden"></span>
-
+                            <span class="icon-bin text-2xl"></span>
                             @lang('shop::app.compare.delete-all')
                         </div>
 
@@ -67,36 +64,36 @@
                     </div>
 
                     <div
-                        class="journal-scroll scrollbar-width-hidden mt-16 grid overflow-auto max-md:mt-7"
+                        class="grid mt-16 overflow-auto journal-scroll"
                         v-if="items.length"
                     >
                         <template v-for="attribute in comparableAttributes">
                             <!-- Product Card -->
                             <div
-                                class="flex max-w-full items-center border-b border-zinc-200"
+                                class="flex items-center max-w-full border-b border-[#E9E9E9]"
                                 v-if="attribute.code == 'product'"
                             >
                                 {!! view_render_event('bagisto.shop.customers.account.compare.attribute_name.before') !!}
 
-                                <div class="min-w-[304px] max-w-full max-md:grid max-md:h-full max-md:min-w-40 max-md:items-center max-md:bg-gray-200 max-sm:min-w-[110px]">
-                                    <p class="text-sm font-medium max-md:pl-4">
+                                <div class="min-w-[304px] max-w-full max-sm:hidden">
+                                    <p class="text-sm font-medium">
                                         @{{ attribute.name ?? attribute.admin_name }}
                                     </p>
                                 </div>
 
                                 {!! view_render_event('bagisto.shop.customers.account.compare.attribute_name.after') !!}
 
-                                <div class="flex gap-3 border-zinc-200 max-md:gap-0 max-md:border-0 ltr:border-l-[1px] rtl:border-r-[1px]">
+                                <div class="flex gap-3 ltr:border-l-[1px] rtl:border-r-[1px] border-[#E9E9E9] max-sm:border-0">
                                     <div
-                                        class="relative w-[311px] max-w-[311px] px-5 max-md:w-60 max-md:px-2.5 max-sm:w-[190px]"
+                                        class="relative group"
                                         v-for="product in items"
                                     >
                                         <span
-                                            class="icon-cancel absolute top-5 z-[1] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md border border-zinc-200 bg-white text-2xl max-md:top-10 max-md:h-6 max-md:w-6 max-md:rounded-full max-md:text-sm ltr:right-10 max-md:ltr:right-4 rtl:left-10 max-md:rtl:left-4"
+                                            class="hidden absolute top-16 ltr:right-5 rtl:left-5 justify-center items-center w-[30px] h-[30px] rounded-md bg-white cursor-pointer icon-cancel text-2xl group-hover:flex group-hover:z-[1] transition-all duration-300"
                                             @click="remove(product.id)"
                                         ></span>
 
-                                        <x-shop::products.card class="[&_span.icon-compare]:hidden" />
+                                        <x-shop::products.card class="min-w-[311px] max-w-[311px] max-md:min-w-[170px] max-md:max-w-[160px] pt-0 ltr:pr-0 rtl:pl-0 p-5 max-sm:ltr:pl-0 max-sm:rtl:pr-0" />
                                     </div>
                                 </div>
                             </div>
@@ -105,22 +102,26 @@
 
                             <!-- Comparable Attributes -->
                             <div
-                                class="flex max-w-full items-center border-b border-zinc-200"
+                                class="flex items-center max-w-full border-b border-[#E9E9E9] last:border-none"
                                 v-else
                             >
-                                <div class="min-w-[304px] max-w-full max-md:grid max-md:h-full max-md:min-w-40 max-md:items-center max-md:bg-gray-200 max-sm:min-w-[110px]">
-                                    <p class="text-sm font-medium max-md:pl-4">
+                                <div class="min-w-[304px] max-w-full max-sm:hidden">
+                                    <p class="text-sm font-medium">
                                         @{{ attribute.name ?? attribute.admin_name }}
                                     </p>
                                 </div>
 
-                                <div class="flex gap-3 border-zinc-200 max-md:gap-0 max-md:border-0 ltr:border-l-[1px] rtl:border-r-[1px]">
+                                <div class="flex gap-3 ltr:border-l-[1px] rtl:border-r-[1px] border-[#E9E9E9] max-sm:border-0">
                                     <div
-                                        class="w-[311px] max-w-[311px] p-5 max-md:w-60 max-md:px-2.5 max-sm:w-[190px]"
+                                        class="w-[311px] max-w-[311px] max-md:min-w-[170px] max-md:max-w-[160px] ltr:pr-0 rtl:pl-0 p-5 max-sm:ltr:pl-0 max-sm:rtl:pr-0"
                                         v-for="(product, index) in items"
                                     >
+                                        <p class="hidden mb-1.5 text-sm font-medium max-sm:block">
+                                            @{{ attribute.name ?? attribute.admin_name }} :
+                                        </p>
+
                                         <p
-                                            class="break-all text-sm"
+                                            class="text-sm"
                                             v-html="product[attribute.code] ?? 'N/A'"
                                         >
                                         </p>
@@ -133,17 +134,16 @@
                     </div>
 
                     <div
-                        class="m-auto grid w-full place-content-center items-center justify-items-center py-32 text-center"
+                        class="grid items-center justify-items-center place-content-center w-full m-auto h-[476px] text-center"
                         v-else
                     >
                         <img
-                            class="max-sm:h-[100px] max-sm:w-[100px]"
                             src="{{ bagisto_asset('images/thank-you.png') }}"
                             alt="@lang('shop::app.compare.empty-text')"
                         />
-                        
+
                         <p
-                            class="text-xl max-sm:text-sm"
+                            class="text-xl"
                             role="heading"
                         >
                             @lang('shop::app.compare.empty-text')
@@ -186,11 +186,11 @@
                 methods: {
                     getItems() {
                         let productIds = [];
-                        
+
                         if (! this.isCustomer) {
                             productIds = this.getStorageValue('compare_items');
                         }
-                        
+
                         this.$axios.get("{{ route('shop.api.compare.index') }}", {
                                 params: {
                                     product_ids: productIds,
@@ -249,7 +249,7 @@
 
                                     return;
                                 }
-                                
+
                                 this.$axios.post("{{ route('shop.api.compare.destroy_all') }}", {
                                         '_method': 'DELETE',
                                     })

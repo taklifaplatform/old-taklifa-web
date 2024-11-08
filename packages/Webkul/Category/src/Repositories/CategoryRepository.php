@@ -60,7 +60,7 @@ class CategoryRepository extends Repository
             }
         }
 
-        return $queryBuilder->paginate($params['limit'] ?? 10);
+        return $queryBuilder->orderBy('position')->paginate($params['limit'] ?? 10);
     }
 
     /**

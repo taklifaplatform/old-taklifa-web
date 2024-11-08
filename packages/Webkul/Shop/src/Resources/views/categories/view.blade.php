@@ -1,14 +1,9 @@
 <!-- SEO Meta Content -->
 @push('meta')
-    <meta 
-        name="description" 
-        content="{{ trim($category->meta_description) != "" ? $category->meta_description : \Illuminate\Support\Str::limit(strip_tags($category->description), 120, '') }}"
-    />
+    <meta name="description"
+        content="{{ trim($category->meta_description) != '' ? $category->meta_description : \Illuminate\Support\Str::limit(strip_tags($category->description), 120, '') }}" />
 
-    <meta 
-        name="keywords" 
-        content="{{ $category->meta_keywords }}"
-    />
+    <meta name="keywords" content="{{ $category->meta_keywords }}" />
 
     @if (core()->getConfigData('catalog.rich_snippets.categories.enable'))
         <script type="application/ld+json">
@@ -17,24 +12,99 @@
     @endif
 @endPush
 
-<x-shop::layouts>
+<x-shop::layouts :category="$category">
     <!-- Page Title -->
     <x-slot:title>
-        {{ trim($category->meta_title) != "" ? $category->meta_title : $category->name }}
+        {{ trim($category->meta_title) != '' ? $category->meta_title : $category->name }}
     </x-slot>
+
+    @php
+        $tags = $category->tags;
+    @endphp
+
+    @props(['tags', 'category'])
+    @php
+        if (!function_exists('getTagUrl')) {
+            function getTagUrl($tagId)
+            {
+                $url = request()->url();
+                $query = request()->query();
+                $query['tag'] = $tagId;
+
+                return $url . '?' . http_build_query($query);
+            }
+        }
+    @endphp
+
+    @if ($tags->isNotEmpty())
+        <div class="max-md:px-0 max-lg:px-8 pb-6" v-if="!isLoading">
+            <div class="relative max-md:px-0 px-16">
+                <div ref="swiperContainer" class="flex overflow-auto scroll-smooth scrollbar-hide">
+                    <div class="container mt-8 px-[60px] max-lg:px-8 max-sm:px-4">
+                        <div class="flex gap-x-2.5">
+                            @if (request()->get('tag'))
+                                <div :class="{
+                                    'border rounded-[10px] max-md:text-xs max-md:rounded-md px-5 py-2.5 whitespace-nowrap max-md:px-4 max-md:py-2.5 bg-gray-100': true,
+
+                                    'bg-green-900 text-white': {{ !request()->get('tag') ? 1 : 0 }},
+                                    'hover:bg-green-900 hover:text-white': {{ !request()->get('tag') ? 1 : 0 }}
+                                }"
+                                    class="border border-navyBlue cursor-pointer transition-colors duration-300">
+                                    <a href="{{ getTagUrl(null) }}">
+                                        All
+                                        ({{ $category->products->count() }})
+                                    </a>
+                                </div>
+                            @endif
+                            @foreach ($tags as $tag)
+                                @php
+                                    $tagsCount = $category
+                                        ->products()
+                                        ->whereHas('tags', function ($query) use ($tag) {
+                                            $query->where('tag_id', $tag->id);
+                                        })
+                                        ->count();
+                                @endphp
+                                @if ($tagsCount)
+                                    <div :class="{
+                                        'border rounded-[10px] max-md:text-xs max-md:rounded-md px-5 py-2.5 whitespace-nowrap max-md:px-4 max-md:py-2.5 bg-gray-100': true,
+
+                                        'bg-green-900 text-white': {{ request()->get('tag') == $tag->id ? 1 : 0 }},
+                                        'hover:bg-green-900 hover:text-white': {{ request()->get('tag') != $tag->id ? 1 : 0 }}
+                                    }"
+                                        class="border border-navyBlue cursor-pointer transition-colors duration-300">
+                                        <a href="{{ getTagUrl($tag->id) }}">{{ $tag->name }}
+                                            ({{ $tagsCount }})
+                                        </a>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <span
+                    class="max-md:hidden flex items-center justify-center absolute top-12 left-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-left-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                    role="button" aria-label="@lang('shop::components.carousel.previous')" tabindex="0" @click="swipeLeft">
+                </span>
+
+                <span
+                    class="max-md:hidden flex items-center justify-center absolute top-12 right-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-right-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                    role="button" aria-label="@lang('shop::components.carousel.next')" tabindex="0" @click="swipeRight">
+                </span>
+            </div>
+        </div>
+    @endif
 
     {!! view_render_event('bagisto.shop.categories.view.banner_path.before') !!}
 
     <!-- Hero Image -->
     @if ($category->banner_path)
-        <div class="container mt-8 px-[60px] max-lg:px-8 max-md:mt-4 max-md:px-4">
-            <x-shop::media.images.lazy
-                class="aspect-[4/1] max-h-full max-w-full rounded-xl"
-                src="{{ $category->banner_url }}"
-                alt="{{ $category->name }}"
-                width="1320"
-                height="300"
-            />
+        <div class="container mt-8 px-[60px] max-lg:px-8 max-sm:px-4">
+            <div>
+                <img class="rounded-xl" src="{{ $category->banner_url }}" alt="{{ $category->name }}" width="1320"
+                    height="300">
+            </div>
         </div>
     @endif
 
@@ -44,13 +114,17 @@
 
     @if (in_array($category->display_mode, [null, 'description_only', 'products_and_description']))
         @if ($category->description)
-            <div class="container mt-[34px] px-[60px] max-lg:px-8 max-md:mt-4 max-md:px-4 max-md:text-sm max-sm:text-xs">
+            <div class="container mt-8 px-[60px] max-lg:px-8 max-sm:px-4">
                 {!! $category->description !!}
             </div>
         @endif
     @endif
-        
+
     {!! view_render_event('bagisto.shop.categories.view.description.after') !!}
+
+
+    {!! view_render_event('bagisto.shop.categories.view.description.after') !!}
+
 
     @if (in_array($category->display_mode, [null, 'products_only', 'products_and_description']))
         <!-- Category Vue Component -->
@@ -61,12 +135,12 @@
     @endif
 
     @pushOnce('scripts')
-        <script 
-            type="text/x-template" 
+        <script
+            type="text/x-template"
             id="v-category-template"
         >
-            <div class="container px-[60px] max-lg:px-8 max-md:px-4">
-                <div class="flex items-start gap-10 max-lg:gap-5 md:mt-10">
+            <div class="container px-[60px] max-lg:px-8 max-sm:px-4">
+                <div class="flex gap-10 items-start md:mt-10 max-lg:gap-5">
                     <!-- Product Listing Filters -->
                     @include('shop::categories.filters')
 
@@ -79,7 +153,7 @@
 
                         <!-- Product List Card Container -->
                         <div
-                            class="mt-8 grid grid-cols-1 gap-6"
+                            class="grid grid-cols-1 gap-6 mt-8"
                             v-if="filters.toolbar.mode === 'list'"
                         >
                             <!-- Product Card Shimmer Effect -->
@@ -100,15 +174,14 @@
 
                                 <!-- Empty Products Container -->
                                 <template v-else>
-                                    <div class="m-auto grid w-full place-content-center items-center justify-items-center py-32 text-center">
+                                    <div class="grid items-center justify-items-center place-content-center w-full m-auto h-[476px] text-center">
                                         <img
-                                            class="max-md:h-[100px] max-md:w-[100px]"
                                             src="{{ bagisto_asset('images/thank-you.png') }}"
                                             alt="@lang('shop::app.categories.view.empty')"
                                         />
-                                  
+
                                         <p
-                                            class="text-xl max-md:text-sm"
+                                            class="text-xl"
                                             role="heading"
                                         >
                                             @lang('shop::app.categories.view.empty')
@@ -121,10 +194,10 @@
                         </div>
 
                         <!-- Product Grid Card Container -->
-                        <div v-else class="mt-8 max-md:mt-5">
+                        <div v-else class="mt-8">
                             <!-- Product Card Shimmer Effect -->
                             <template v-if="isLoading">
-                                <div class="grid grid-cols-3 gap-8 max-1060:grid-cols-2 max-md:justify-items-center max-md:gap-x-4">
+                                <div class="grid grid-cols-3 gap-8 max-1060:grid-cols-2 max-sm:justify-items-center max-sm:gap-4">
                                     <x-shop::shimmer.products.cards.grid count="12" />
                                 </div>
                             </template>
@@ -134,7 +207,7 @@
                             <!-- Product Card Listing -->
                             <template v-else>
                                 <template v-if="products.length">
-                                    <div class="grid grid-cols-3 gap-8 max-1060:grid-cols-2 max-md:justify-items-center max-md:gap-x-4">
+                                    <div class="grid grid-cols-3 gap-8 max-1060:grid-cols-2 max-sm:justify-items-center max-sm:gap-4">
                                         <x-shop::products.card
                                             ::mode="'grid'"
                                             v-for="product in products"
@@ -144,15 +217,14 @@
 
                                 <!-- Empty Products Container -->
                                 <template v-else>
-                                    <div class="m-auto grid w-full place-content-center items-center justify-items-center py-32 text-center">
+                                    <div class="grid items-center justify-items-center place-content-center w-full m-auto h-[476px] text-center">
                                         <img
-                                            class="max-md:h-[100px] max-md:w-[100px]"
                                             src="{{ bagisto_asset('images/thank-you.png') }}"
                                             alt="@lang('shop::app.categories.view.empty')"
                                         />
-                                        
+
                                         <p
-                                            class="text-xl max-md:text-sm"
+                                            class="text-xl"
                                             role="heading"
                                         >
                                             @lang('shop::app.categories.view.empty')
@@ -168,7 +240,7 @@
 
                         <!-- Load More Button -->
                         <button
-                            class="secondary-button mx-auto mt-14 block w-max rounded-2xl px-11 py-3 text-center text-base max-md:rounded-lg max-sm:mt-6 max-sm:px-6 max-sm:py-1.5 max-sm:text-sm"
+                            class="secondary-button block mx-auto w-max py-3 mt-14 px-11 rounded-2xl text-base text-center"
                             @click="loadMoreProducts"
                             v-if="links.next && ! loader"
                         >
@@ -177,11 +249,11 @@
 
                         <button
                             v-else-if="links.next"
-                            class="secondary-button mx-auto mt-14 block w-max rounded-2xl px-[74.5px] py-3.5 text-center text-base max-md:rounded-lg max-md:py-3 max-sm:mt-6 max-sm:px-[50.8px] max-sm:py-1.5"
+                            class="secondary-button block w-max mx-auto py-3.5 mt-14 px-[74.5px] rounded-2xl text-base text-center"
                         >
                             <!-- Spinner -->
                             <img
-                                class="h-5 w-5 animate-spin text-navyBlue"
+                                class="animate-spin h-5 w-5 text-navyBlue"
                                 src="{{ bagisto_asset('images/spinner.svg') }}"
                                 alt="Loading"
                             />
@@ -203,15 +275,19 @@
 
                         isLoading: true,
 
+                        categories: [],
+
+                        offset: 323,
+
                         isDrawerActive: {
                             toolbar: false,
-                            
+
                             filter: false,
                         },
 
                         filters: {
                             toolbar: {},
-                            
+
                             filter: {},
                         },
 
@@ -246,6 +322,17 @@
                 },
 
                 methods: {
+                    swipeLeft() {
+                        const container = this.$refs.swiperContainer;
+                        container.scrollLeft = container.scrollLeft - this.offset;
+                        console.log('Left:', container.scrollLeft);
+                    },
+
+                    swipeRight() {
+                        const container = this.$refs.swiperContainer;
+                        container.scrollLeft = container.scrollLeft + this.offset;
+                        console.log('Right:', container.scrollLeft);
+                    },
                     setFilters(type, filters) {
                         this.filters[type] = filters;
                     },
@@ -257,15 +344,15 @@
                     getProducts() {
                         this.isDrawerActive = {
                             toolbar: false,
-                            
+
                             filter: false,
                         };
 
-                        document.body.style.overflow ='scroll';
+                        document.body.style.overflow = 'scroll';
 
                         this.$axios.get("{{ route('shop.api.products.index', ['category_id' => $category->id]) }}", {
-                            params: this.queryParams 
-                        })
+                                params: this.queryParams
+                            })
                             .then(response => {
                                 this.isLoading = false;
 
@@ -278,7 +365,7 @@
                     },
 
                     loadMoreProducts() {
-                        if (! this.links.next) {
+                        if (!this.links.next) {
                             return;
                         }
 
@@ -297,8 +384,8 @@
                     },
 
                     removeJsonEmptyValues(params) {
-                        Object.keys(params).forEach(function (key) {
-                            if ((! params[key] && params[key] !== undefined)) {
+                        Object.keys(params).forEach(function(key) {
+                            if ((!params[key] && params[key] !== undefined)) {
                                 delete params[key];
                             }
 

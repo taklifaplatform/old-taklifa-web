@@ -2,26 +2,32 @@
 
 namespace Webkul\Checkout;
 
+use Illuminate\Support\Arr;
+use Webkul\Tax\Facades\Tax;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
-use Webkul\Checkout\Contracts\CartAddress as CartAddressContract;
-use Webkul\Checkout\Exceptions\BillingAddressNotFoundException;
+use Webkul\Checkout\Traits\CartTools;
+use Webkul\Shipping\Facades\Shipping;
 use Webkul\Checkout\Models\CartAddress;
 use Webkul\Checkout\Models\CartPayment;
-use Webkul\Checkout\Repositories\CartAddressRepository;
-use Webkul\Checkout\Repositories\CartItemRepository;
+use Webkul\Checkout\Traits\CartCoupons;
+use Webkul\Checkout\Traits\CartValidators;
 use Webkul\Checkout\Repositories\CartRepository;
+use Webkul\Product\Repositories\ProductRepository;
+use Webkul\Tax\Repositories\TaxCategoryRepository;
+use Webkul\Checkout\Repositories\CartItemRepository;
+use Webkul\Customer\Repositories\WishlistRepository;
+use Webkul\Checkout\Repositories\CartAddressRepository;
+use Webkul\Product\Contracts\Product as ProductContract;
 use Webkul\Customer\Contracts\Customer as CustomerContract;
 use Webkul\Customer\Contracts\Wishlist as WishlistContract;
 use Webkul\Customer\Repositories\CustomerAddressRepository;
-use Webkul\Customer\Repositories\WishlistRepository;
-use Webkul\Product\Contracts\Product as ProductContract;
-use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Shipping\Facades\Shipping;
-use Webkul\Tax\Facades\Tax;
-use Webkul\Tax\Repositories\TaxCategoryRepository;
+use Webkul\Checkout\Exceptions\BillingAddressNotFoundException;
+use Webkul\Checkout\Contracts\CartAddress as CartAddressContract;
 
 class Cart
 {
+    use CartCoupons, CartTools, CartValidators;
     /**
      * The cart instance.
      *
@@ -587,7 +593,7 @@ class Cart
         $cartPayment = new CartPayment;
 
         $cartPayment->method = $params['method'];
-        $cartPayment->method_title = core()->getConfigData('sales.payment_methods.'.$params['method'].'.title');
+        $cartPayment->method_title = core()->getConfigData('sales.payment_methods.' . $params['method'] . '.title');
         $cartPayment->cart_id = $this->cart->id;
         $cartPayment->save();
 
@@ -1153,5 +1159,156 @@ class Cart
         $shippingRate->save();
 
         Event::dispatch('checkout.cart.calculate.shipping.tax.after', $this->cart);
+    }
+
+    /**
+     * Prepare data for order.
+     */
+    public function prepareDataForOrder(): array
+    {
+        $data = $this->toArray();
+
+        $finalData = [
+            'cart_id'               => $this->getCart()->id,
+            'customer_id'           => $data['customer_id'],
+            'is_guest'              => $data['is_guest'],
+            'customer_email'        => $data['customer_email'],
+            'customer_first_name'   => $data['customer_first_name'],
+            'customer_last_name'    => $data['customer_last_name'],
+            'customer'              => auth()->guard()->check() ? auth()->guard()->user() : null,
+            'total_item_count'      => $data['items_count'],
+            'total_qty_ordered'     => $data['items_qty'],
+            'base_currency_code'    => $data['base_currency_code'],
+            'channel_currency_code' => $data['channel_currency_code'],
+            'order_currency_code'   => $data['cart_currency_code'],
+            'grand_total'           => $data['grand_total'],
+            'base_grand_total'      => $data['base_grand_total'],
+            'sub_total'             => $data['sub_total'],
+            'base_sub_total'        => $data['base_sub_total'],
+            'tax_amount'            => $data['tax_total'],
+            'base_tax_amount'       => $data['base_tax_total'],
+            'coupon_code'           => $data['coupon_code'],
+            'applied_cart_rule_ids' => $data['applied_cart_rule_ids'],
+            'discount_amount'       => $data['discount_amount'],
+            'base_discount_amount'  => $data['base_discount_amount'],
+            'billing_address'       => Arr::except($data['billing_address'], ['id', 'cart_id']),
+            'payment'               => ($data && array_key_exists('payment', $data)) ? Arr::except($data['payment'], ['id', 'cart_id']) : [],
+            'channel'               => core()->getCurrentChannel(),
+        ];
+
+        if ($this->getCart()->haveStockableItems()) {
+            // Check if selected_shipping_rate is an array
+            if (isset($data['selected_shipping_rate']) && is_array($data['selected_shipping_rate'])) {
+                // Ensure all necessary keys are present
+                if (isset($data['selected_shipping_rate']['carrier_title'], $data['selected_shipping_rate']['method_title'], $data['selected_shipping_rate']['method'], $data['selected_shipping_rate']['method_description'], $data['selected_shipping_rate']['price'], $data['selected_shipping_rate']['base_price'], $data['selected_shipping_rate']['discount_amount'], $data['selected_shipping_rate']['base_discount_amount'])) {
+                    $finalData = array_merge($finalData, [
+                        'shipping_method'               => $data['selected_shipping_rate']['method'],
+                        'shipping_title'                => $data['selected_shipping_rate']['carrier_title'] . ' - ' . $data['selected_shipping_rate']['method_title'],
+                        'shipping_description'          => $data['selected_shipping_rate']['method_description'],
+                        'shipping_amount'               => $data['selected_shipping_rate']['price'],
+                        'base_shipping_amount'          => $data['selected_shipping_rate']['base_price'],
+                        'shipping_address'              => Arr::except($data['shipping_address'], ['id', 'cart_id']),
+                        'shipping_discount_amount'      => $data['selected_shipping_rate']['discount_amount'],
+                        'base_shipping_discount_amount' => $data['selected_shipping_rate']['base_discount_amount'],
+                    ]);
+                } else {
+                    Log::debug('Missing keys in selected_shipping_rate.');
+                    // Handle missing keys: set defaults or log error
+                }
+            } else {
+                Log::debug('selected_shipping_rate is not an array or not set.');
+                // Handle the case where selected_shipping_rate is not an array: set defaults or log error
+            }
+        }
+
+
+        foreach ($data['items'] as $item) {
+            $finalData['items'][] = $this->prepareDataForOrderItem($item);
+        }
+
+        if (count($finalData['payment'])) {
+            if ($finalData['payment']['method'] === 'paypal_smart_button') {
+                $finalData['payment']['additional'] = request()->get('orderData');
+            }
+        }
+
+
+        return $finalData;
+    }
+
+    /**
+     * Prepares data for order item.
+     *
+     * @param  array  $data
+     */
+    public function prepareDataForOrderItem($data): array
+    {
+        $finalData = [
+            'product'              => $this->productRepository->find($data['product_id']),
+            'sku'                  => $data['sku'],
+            'type'                 => $data['type'],
+            'name'                 => $data['name'],
+            'weight'               => $data['weight'],
+            'total_weight'         => $data['total_weight'],
+            'qty_ordered'          => $data['quantity'],
+            'price'                => $data['price'],
+            'base_price'           => $data['base_price'],
+            'total'                => $data['total'],
+            'base_total'           => $data['base_total'],
+            'tax_percent'          => $data['tax_percent'],
+            'tax_amount'           => $data['tax_amount'],
+            'base_tax_amount'      => $data['base_tax_amount'],
+            'tax_category_id'      => $data['tax_category_id'],
+            'discount_percent'     => $data['discount_percent'],
+            'discount_amount'      => $data['discount_amount'],
+            'base_discount_amount' => $data['base_discount_amount'],
+            'additional'           => array_merge($data['additional'] ?? [], ['locale' => core()->getCurrentLocale()->code]),
+        ];
+
+        if (!empty($data['children'])) {
+            foreach ($data['children'] as $child) {
+                /**
+                 * - For bundle, child quantity will not be zero.
+                 *
+                 * - For configurable, parent one will be added as child one is zero.
+                 *
+                 * - In testing phase.
+                 */
+                $child['quantity'] = $child['quantity'] ? $child['quantity'] * $data['quantity'] : $data['quantity'];
+
+                $finalData['children'][] = $this->prepareDataForOrderItem($child);
+            }
+        }
+
+        return $finalData;
+    }
+
+    /**
+     * Returns cart details in array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $cart = $this->getCart();
+
+        $data = $cart->toArray();
+
+        $data['billing_address'] = $cart->billing_address->toArray();
+
+        if ($cart->haveStockableItems()) {
+            $data['shipping_address'] = $cart->shipping_address->toArray();
+
+            $data['selected_shipping_rate'] = $cart->selected_shipping_rate?->toArray() ?? 0;
+        }
+
+        $data['payment'] = [];
+        if ($cart->payment) {
+            $data['payment'] = $cart->payment->toArray();
+        }
+
+        $data['items'] = $cart->items()->with('children')->get()->toArray();
+
+        return $data;
     }
 }
