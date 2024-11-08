@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/laravel-marketplace",
+    "license": "MIT",
+    "description" : "Marketplace package",
+    "authors": [
+        {
+            "name": "Bagisto",
+            "email": "support@bagisto.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Marketplace\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Marketplace\\Providers\\MarketplaceServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

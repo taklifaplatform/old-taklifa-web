@@ -1,0 +1,1 @@
+@bagistoVite(['src/Resources/assets/css/shop.css'], 'marketplace')

@@ -1,0 +1,108 @@
+{
+  "src/Resources/assets/css/admin.css": {
+    "file": "assets/admin-a09bb80a.css",
+    "isEntry": true,
+    "src": "src/Resources/assets/css/admin.css"
+  },
+  "src/Resources/assets/css/shop.css": {
+    "file": "assets/shop-c629f25e.css",
+    "isEntry": true,
+    "src": "src/Resources/assets/css/shop.css"
+  },
+  "src/Resources/assets/fonts/icomoon.woff": {
+    "file": "assets/icomoon-0666ca40.woff",
+    "src": "src/Resources/assets/fonts/icomoon.woff"
+  },
+  "src/Resources/assets/images/default-banner.webp": {
+    "file": "assets/default-banner-d9ee3b1f.webp",
+    "src": "src/Resources/assets/images/default-banner.webp"
+  },
+  "src/Resources/assets/images/default-logo.webp": {
+    "file": "assets/default-logo-4e2985b5.webp",
+    "src": "src/Resources/assets/images/default-logo.webp"
+  },
+  "src/Resources/assets/images/empty-placeholders/default-empty.svg": {
+    "file": "assets/default-empty-2c56169a.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/default-empty.svg"
+  },
+  "src/Resources/assets/images/empty-placeholders/orders-empty.svg": {
+    "file": "assets/orders-empty-5dd62d9d.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/orders-empty.svg"
+  },
+  "src/Resources/assets/images/empty-placeholders/report-empty.svg": {
+    "file": "assets/report-empty-c3bb4a01.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/report-empty.svg"
+  },
+  "src/Resources/assets/images/empty-placeholders/reviews-empty.svg": {
+    "file": "assets/reviews-empty-17309002.svg",
+    "src": "src/Resources/assets/images/empty-placeholders/reviews-empty.svg"
+  },
+  "src/Resources/assets/images/icon-add-product.svg": {
+    "file": "assets/icon-add-product-e3232d62.svg",
+    "src": "src/Resources/assets/images/icon-add-product.svg"
+  },
+  "src/Resources/assets/images/icon-discount.svg": {
+    "file": "assets/icon-discount-e37d1aed.svg",
+    "src": "src/Resources/assets/images/icon-discount.svg"
+  },
+  "src/Resources/assets/images/icon-options.svg": {
+    "file": "assets/icon-options-ebfcd268.svg",
+    "src": "src/Resources/assets/images/icon-options.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/front.svg": {
+    "file": "assets/front-93490c30.svg",
+    "src": "src/Resources/assets/images/product-placeholders/front.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/next-1.svg": {
+    "file": "assets/next-1-91bb148a.svg",
+    "src": "src/Resources/assets/images/product-placeholders/next-1.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/next-2.svg": {
+    "file": "assets/next-2-6aace5ca.svg",
+    "src": "src/Resources/assets/images/product-placeholders/next-2.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/size.svg": {
+    "file": "assets/size-04e2a252.svg",
+    "src": "src/Resources/assets/images/product-placeholders/size.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/use-cases.svg": {
+    "file": "assets/use-cases-4a33de1a.svg",
+    "src": "src/Resources/assets/images/product-placeholders/use-cases.svg"
+  },
+  "src/Resources/assets/images/product-placeholders/zoom.svg": {
+    "file": "assets/zoom-0c75bed3.svg",
+    "src": "src/Resources/assets/images/product-placeholders/zoom.svg"
+  },
+  "src/Resources/assets/images/small-product-placeholder-64b7f208.webp": {
+    "file": "assets/small-product-placeholder-64b7f208-64b7f208.webp",
+    "src": "src/Resources/assets/images/small-product-placeholder-64b7f208.webp"
+  },
+  "src/Resources/assets/images/social-icons/facebook.svg": {
+    "file": "assets/facebook-5c7cf779.svg",
+    "src": "src/Resources/assets/images/social-icons/facebook.svg"
+  },
+  "src/Resources/assets/images/social-icons/linkedin.svg": {
+    "file": "assets/linkedin-e10276c8.svg",
+    "src": "src/Resources/assets/images/social-icons/linkedin.svg"
+  },
+  "src/Resources/assets/images/social-icons/pinterest.svg": {
+    "file": "assets/pinterest-8e4b4049.svg",
+    "src": "src/Resources/assets/images/social-icons/pinterest.svg"
+  },
+  "src/Resources/assets/images/social-icons/twitter.svg": {
+    "file": "assets/twitter-ecdd61e2.svg",
+    "src": "src/Resources/assets/images/social-icons/twitter.svg"
+  },
+  "src/Resources/assets/js/app.css": {
+    "file": "assets/app-05f8acf7.css",
+    "src": "src/Resources/assets/js/app.css"
+  },
+  "src/Resources/assets/js/app.js": {
+    "css": [
+      "assets/app-05f8acf7.css"
+    ],
+    "file": "assets/app-d0ccc4e8.js",
+    "isEntry": true,
+    "src": "src/Resources/assets/js/app.js"
+  }
+}
