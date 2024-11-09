@@ -8,28 +8,28 @@
     @section('breadcrumbs')
         <x-marketplace::shop.breadcrumbs name="seller_dashboard" />
     @endSection
- 
+
     <div class="grid gap-2.5">
         <div class="flex items-center justify-between gap-4 max-sm:flex-wrap">
             <div>
                 <p class="text-2xl font-medium">
                     @lang('marketplace::app.shop.sellers.account.dashboard.hi-seller', ['seller_name' => $seller->name])
                 </p>
-    
+
                 <div class="py-4">
                     <p class="text-xs font-medium opacity-80">
                         @lang('marketplace::app.shop.sellers.account.dashboard.hi-comment')
                     </p>
                 </div>
             </div>
-            
+
             {!! view_render_event('marketplace.seller.dashboard.filter.before') !!}
-            
+
             <!-- Filter Component -->
             <v-dashboard-filters>
                 <x:marketplace::shop.shimmer.dashboard.filter />
             </v-dashboard-filters>
-            
+
             {!! view_render_event('marketplace.seller.dashboard.filter.after') !!}
         </div>
     </div>
@@ -37,7 +37,7 @@
     {!! view_render_event('marketplace.seller.dashboard.stats.before') !!}
 
     {!! view_render_event('marketplace.seller.dashboard.stats.over_all_details.before') !!}
-    
+
     <!-- Over All Details -->
     @include('marketplace::shop.default.sellers.account.dashboard.over-all-details')
 
@@ -52,7 +52,7 @@
     </div>
 
     {!! view_render_event('marketplace.seller.dashboard.stats.orders.before') !!}
-    
+
     <!-- Orders Listing -->
     @include('marketplace::shop.sellers.account.dashboard.orders')
 
@@ -95,7 +95,7 @@
                         <option value="">
                             @lang('marketplace::app.shop.sellers.account.dashboard.date-range')
                         </option>
-                        
+
                         @foreach (['today', 'week', 'month', 'year'] as $type)
                             <option value="{{ $type }}">
                                 @lang('marketplace::app.shop.sellers.account.dashboard.'.$type)
@@ -103,7 +103,7 @@
                         @endforeach
                     </x-marketplace::shop.form.control-group.control>
                 </x-marketplace::shop.form.control-group>
-    
+
                 <date-filter>
                     <div class="flex gap-x-2.5">
                         <!-- Start Date -->
@@ -114,7 +114,7 @@
                                 v-model="filters.start"
                             >
                         </x-shop::flat-picker.date>
-            
+
                         <!-- End Date -->
                         <x-shop::flat-picker.date class="w-36">
                             <input
@@ -136,7 +136,7 @@
                     return {
                         filters: {
                             start: "{{ $startDate->format('Y-m-d') }}",
-                            
+
                             end: "{{ $endDate->format('Y-m-d') }}",
                         }
                     }

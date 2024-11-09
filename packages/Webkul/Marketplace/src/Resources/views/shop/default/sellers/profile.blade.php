@@ -57,7 +57,7 @@
                 >
                 </x-shop::media.images.lazy>
             </div>
-        
+
             <div class="grid gap-5">
                 <div class="grid md:flex md:items-center md:justify-between">
                     <div class="grid gap-2.5 md:flex">
@@ -71,7 +71,7 @@
                             >
                             </x-shop::media.images.lazy>
                         </div>
-    
+
                         <div class="grid md:max-w-[500px]">
                             <h1 class="text-3xl font-medium">
                                 {{$seller->shop_title}}
@@ -82,29 +82,29 @@
                             </h6>
                         </div>
                     </div>
-    
+
                     <div class="grid gap-1.5">
                         <div class="flex items-center gap-2.5 md:justify-end">
-                            <x-marketplace::shop.products.star-rating 
+                            <x-marketplace::shop.products.star-rating
                                 :value="$avgRatings"
                                 :is-editable=false
                             />
-            
+
                             <div class="flex gap-4">
                                 <p class="text-sm leading-8 text-[#757575]">
                                     ({{ $totalReviews }} @lang('reviews'))
                                 </p>
                             </div>
                         </div>
-    
+
                         @include('marketplace::shop.sellers.contacts')
                     </div>
                 </div>
-    
+
                 <!-- seller Profile component -->
                 <v-seller-profile>
                     <x-marketplace::shop.shimmer.profile-tab />
-    
+
                     <x-marketplace::shop.shimmer.product />
                 </v-seller-profile>
             </div>
@@ -116,7 +116,7 @@
             <div class="grid justify-between gap-y-4 rounded-2xl md:flex md:border md:p-5">
                 <div class="flex gap-1 md:gap-5">
                     {!! view_render_event('bagisto.shop.marketplace.seller.profile.tabs.before', ['seller' => $seller]) !!}
-                    
+
                     <button
                         class="rounded-xl px-2 py-2 text-lg font-normal leading-7 md:px-4"
                         :class="{ 'border border-navyBlue': activeTab == 'products' }"
@@ -124,7 +124,7 @@
                     >
                         @lang('marketplace::app.shop.sellers.profile.products-count', ['count' => $totalProduct])
                     </button>
-    
+
                     <button
                         class="rounded-xl px-2 py-2 text-lg font-normal leading-7 md:px-4"
                         :class="{ 'border border-navyBlue': activeTab == 'reviews' }"
@@ -132,7 +132,7 @@
                     >
                         @lang('marketplace::app.shop.sellers.profile.reviews-count', ['count' => $totalReviews])
                     </button>
-    
+
                     <button
                         class="rounded-xl px-2 py-2 text-lg font-normal leading-7 md:px-4"
                         :class="{ 'border border-navyBlue': activeTab == 'about' }"
@@ -143,7 +143,7 @@
 
                     {!! view_render_event('bagisto.shop.marketplace.seller.profile.tabs.after', ['seller' => $seller]) !!}
                 </div>
-    
+
                 <div class="flex">
                     <!-- Serach Product Form -->
                     <form
@@ -156,12 +156,12 @@
                         >
                             @lang('marketplace::app.shop.sellers.profile.reviews.search')
                         </label>
-    
+
                         <div class="relative w-full">
                             <div
                                 class="icon-search pointer-events-none absolute top-2.5 flex items-center text-2xl ltr:left-3 rtl:right-3">
                             </div>
-    
+
                             <input
                                 type="text"
                                 class="block w-full rounded-xl border border-navyBlue px-11 py-3.5 text-xs font-medium"
@@ -185,7 +185,7 @@
                     <h2 class="text-2xl font-medium">
                         @lang('marketplace::app.shop.sellers.profile.reviews.customer-reviews')
                     </h2>
-                    
+
                     @if (auth()->guard('customer')->check())
                         <span
                             class="icon-pen flex cursor-pointer items-center gap-2 rounded-3xl border border-navyBlue px-4 py-2 text-2xl"
@@ -208,12 +208,12 @@
                                     </p>
                                 </div>
 
-                                <x-marketplace::shop.products.star-rating 
+                                <x-marketplace::shop.products.star-rating
                                     :value="$avgRatings"
                                     :is-editable=false
                                 >
                                 </x-marketplace::shop.products.star-rating>
-                
+
                                 <div class="flex gap-4">
                                     <p class="text-xs text-[#858585] underline">
                                         (@lang('marketplace::app.shop.sellers.profile.reviews.customer-review', ['count' => $totalReviews]))
@@ -254,20 +254,20 @@
                                         </span>
                                     </div>
                                 </div>
-                    
+
                                 <div class="w-full">
                                     <div class="flex justify-between">
                                         <p class="text-xl font-medium max-sm:text-base">
                                             {{$review->title}}
                                         </p>
-                    
+
                                         <div class="flex items-center">
-                                            <x-marketplace::shop.products.star-rating 
+                                            <x-marketplace::shop.products.star-rating
                                                 :value="$review->rating"
                                             />
                                         </div>
-                                    </div>                    
-                    
+                                    </div>
+
                                     <p class="mt-2.5 text-base text-[#757575] max-sm:text-xs">
                                         {{$review->comment}}
                                     </p>
@@ -318,7 +318,7 @@
                                 />
 
                                 {!! view_render_event('bagisto.shop.marketplace.seller.profile.review.create_form_controls.before', ['seller' => $seller]) !!}
-                                
+
                                 <x-shop::form.control-group class="w-full">
                                     <x-shop::form.control-group.label class="required flex">
                                         @lang('shop::app.products.view.reviews.rating')
@@ -418,12 +418,12 @@
 
                 methods: {
                     createReview(params, { resetForm, setErrors }) {
-                        let formData = new FormData(this.$refs.reviewForm);                     
+                        let formData = new FormData(this.$refs.reviewForm);
 
                         this.$axios.post("{{route('marketplace.seller.reviews.store')}}", formData)
                             .then((response) => {
                                 this.$refs.reviewForm.reset();
-                                
+
                                 this.$refs.reviewModal.close();
 
                                 this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
@@ -438,8 +438,8 @@
             });
         </script>
 
-        <script 
-            type="text/x-template" 
+        <script
+            type="text/x-template"
             id="v-seller-products-template"
         >
             <div>
@@ -478,7 +478,7 @@
                                 <template v-else>
                                     <div class="m-auto grid h-[476px] w-[100%] place-content-center items-center justify-items-center text-center">
                                         <img src="{{ bagisto_asset('images/thank-you.png') }}"/>
-                                
+
                                         <p class="text-xl">
                                             @lang('marketplace::app.shop.sellers.profile.products.no-result')
                                         </p>
@@ -512,7 +512,7 @@
                                 <template v-else>
                                     <div class="m-auto grid h-[476px] w-[100%] place-content-center items-center justify-items-center text-center">
                                         <img src="{{ bagisto_asset('images/thank-you.png') }}"/>
-                                        
+
                                         <p class="text-xl">
                                             @lang('marketplace::app.shop.sellers.profile.products.no-result')
                                         </p>
@@ -546,13 +546,13 @@
 
                         isDrawerActive: {
                             toolbar: false,
-                            
+
                             filter: false,
                         },
 
                         filters: {
                             toolbar: {},
-                            
+
                             filter: {},
                         },
 
@@ -587,7 +587,7 @@
                 methods: {
                     setFilters(type, filters) {
                         this.filters[type] = filters;
-                     
+
                         document.body.style.overflow = 'auto';
                     },
 
@@ -600,12 +600,12 @@
                     getProducts() {
                         this.isDrawerActive = {
                             toolbar: false,
-                            
+
                             filter: false,
                         };
 
-                        this.$axios.get(("{{ route('marketplace.products.index', $seller->shop_url) }}"), { 
-                            params: this.queryParams 
+                        this.$axios.get(("{{ route('marketplace.products.index', $seller->shop_url) }}"), {
+                            params: this.queryParams
                         })
                             .then(response => {
                                 this.isLoading = false;
@@ -657,4 +657,4 @@
             });
         </script>
     @endPushOnce
-</x-marketplace::shop.layouts.full> 
+</x-marketplace::shop.layouts.full>

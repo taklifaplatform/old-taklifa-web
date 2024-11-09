@@ -17,7 +17,7 @@
                     <a href="{{ route('shop.home.index') }}">
                         @if ($logo = core()->getConfigData('general.design.admin_logo.logo_image'))
                             <img
-                                src="{{ Storage::url($logo) }}"
+                                src="{{ $logo }}"
                                 alt="{{ config('app.name') }}"
                                 style="height: 40px; width: 110px;"
                             />
@@ -37,8 +37,8 @@
                 <!-- Email Footer -->
                 <p style="font-size: 16px;color: #202B3C;line-height: 24px;">
                     @lang('admin::app.emails.thanks', [
-                        'link' => 'mailto:' . core()->getContactEmailDetails()['email'],
-                        'email' => core()->getContactEmailDetails()['email'],
+                        'link' => 'mailto:taklifa@taklifa.com',
+                        'email' => 'taklifa@taklifa.com',
                         'style' => 'color: #2969FF;'
                     ])
                 </p>

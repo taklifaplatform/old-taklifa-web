@@ -901,6 +901,67 @@ class Cart
         return $this;
     }
 
+    private function calculateItemTaxes($cart): void
+    {
+        $taxPercent = 15;
+
+        $totalAmount = $cart->items->sum('total');
+        $cart->tax_total = Tax::calculateTax($totalAmount, $taxPercent);
+
+        foreach ($cart->items as $item) {
+            $item->tax_amount = Tax::calculateTax($item->total, $taxPercent);
+            $item->save();
+        }
+    }
+
+    private function calculateCartTotals($cart): void
+    {
+        $cart->sub_total = $cart->base_sub_total = 0;
+        $cart->grand_total = $cart->base_grand_total = 0;
+        $cart->tax_total = $cart->base_tax_total = 0;
+        $cart->discount_amount = $cart->base_discount_amount = 0;
+
+        $quantities = 0;
+
+        foreach ($cart->items as $item) {
+            $cart->discount_amount += $item->discount_amount;
+            $cart->base_discount_amount += $item->base_discount_amount;
+
+            $cart->sub_total += $item->total;
+            $cart->base_sub_total += $item->base_total;
+
+            $quantities += $item->quantity;
+        }
+
+        $cart->items_qty = $quantities;
+        $cart->items_count = $cart->items->count();
+
+        $cart->tax_total = Tax::getTaxTotal($cart, false);
+        $cart->base_tax_total = Tax::getTaxTotal($cart, true);
+
+        $cart->grand_total = $cart->sub_total + $cart->tax_total - $cart->discount_amount;
+        $cart->base_grand_total = $cart->base_sub_total + $cart->base_tax_total - $cart->base_discount_amount;
+
+        if ($shipping = $cart->selected_shipping_rate) {
+            $cart->grand_total += $shipping->price - $shipping->discount_amount;
+            $cart->base_grand_total += $shipping->base_price - $shipping->base_discount_amount;
+
+            $cart->discount_amount += $shipping->discount_amount;
+            $cart->base_discount_amount += $shipping->base_discount_amount;
+        }
+
+        $cart->discount_amount = round($cart->discount_amount, 2);
+        $cart->base_discount_amount = round($cart->base_discount_amount, 2);
+
+        $cart->sub_total = round($cart->sub_total, 2);
+        $cart->base_sub_total = round($cart->base_sub_total, 2);
+
+        $cart->grand_total = round($cart->grand_total, 2);
+        $cart->base_grand_total = round($cart->base_grand_total, 2);
+
+        $cart->cart_currency_code = core()->getCurrentCurrencyCode();
+    }
+
     /**
      * To validate if the product information is changed by admin and the items have been added to the cart before it.
      */

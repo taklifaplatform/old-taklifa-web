@@ -56,7 +56,7 @@ class AddressController extends Controller
             'company_name',
             'vat_id',
             'first_name',
-            'last_name',
+            // 'last_name',
             'address',
             'city',
             'country',

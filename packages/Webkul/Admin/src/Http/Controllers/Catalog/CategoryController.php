@@ -135,8 +135,8 @@ class CategoryController extends Controller
             $categoryRequest->input('locale')
         ), $id);
 
-         // Sync the tags
-         $category->tags()->sync($categoryRequest->input('tags', []));
+        // Sync the tags
+        $category->tags()->sync($categoryRequest->input('tags', []));
 
         Event::dispatch('catalog.category.update.after', $category);
 
@@ -289,10 +289,18 @@ class CategoryController extends Controller
      */
     public function search()
     {
-        $categories = $this->categoryRepository->getAll([
-            'name'   => request()->input('query'),
-            'locale' => app()->getLocale(),
-        ]);
+        $results = [];
+
+        $categories = $this->categoryRepository->scopeQuery(function ($query) {
+            return $query
+                ->select('categories.*')
+                ->leftJoin('category_translations', function ($query) {
+                    $query->on('categories.id', '=', 'category_translations.category_id')
+                        ->where('category_translations.locale', app()->getLocale());
+                })
+                ->where('category_translations.name', 'like', '%' . urldecode(request()->input('query')) . '%')
+                ->orderBy('created_at', 'desc');
+        })->paginate(10);
 
         return response()->json($categories);
     }

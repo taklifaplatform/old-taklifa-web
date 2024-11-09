@@ -181,6 +181,87 @@
                     {!! view_render_event('bagisto.shop.components.products.card.compare_option.after') !!}
                 </div>
             </div>
+
+            <div class="grid gap-2.5 content-start max-w-[291px] p-2">
+
+                {!! view_render_event('bagisto.shop.components.products.card.name.before') !!}
+
+                <p class="text-wrap: wrap;" v-text="product.name"></p>
+
+                {!! view_render_event('bagisto.shop.components.products.card.name.after') !!}
+
+                {!! view_render_event('bagisto.shop.components.products.card.price.before') !!}
+
+                <div
+                    class="flex flex-wrap max-md:h-12 gap-2.5 items-center font-semibold text-sm"
+                    v-html="product.price_html"
+                >
+                </div>
+
+                {!! view_render_event('bagisto.shop.components.products.card.price.before') !!}
+
+                @if(false)
+                <div class="flex max-md:flex-wrap gap-2.5">
+                    <x-shop::quantity-changer
+                        class="flex gap-x-2.5 border rounded-[10px] border-navyBlue py-1.5 px-2.5 max-md:px-2 max-md:py-1 max-w-max"
+                        name="quantity"
+                        ::value="quantity"
+                        @change="setItemQuantity"
+                    />
+                    <x-shop::button
+                        class="primary-button max-md:px-2 max-md:py-1.5 max-md:text-xs max-md:rounded-md px-8 py-2.5 whitespace-nowrap max-w-[150px] max-sm:w-full"
+                        :title="trans('shop::app.components.products.card.add-to-quote')"
+                        ::loading="isAddingToQuote"
+                        ::disabled="! product.is_saleable || isAddingToQuote"
+                        @click="addToQuote()"
+                    />
+                </div>
+                @endif
+
+                <div class="flex max-md:flex-wrap gap-2.5">
+                    <div class="flex gap-x-2.5 border rounded-[10px] border-navyBlue py-1.5 px-2.5 max-md:px-2 max-md:py-1 max-w-[140px] max-sm:w-full bg-gray-200">
+                        <button
+                            type="button"
+                            class="px-1 py-0.5 bg-gray-200 rounded"
+                            @click="decreaseQuantity"
+                        >
+                            -
+                        </button>
+
+                        <input
+                            type="number"
+                            name="quantity"
+                            class="w-14 text-center no-arrows bg-gray-200"
+                            v-model="quantity"
+                            min="1"
+                            @input="setItemQuantity($event.target.value)"
+                        />
+
+                        <button
+                            type="button"
+                            class="px-1 py-0.5 bg-gray-200 rounded"
+                            @click="increaseQuantity"
+                        >
+                            +
+                        </button>
+                    </div>
+
+                    <x-shop::button
+                        class="primary-button max-md:px-2 max-md:py-1.5 max-md:text-xs max-md:rounded-md px-8 py-2.5 whitespace-nowrap max-w-[140px] max-sm:w-full"
+                        :title="trans('shop::app.components.products.card.add-to-quote')"
+                        ::loading="isAddingToQuote"
+                        ::disabled="! product.is_saleable || isAddingToQuote"
+                        @click="addToQuote()"
+                    />
+                </div>
+
+                <!-- Needs to implement that in future -->
+                <div class="hidden flex gap-4 mt-2">
+                    <span class="block w-[30px] h-[30px] bg-[#B5DCB4] rounded-full cursor-pointer"></span>
+
+                    <span class="block w-[30px] h-[30px] bg-[#5C5C5C] rounded-full cursor-pointer"></span>
+                </div>
+            </div>
         </div>
 
         <!-- List Card -->
@@ -320,13 +401,21 @@
 
                     {!! view_render_event('bagisto.shop.components.products.card.add_to_cart.before') !!}
 
-                    <x-shop::button
-                        class="primary-button whitespace-nowrap px-8 py-2.5"
-                        :title="trans('shop::app.components.products.card.add-to-cart')"
-                        ::loading="isAddingToCart"
-                        ::disabled="! product.is_saleable || isAddingToCart"
-                        @click="addToCart()"
-                    />
+                    <div class="flex gap-2.5 items-center">
+                        <x-shop::quantity-changer
+                            class="flex gap-x-2.5 border rounded-[10px] border-navyBlue py-2.5 px-3.5 items-center max-w-max"
+                            name="quantity"
+                            ::value="quantity"
+                            @change="setItemQuantity"
+                        />
+                        <x-shop::button
+                            class="primary-button px-8 py-2.5 whitespace-nowrap max-w-[150px] max-sm:w-full"
+                            :title="trans('shop::app.components.products.card.add-to-quote')"
+                            ::loading="isAddingToQuote"
+                            ::disabled="! product.is_saleable || isAddingToQuote"
+                            @click="addToQuote()"
+                        />
+                    </div>
 
                     {!! view_render_event('bagisto.shop.components.products.card.add_to_cart.after') !!}
 
@@ -350,6 +439,56 @@
             },
 
             methods: {
+                calculateAndClose(productId) {
+                    this.calculate(productId);
+                    this.showPopup = false;
+                },
+                calculate(productId) {
+                    const height = this.defaultDimensionHeight;
+                    const width = this.defaultDimensionWidth;
+                    const length = this.defaultDimensionLength;
+                    const quantity = this.quantity;
+
+                    // Basic validation
+                    if (height <= 0 || width <= 0 || length <= 0 || quantity <= 0) {
+                        alert('Please enter valid dimensions and quantity.');
+                        return;
+                    }
+
+                    // Calculate the total price considering the quantity
+                    const volume = height * width * length; // Calculate the volume based on dimensions
+                    const calculatedPrice = volume * quantity * this
+                        .pricePerUnit; // Calculate the price based on volume and quantity
+
+                    // Update the product price with the calculated price
+                    this.calculatedPrice = calculatedPrice;
+
+                    // Optionally, you can also display the calculated price in an alert
+                    alert(`The calculated price is: ${calculatedPrice} price units`);
+
+                    // Update the UI to reflect the new price
+                    this.updateProductPrice();
+                },
+                updateProductPrice() {
+                    // Update the product price in the UI
+                    this.product.price = this.calculatedPrice;
+                },
+
+                setItemQuantity(quantity) {
+                    this.quantity = quantity;
+                },
+
+                setItemQuantity(value) {
+                    this.quantity = parseInt(value, 10);
+                },
+                increaseQuantity() {
+                    this.quantity++;
+                },
+                decreaseQuantity() {
+                    if (this.quantity > 1) {
+                        this.quantity--;
+                    }
+                },
                 addToWishlist() {
                     if (this.isCustomer) {
                         this.$axios.post(`{{ route('shop.api.customers.account.wishlist.store') }}`, {
@@ -484,4 +623,22 @@
             },
         });
     </script>
+
+    <style>
+        input[type="number"].no-arrows::-webkit-outer-spin-button,
+        input[type="number"].no-arrows::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"].no-arrows {
+            -moz-appearance: textfield;
+        }
+
+        /* Adjust the distance between the input and buttons */
+        .gap-x-2.5 {
+            gap: 10px;
+            /* Adjust this value as needed */
+        }
+    </style>
 @endpushOnce

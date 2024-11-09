@@ -31,7 +31,7 @@
 
             <div class="flex items-center gap-x-2.5 text-center">
                 {!! view_render_event('marketplace.seller.account.profile.edit.button.before', ['seller' => $seller]) !!}
-                
+
                 <!-- Collection Button -->
                 <a
                     href="{{route('marketplace.seller.show', $seller->shop_url)}}"
@@ -85,14 +85,14 @@
                     <h1 class="text-3xl font-medium leading-[48px]">
                         {{$seller->shop_title}}
                     </h1>
-                    
+
                     <h6 class="text-base font-medium leading-6 text-[#757575]">
                         {{ $seller->full_address }}
                     </h6>
                 </div>
             </div>
         </v-seller-banner-logo>
-        
+
         <!-- Full Pannel -->
         <div class="mt-3.5 flex gap-6 max-xl:flex-wrap">
             <!-- Left Section -->
@@ -103,9 +103,9 @@
                     <h3 class="mb-6 text-xl font-medium leading-8 text-navyBlue">
                         @lang('marketplace::app.shop.sellers.account.manage-profile.shop.general-info')
                     </h3>
-                    
+
                     {!! view_render_event('marketplace.seller.account.profile.edit.shop_title_field.before', ['seller' => $seller]) !!}
-                    
+
                     <!-- Shop Title -->
                     <div class="flex gap-4 max-sm:flex-wrap">
                         <x-marketplace::shop.form.control-group class="w-full">
@@ -127,7 +127,7 @@
                     </div>
 
                     {!! view_render_event('marketplace.seller.account.profile.edit.shop_title_field.after', ['seller' => $seller]) !!}
-                    
+
                     <!-- Shop URL -->
                     <div class="flex gap-4 max-sm:flex-wrap">
                         <x-marketplace::shop.form.control-group class="w-full">
@@ -305,7 +305,7 @@
                 </div>
 
                 {!! view_render_event('marketplace.seller.account.profile.edit.meta_title_field.after', ['seller' => $seller]) !!}
-                
+
                 <!-- Policy -->
                 <div class="box-shadow rounded-xl border border-[#E9E9E9] bg-white p-5">
                     <h3 class="mb-6 text-xl font-medium leading-8 text-navyBlue">
@@ -379,14 +379,14 @@
             <!-- Right Section -->
             <div class="flex w-[360px] max-w-full flex-col gap-6 max-xl:flex-auto">
                 {!! view_render_event('marketplace.seller.account.profile.edit.address_container.before', ['seller' => $seller]) !!}
-                
+
                 <div class="box-shadow rounded-xl border border-[#E9E9E9] bg-white p-5">
                     <h3 class="mb-6 text-xl font-medium leading-8 text-navyBlue">
                         @lang('marketplace::app.shop.sellers.account.manage-profile.shop.store-address')
                     </h3>
 
                     {!! view_render_event('marketplace.seller.account.profile.edit.address_fields.before', ['seller' => $seller]) !!}
-                    
+
                     <!-- Addresses -->
                     <x-marketplace::shop.form.control-group.label class="required">
                         @lang('marketplace::app.shop.sellers.account.manage-profile.shop.address')
@@ -400,7 +400,7 @@
                                 type="text"
                                 name="address[{{ $i }}]"
                                 :value="old('address.{{ $i }}') ?: $addresses[$i] ?? ''"
-                                
+
                                 :label="trans('marketplace::app.shop.sellers.account.manage-profile.shop.street-address')"
                                 :placeholder="trans('marketplace::app.shop.sellers.account.manage-profile.shop.street-address')"
                             />
@@ -409,7 +409,7 @@
                     @endfor
 
                     {!! view_render_event('marketplace.seller.account.profile.edit.address_fields.after', ['seller' => $seller]) !!}
-                        
+
                     <div class="flex gap-4 max-sm:flex-wrap">
                         <!-- Postcode -->
                         <x-marketplace::shop.form.control-group class="w-full">
@@ -431,7 +431,7 @@
                     </div>
 
                     {!! view_render_event('marketplace.seller.account.profile.edit.postcode_fields.after', ['seller' => $seller]) !!}
-                    
+
                     <!-- City -->
                     <div class="flex gap-4 max-sm:flex-wrap">
                         <x-marketplace::shop.form.control-group class="w-full">
@@ -478,7 +478,7 @@
                                 <x-marketplace::shop.form.control-group.label class="required">
                                     @lang('marketplace::app.shop.sellers.account.manage-profile.shop.state')
                                 </x-marketplace::shop.form.control-group.label>
-    
+
                                 <x-marketplace::shop.form.control-group.control
                                     type="text"
                                     name="state"
@@ -491,7 +491,7 @@
                 </div>
 
                 {!! view_render_event('marketplace.seller.account.profile.edit.address_container.after', ['seller' => $seller]) !!}
-                
+
                 <!-- Social Links -->
                 <div class="box-shadow rounded-xl border border-[#E9E9E9] bg-white p-5">
 
@@ -502,9 +502,9 @@
                     @php
                         $socialLinks = ['facebook', 'twitter', 'pinterest', 'linkedin']
                     @endphp
-                    
+
                     {!! view_render_event('marketplace.seller.account.profile.edit.social_link_fields.before', ['seller' => $seller]) !!}
-                    
+
                     @foreach($socialLinks as $socialLink)
                         <x-marketplace::shop.form.control-group>
                             <x-marketplace::shop.form.control-group.label>
@@ -527,7 +527,7 @@
                 </div>
 
                 {!! view_render_event('marketplace.seller.account.profile.edit.social_links_container.after', ['seller' => $seller]) !!}
-                
+
                 @if (core()->getConfigData('marketplace.settings.general.enable_minimum_order_amount'))
                     <!-- Minimum Order Amount -->
                     <div class="box-shadow rounded-xl border border-[#E9E9E9] bg-white p-5">
@@ -582,7 +582,7 @@
 
                         <x-marketplace::shop.form.control-group.error control-name="google_analytics_id" />
                     </x-marketplace::shop.form.control-group>
-                    
+
                     {!! view_render_event('marketplace.seller.account.profile.edit.google_analytics_id_field.after', ['seller' => $seller]) !!}
                 </div>
 
@@ -594,7 +594,7 @@
     </x-marketplace::shop.form>
 
     {!! view_render_event('marketplace.seller.account.profile.edit.after', ['seller' => $seller]) !!}
-    
+
     @pushOnce('scripts')
         <script type="text/x-template" id="v-seller-country-state-template">
             <!-- Country -->
@@ -617,8 +617,8 @@
                         </option>
 
                         @foreach (core()->countries() as $country)
-                            <option 
-                                {{ $country->code === config('app.default_country') ? 'selected' : '' }}  
+                            <option
+                                {{ $country->code === config('app.default_country') ? 'selected' : '' }}
                                 value="{{ $country->code }}"
                             >
                                 {{ $country->name }}
@@ -647,7 +647,7 @@
                             ::value="state"
                             :placeholder="trans('marketplace::app.shop.sellers.account.manage-profile.shop.state')"
                         >
-                            <option 
+                            <option
                                 v-for='state in currentCountryStates'
                                 :value="state.code"
                                 v-text="state.default_name"
@@ -685,7 +685,7 @@
                         state: @json(old('state') ?: $seller->state),
 
                         currentCountryStates: [],
-                        
+
                         allCountryStates: @json(core()->groupedStatesByCountries()),
                     }
                 },
@@ -736,7 +736,7 @@
                                         </p>
                                         <span class="mp-cancel-icon cursor-pointer text-2xl"></span>
                                     </div>
-    
+
                                     <p class="text-base font-normal leading-5">
                                         @lang('marketplace::app.shop.sellers.account.manage-profile.profile.banner-description')
                                     </p>
@@ -801,7 +801,7 @@
                         width="80"
                         height="80"
                     >
-                    
+
                     <div class="absolute left-[70px] top-[70px] -translate-x-4 -translate-y-5 transform">
                         <x-shop::dropdown position="bottom-{{ core()->getCurrentLocale()->direction === 'ltr' ? 'left' : 'right' }}">
                             <x-slot:toggle>
@@ -819,31 +819,31 @@
                                             </p>
                                             <span class="mp-cancel-icon cursor-pointer text-2xl"></span>
                                         </div>
-        
+
                                         <p class="text-base font-normal leading-5">
                                             @lang('marketplace::app.shop.sellers.account.manage-profile.profile.logo-description')
                                         </p>
                                     </div>
-    
+
                                     <div class="cursor-pointer px-5 hover:bg-gray-100">
                                         <label
                                             for="logo"
                                             class="flex items-center gap-4 py-5"
                                         >
                                             <span class="mp-upload-icon text-2xl"></span>
-    
+
                                             <p class="text-lg font-medium text-[#3D2D2D]">
                                                 @lang('marketplace::app.shop.sellers.account.manage-profile.profile.upload-new-logo')
                                             </p>
                                         </label>
                                     </div>
-    
+
                                     <input
                                         type="hidden"
                                         name="logo[]"
                                         v-if="! uploadedFiles.logoPicked"
                                     />
-    
+
                                     <input
                                         type="file"
                                         class="hidden"
@@ -853,7 +853,7 @@
                                         ref="logo"
                                         @change="setLogo()"
                                     >
-    
+
                                     <div class="cursor-pointer px-5 hover:bg-gray-100">
                                         <button
                                             type="button"
@@ -862,7 +862,7 @@
                                             @click="removeImage('logo')"
                                         >
                                             <span class="mp-delete-icon text-2xl"></span>
-    
+
                                             <p class="text-lg font-medium text-[#3D2D2D]">
                                                 @lang('marketplace::app.shop.sellers.account.manage-profile.profile.delete-logo')
                                             </p>
@@ -872,7 +872,7 @@
                             </x-slot:content>
                         </x-shop::dropdown>
                     </div>
-                </div> 
+                </div>
                 <div class="grid">
                     <h1 class="text-3xl font-medium leading-[48px]">
                         {{$seller->shop_title}}

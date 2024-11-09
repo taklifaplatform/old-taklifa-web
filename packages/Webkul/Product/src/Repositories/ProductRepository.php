@@ -257,6 +257,12 @@ class ProductRepository extends Repository
                     ->whereIn('product_categories.category_id', explode(',', $params['category_id']));
             }
 
+            if (!empty($params['tag'])) {
+                $qb->whereHas('tags', function ($query) use ($params) {
+                    $query->whereIn('tag_id', explode(',', $params['tag']));
+                });
+            }
+
             if (! empty($params['channel_id'])) {
                 $qb->leftJoin('product_channels', 'products.id', '=', 'product_channels.product_id')
                     ->where('product_channels.channel_id', explode(',', $params['channel_id']));
