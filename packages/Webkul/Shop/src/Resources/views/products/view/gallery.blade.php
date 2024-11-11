@@ -84,7 +84,7 @@
                         :src="baseFile.path"
                         v-if="baseFile.type == 'image'"
                         alt="{{ $product->name }}"
-                        width="400"
+                        width="560"
                         height="610"
                         tabindex="0"
                         @click="isImageZooming = !isImageZooming"
@@ -120,13 +120,13 @@
             >
                 <div class="shimmer aspect-square max-h-screen w-screen bg-zinc-200"></div>
             </div>
-
+        
             <div
                 class="scrollbar-hide flex w-screen gap-8 overflow-auto max-sm:gap-5 1180:hidden"
                 v-show="! isMediaLoading"
             >
                 <!-- Show single media if there is only one image or video -->
-                <template
+                <template 
                     v-if="media.images.length + media.videos.length <= 1"
                     v-for="(media, index) in [...media.images, ...media.videos]"
                 >
@@ -143,7 +143,7 @@
                                 type="video/mp4"
                             />
                         </video>
-
+            
                         <img
                             v-else
                             :src="media.large_image_url"
@@ -155,7 +155,7 @@
                         />
                     </div>
                 </template>
-
+                
                  <!-- Show carousel if there is more than one image or video -->
                 <x-shop::products.mobile.carousel
                     v-else
@@ -163,11 +163,11 @@
                     @click="isImageZooming = !isImageZooming"
                 />
             </div>
-
+            
             <!-- Gallery Images Zoomer -->
-            <x-shop::image-zoomer
-                ::attachments="attachments"
-                ::is-image-zooming="isImageZooming"
+            <x-shop::image-zoomer 
+                ::attachments="attachments" 
+                ::is-image-zooming="isImageZooming" 
                 ::initial-index="`media_${activeIndex}`"
             />
         </div>
@@ -214,7 +214,7 @@
                     },
                 },
             },
-
+        
             mounted() {
                 if (this.media.images.length) {
 
@@ -239,7 +239,7 @@
                 attachments() {
                     return [...this.media.images, ...this.media.videos].map(media => ({
                         url: media.type === 'videos' ? media.video_url : media.original_image_url,
-
+                        
                         type: media.type === 'videos' ? 'video' : 'image',
                     }));
                 },
@@ -249,7 +249,7 @@
                 isActiveMedia(index) {
                     return index === this.activeIndex;
                 },
-
+                
                 onMediaLoad() {
                     this.isMediaLoading = false;
                 },

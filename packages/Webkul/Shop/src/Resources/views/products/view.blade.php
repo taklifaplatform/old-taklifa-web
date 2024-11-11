@@ -2,217 +2,227 @@
 @inject ('productViewHelper', 'Webkul\Product\Helpers\View')
 
 @php
-    $avgRatings = round($reviewHelper->getAverageRating($product));
+$avgRatings = $reviewHelper->getAverageRating($product);
 
-    $percentageRatings = $reviewHelper->getPercentageRating($product);
+$percentageRatings = $reviewHelper->getPercentageRating($product);
 
-    $customAttributeValues = $productViewHelper->getAdditionalData($product);
+$customAttributeValues = $productViewHelper->getAdditionalData($product);
 
-    $attributeData = collect($customAttributeValues)->filter(fn($item) => !empty($item['value']));
+$attributeData = collect($customAttributeValues)->filter(fn ($item) => ! empty($item['value']));
 @endphp
 
 <!-- SEO Meta Content -->
 @push('meta')
-    <meta name="description"
-        content="{{ trim($product->meta_description) != '' ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}" />
+<meta name="description"
+    content="{{ trim($product->meta_description) != "" ? $product->meta_description : \Illuminate\Support\Str::limit(strip_tags($product->description), 120, '') }}" />
 
-    <meta name="keywords" content="{{ $product->meta_keywords }}" />
+<meta name="keywords" content="{{ $product->meta_keywords }}" />
 
-    @if (core()->getConfigData('catalog.rich_snippets.products.enable'))
-        <script type="application/ld+json">
-            {{ app('Webkul\Product\Helpers\SEO')->getProductJsonLd($product) }}
-        </script>
-    @endif
+@if (core()->getConfigData('catalog.rich_snippets.products.enable'))
+<script type="application/ld+json">
+    {!! app('Webkul\Product\Helpers\SEO')->getProductJsonLd($product) !!}
+</script>
+@endif
 
-    <?php $productBaseImage = product_image()->getProductBaseImage($product); ?>
+<?php $productBaseImage = product_image()->getProductBaseImage($product); ?>
 
-    <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="twitter:title" content="{{ $product->name }}" />
+<meta name="twitter:title" content="{{ $product->name }}" />
 
-    <meta name="twitter:description" content="{!! htmlspecialchars(trim(strip_tags($product->description))) !!}" />
+<meta name="twitter:description" content="{!! htmlspecialchars(trim(strip_tags($product->description))) !!}" />
 
-    <meta name="twitter:image:alt" content="" />
+<meta name="twitter:image:alt" content="" />
 
-    <meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}" />
+<meta name="twitter:image" content="{{ $productBaseImage['medium_image_url'] }}" />
 
-    <meta property="og:type" content="og:product" />
+<meta property="og:type" content="og:product" />
 
-    <meta property="og:title" content="{{ $product->name }}" />
+<meta property="og:title" content="{{ $product->name }}" />
 
-    <meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}" />
+<meta property="og:image" content="{{ $productBaseImage['medium_image_url'] }}" />
 
-    <meta property="og:description" content="{!! htmlspecialchars(trim(strip_tags($product->description))) !!}" />
+<meta property="og:description" content="{!! htmlspecialchars(trim(strip_tags($product->description))) !!}" />
 
-    <meta property="og:url" content="{{ route('shop.product_or_category.index', $product->url_key) }}" />
+<meta property="og:url" content="{{ route('shop.product_or_category.index', $product->url_key) }}" />
 @endPush
 
 <!-- Page Layout -->
 <x-shop::layouts>
     <!-- Page Title -->
     <x-slot:title>
-        {{ trim($product->meta_title) != '' ? $product->meta_title : $product->name }}
-    </x-slot>
+        {{ trim($product->meta_title) != "" ? $product->meta_title : $product->name }}
+        </x-slot>
 
-    {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
+        {!! view_render_event('bagisto.shop.products.view.before', ['product' => $product]) !!}
 
-    <!-- Breadcrumbs -->
-    <div class="flex justify-center max-lg:hidden">
-        <x-shop::breadcrumbs name="product" :entity="$product" />
-    </div>
+        <!-- Breadcrumbs -->
+        @if ((core()->getConfigData('general.general.breadcrumbs.shop')))
+        <div class="flex justify-center max-lg:hidden">
+            <x-shop::breadcrumbs name="product" :entity="$product" />
+        </div>
+        @endif
 
-    <!-- Product Information Vue Component -->
-    <v-product :product-id="{{ $product->id }}">
-        <x-shop::shimmer.products.view />
-    </v-product>
+        <!-- Product Information Vue Component -->
+        <v-product>
+            <x-shop::shimmer.products.view />
+        </v-product>
 
-    <!-- Information Section -->
-    <div class="1180:mt-20">
-        <x-shop::tabs position="center">
-            <!-- Description Tab -->
-            {!! view_render_event('bagisto.shop.products.view.description.before', ['product' => $product]) !!}
+        <!-- Information Section -->
+        <div class="1180:mt-20">
+            <div class="max-1180:hidden">
+                <x-shop::tabs position="center" ref="productTabs">
+                    <!-- Description Tab -->
+                    {!! view_render_event('bagisto.shop.products.view.description.before', ['product' => $product]) !!}
 
-            <x-shop::tabs.item class="container mt-[60px] !p-0 max-1180:hidden" :title="trans('shop::app.products.view.description')" :is-selected="true">
-                <div class="container mt-[60px] max-1180:px-5">
-                    <p class="text-[#6E6E6E] text-lg max-1180:text-sm">
-                        {!! $product->description !!}
-                    </p>
-                </div>
-            </x-shop::tabs.item>
-
-            {!! view_render_event('bagisto.shop.products.view.description.after', ['product' => $product]) !!}
-
-            <!-- Additional Information Tab -->
-            @if (count($attributeData))
-                <x-shop::tabs.item class="container mt-[60px] !p-0 max-1180:hidden" :title="trans('shop::app.products.view.additional-information')" :is-selected="false">
-                    <div class="container mt-[60px] max-1180:px-5">
-                        <div class="grid gap-4 grid-cols-[auto_1fr] max-w-max mt-8">
-                            @foreach ($customAttributeValues as $customAttributeValue)
-                                @if (!empty($customAttributeValue['value']))
-                                    <div class="grid">
-                                        <p class="text-base text-black">
-                                            {!! $customAttributeValue['label'] !!}
-                                        </p>
-                                    </div>
-
-                                    @if ($customAttributeValue['type'] == 'file')
-                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}">
-                                            <span class="icon-download text-2xl"></span>
-                                        </a>
-                                    @elseif ($customAttributeValue['type'] == 'image')
-                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}">
-                                            <img class="h-5 w-5 min-h-5 min-w-5"
-                                                src="{{ Storage::url($customAttributeValue['value']) }}" />
-                                        </a>
-                                    @else
-                                        <div class="grid">
-                                            <p class="text-base text-[#7D7D7D]">
-                                                {!! $customAttributeValue['value'] !!}
-                                            </p>
-                                        </div>
-                                    @endif
-                                @endif
-                            @endforeach
+                    <x-shop::tabs.item id="descritpion-tab" class="container mt-[60px] !p-0"
+                        :title="trans('shop::app.products.view.description')" :is-selected="true">
+                        <div class="container mt-[60px] max-1180:px-5">
+                            <p class="text-lg text-zinc-500 max-1180:text-sm">
+                                {!! $product->description !!}
+                            </p>
                         </div>
-                    </div>
-                </x-shop::tabs.item>
-            @endif
+                    </x-shop::tabs.item>
 
-            <!-- Reviews Tab -->
-            <x-shop::tabs.item class="container mt-[60px] !p-0 max-1180:hidden" :title="trans('shop::app.products.view.review')" :is-selected="false">
-                @include('shop::products.view.reviews')
-            </x-shop::tabs.item>
-        </x-shop::tabs>
-    </div>
+                    {!! view_render_event('bagisto.shop.products.view.description.after', ['product' => $product]) !!}
 
-    <!-- Information Section -->
-    <div class="container mt-10 !p-0 max-1180:px-5 1180:hidden">
-        <!-- Description Accordion -->
-        <x-shop::accordion :is-active="true">
-            <x-slot:header class="bg-gray-100">
-                <p class="text-base font-medium 1180:hidden">
-                    @lang('shop::app.products.view.description')
-                </p>
-            </x-slot>
+                    <!-- Additional Information Tab -->
+                    @if(count($attributeData))
+                    <x-shop::tabs.item id="information-tab" class="container mt-[60px] !p-0"
+                        :title="trans('shop::app.products.view.additional-information')" :is-selected="false">
+                        <div class="container mt-[60px] max-1180:px-5">
+                            <div class="mt-8 grid max-w-max grid-cols-[auto_1fr] gap-4">
+                                @foreach ($customAttributeValues as $customAttributeValue)
+                                @if (! empty($customAttributeValue['value']))
+                                <div class="grid">
+                                    <p class="text-base text-black">
+                                        {!! $customAttributeValue['label'] !!}
+                                    </p>
+                                </div>
 
-            <x-slot:content>
-                <div class="text-[#7D7D7D] text-lg max-1180:text-sm mb-5">
-                    {!! $product->description !!}
-                </div>
-            </x-slot>
-        </x-shop::accordion>
+                                @if ($customAttributeValue['type'] == 'file')
+                                <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                    download="{{ $customAttributeValue['label'] }}">
+                                    <span class="icon-download text-2xl"></span>
+                                </a>
+                                @elseif ($customAttributeValue['type'] == 'image')
+                                <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                    download="{{ $customAttributeValue['label'] }}">
+                                    <img class="h-5 min-h-5 w-5 min-w-5"
+                                        src="{{ Storage::url($customAttributeValue['value']) }}" />
+                                </a>
+                                @else
+                                <div class="grid">
+                                    <p class="text-base text-zinc-500">
+                                        {!! $customAttributeValue['value'] !!}
+                                    </p>
+                                </div>
+                                @endif
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </x-shop::tabs.item>
+                    @endif
 
-        <!-- Additional Information Accordion -->
-        @if (count($attributeData))
-            <x-shop::accordion class="bg-gray-100" :is-active="false">
-                <x-slot:header>
+                    <!-- Reviews Tab -->
+                    <x-shop::tabs.item id="review-tab" class="container mt-[60px] !p-0"
+                        :title="trans('shop::app.products.view.review')" :is-selected="false">
+                        @include('shop::products.view.reviews')
+                    </x-shop::tabs.item>
+                </x-shop::tabs>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div class="container mt-6 grid gap-3 !p-0 max-1180:px-5 1180:hidden">
+            <!-- Description Accordion -->
+            <x-shop::accordion class="max-md:border-none" :is-active="true">
+                <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2">
+                    <p class="text-base font-medium 1180:hidden">
+                        @lang('shop::app.products.view.description')
+                    </p>
+                    </x-slot>
+
+                    <x-slot:content class="max-sm:px-0">
+                        <div class="mb-5 text-lg text-zinc-500 max-1180:text-sm max-md:mb-1 max-md:px-4">
+                            {!! $product->description !!}
+                        </div>
+                        </x-slot>
+            </x-shop::accordion>
+
+            <!-- Additional Information Accordion -->
+            @if (count($attributeData))
+            <x-shop::accordion class="max-md:border-none" :is-active="false">
+                <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2">
                     <p class="text-base font-medium 1180:hidden">
                         @lang('shop::app.products.view.additional-information')
                     </p>
-                </x-slot>
+                    </x-slot>
 
-                <x-slot:content>
-                    <div class="container mb-4 max-1180:px-5">
-                        <div class="grid gap-4 grid-cols-[auto_1fr] max-w-max text-[#6E6E6E] text-lg max-1180:text-sm">
-                            @foreach ($customAttributeValues as $customAttributeValue)
-                                @if (!empty($customAttributeValue['value']))
-                                    <div class="grid">
-                                        <p class="text-base text-black">
-                                            {{ $customAttributeValue['label'] }}
-                                        </p>
-                                    </div>
+                    <x-slot:content class="max-sm:px-0">
+                        <div class="container max-1180:px-5">
+                            <div
+                                class="grid max-w-max grid-cols-[auto_1fr] gap-4 text-lg text-zinc-500 max-1180:text-sm">
+                                @foreach ($customAttributeValues as $customAttributeValue)
+                                @if (! empty($customAttributeValue['value']))
+                                <div class="grid">
+                                    <p class="text-base text-black">
+                                        {{ $customAttributeValue['label'] }}
+                                    </p>
+                                </div>
 
-                                    @if ($customAttributeValue['type'] == 'file')
-                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}">
-                                            <span class="icon-download text-2xl"></span>
-                                        </a>
-                                    @elseif ($customAttributeValue['type'] == 'image')
-                                        <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
-                                            download="{{ $customAttributeValue['label'] }}">
-                                            <img class="h-5 w-5 min-h-5 min-w-5"
-                                                src="{{ Storage::url($customAttributeValue['value']) }}" />
-                                        </a>
-                                    @else
-                                        <div class="grid">
-                                            <p class="text-base text-[#6E6E6E]">
-                                                {{ $customAttributeValue['value'] ?? '-' }}
-                                            </p>
-                                        </div>
-                                    @endif
+                                @if ($customAttributeValue['type'] == 'file')
+                                <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                    download="{{ $customAttributeValue['label'] }}">
+                                    <span class="icon-download text-2xl"></span>
+                                </a>
+                                @elseif ($customAttributeValue['type'] == 'image')
+                                <a href="{{ Storage::url($product[$customAttributeValue['code']]) }}"
+                                    download="{{ $customAttributeValue['label'] }}">
+                                    <img class="h-5 min-h-5 w-5 min-w-5"
+                                        src="{{ Storage::url($customAttributeValue['value']) }}" alt="Product Image" />
+                                </a>
+                                @else
+                                <div class="grid">
+                                    <p class="text-base text-zinc-500">
+                                        {{ $customAttributeValue['value'] ?? '-' }}
+                                    </p>
+                                </div>
                                 @endif
-                            @endforeach
+                                @endif
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                </x-slot>
+                        </x-slot>
             </x-shop::accordion>
-        @endif
+            @endif
 
-        <!-- Reviews Accordion -->
-        <x-shop::accordion class="bg-gray-100" :is-active="false">
-            <x-slot:header>
-                <p class="text-base font-medium 1180:hidden">
-                    @lang('shop::app.products.view.review')
-                </p>
-            </x-slot>
+            <!-- Reviews Accordion -->
+            <x-shop::accordion class="max-md:border-none" :is-active="false">
+                <x-slot:header class="bg-gray-100 max-md:!py-3 max-sm:!py-2" id="review-accordian-button">
+                    <p class="text-base font-medium">
+                        @lang('shop::app.products.view.review')
+                    </p>
+                    </x-slot>
 
-            <x-slot:content>
-                @include('shop::products.view.reviews')
-            </x-slot>
-        </x-shop::accordion>
-    </div>
+                    <x-slot:content>
+                        @include('shop::products.view.reviews')
+                        </x-slot>
+            </x-shop::accordion>
+        </div>
 
-    <!-- Featured Products -->
-    <x-shop::products.carousel :title="trans('shop::app.products.view.related-product-title')" :src="route('shop.api.products.related.index', ['id' => $product->id])" />
+        <!-- Featured Products -->
+        <x-shop::products.carousel :title="trans('shop::app.products.view.related-product-title')"
+            :src="route('shop.api.products.related.index', ['id' => $product->id])" />
 
-    <!-- Upsell Products -->
-    <x-shop::products.carousel :title="trans('shop::app.products.view.up-sell-title')" :src="route('shop.api.products.up-sell.index', ['id' => $product->id])" />
+        <!-- Upsell Products -->
+        <x-shop::products.carousel :title="trans('shop::app.products.view.up-sell-title')"
+            :src="route('shop.api.products.up-sell.index', ['id' => $product->id])" />
 
-    {!! view_render_event('bagisto.shop.products.view.after', ['product' => $product]) !!}
+        {!! view_render_event('bagisto.shop.products.view.after', ['product' => $product]) !!}
 
-    @pushOnce('scripts')
+        @pushOnce('scripts')
         <script type="text/x-template" id="v-product-template">
             <x-shop::form
                 v-slot="{ meta, errors, handleSubmit }"
@@ -234,33 +244,27 @@
                         v-model="is_buy_now"
                     >
 
-                    <input
-                        type="hidden"
-                        name="quantity"
-                        :value="qty"
-                    >
-
                     <div class="container px-[60px] max-1180:px-0">
-                        <div class="flex gap-9 mt-12 max-1180:flex-wrap max-lg:mt-0 max-sm:gap-y-6">
+                        <div class="mt-12 flex gap-9 max-1180:flex-wrap max-lg:mt-0 max-sm:gap-y-4">
                             <!-- Gallery Blade Inclusion -->
                             @include('shop::products.view.gallery')
 
                             <!-- Details -->
-                            <div class="max-w-[590px] relative max-1180:w-full max-1180:max-w-full max-1180:px-5">
+                            <div class="relative max-w-[590px] max-1180:w-full max-1180:max-w-full max-1180:px-5 max-sm:px-4">
                                 {!! view_render_event('bagisto.shop.products.name.before', ['product' => $product]) !!}
 
-                                <div class="flex gap-4 justify-between">
+                                <div class="flex justify-between gap-4">
                                     <h1 class="text-3xl font-medium max-sm:text-xl">
                                         {{ $product->name }}
                                     </h1>
 
-                                    @if (core()->getConfigData('general.content.shop.wishlist_option'))
+                                    @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
                                         <div
-                                            class="flex items-center justify-center min-w-[46px] min-h-[46px] max-h-[46px] bg-white border border-black rounded-full text-2xl transition-all hover:opacity-[0.8] cursor-pointer"
+                                            class="flex max-h-[46px] min-h-[46px] min-w-[46px] cursor-pointer items-center justify-center rounded-full border bg-white text-2xl transition-all hover:opacity-[0.8] max-sm:max-h-7 max-sm:min-h-7 max-sm:min-w-7 max-sm:text-base"
                                             role="button"
                                             aria-label="@lang('shop::app.products.view.add-to-wishlist')"
                                             tabindex="0"
-                                            :class="isWishlist ? 'icon-heart-fill' : 'icon-heart'"
+                                            :class="isWishlist ? 'icon-heart-fill text-red-600' : 'icon-heart'"
                                             @click="addToWishlist"
                                         >
                                         </div>
@@ -273,7 +277,7 @@
                                 {!! view_render_event('bagisto.shop.products.rating.before', ['product' => $product]) !!}
 
                                 <div class="flex gap-4 items-center mt-4">
-                                    <x-shop::products.star-rating
+                                    <x-shop::products.ratings
                                         :value="$avgRatings"
                                         :is-editable=false
                                     />
@@ -317,7 +321,7 @@
 
                                 {!! view_render_event('bagisto.shop.products.short_description.before', ['product' => $product]) !!}
 
-                                <p class="mt-6 text-lg text-[#6E6E6E] max-sm:text-sm max-sm:mt-4">
+                                <p class="mt-6 text-lg text-zinc-500 max-sm:mt-1.5 max-sm:text-sm">
                                     {!! $product->short_description !!}
                                 </p>
 
@@ -338,84 +342,86 @@
                                     {!! view_render_event('bagisto.shop.products.view.quantity.before', ['product' => $product]) !!}
 
                                     @if ($product->getTypeInstance()->showQuantityBox())
+                                    <div class="flex gap-x-2.5 border rounded-[10px] border-navyBlue py-1.5 px-2.5 max-md:px-2 max-md:py-1 w-full max-w-full justify-between">
+                                        <button
+                                            type="button"
+                                            class="px-1.5 py-1 bg-white rounded"
+                                            @click="decreaseQuantity"
+                                        >
+                                            -
+                                        </button>
 
-                                        <div class="flex gap-x-2.5 border rounded-[10px] border-navyBlue py-1.5 px-2.5 max-md:px-2 max-md:py-1 w-full max-w-full justify-between">
-                                            <button
-                                                type="button"
-                                                class="px-1.5 py-1 bg-white rounded"
-                                                @click="decreaseQuantity"
-                                            >
-                                                -
-                                            </button>
+                                        <input
+                                            type="number"
+                                            name="quantity"
+                                            class="w-11 text-center no-arrows"
+                                            v-model="quantity"
+                                            min="1"
+                                            @input="setItemQuantity($event.target.value)"
+                                        />
 
-                                            <input
-                                                type="number"
-                                                name="quantity"
-                                                class="w-11 text-center no-arrows"
-                                                v-model="quantity"
-                                                min="1"
-                                                @input="setItemQuantity($event.target.value)"
-                                            />
-
-                                            <button
-                                                type="button"
-                                                class="px-1.5 py-1 bg-white rounded"
-                                                @click="increaseQuantity"
-                                            >
-                                                +
-                                            </button>
-                                        </div>
+                                        <button
+                                            type="button"
+                                            class="px-1.5 py-1 bg-white rounded"
+                                            @click="increaseQuantity"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
                                     @endif
 
                                     {!! view_render_event('bagisto.shop.products.view.quantity.after', ['product' => $product]) !!}
 
-                                    <!-- Add To Cart Button -->
-                                    {!! view_render_event('bagisto.shop.products.view.add_to_cart.before', ['product' => $product]) !!}
+                                    @if (core()->getConfigData('sales.checkout.shopping_cart.cart_page'))
+                                        <!-- Add To Cart Button -->
+                                        {!! view_render_event('bagisto.shop.products.view.add_to_cart.before', ['product' => $product]) !!}
 
-                                    <x-shop::button
-                                        type="submit"
-                                        class="primary-button w-full max-w-full"
-                                        button-type="secondary-button"
-                                        :loading="false"
-                                        :title="trans('shop::app.products.view.add-to-cart')"
-                                        :disabled="! $product->isSaleable(1)"
-                                        ::loading="isStoring.addToCart"
-                                    />
+                                        <x-shop::button
+                                            type="submit"
+                                            class="primary-button w-full max-w-full"
+                                            button-type="secondary-button"
+                                            :loading="false"
+                                            :title="trans('shop::app.products.view.add-to-cart')"
+                                            :disabled="! $product->isSaleable(1)"
+                                            ::loading="isStoring.addToCart"
+                                        />
 
-
-                                    {!! view_render_event('bagisto.shop.products.view.add_to_cart.after', ['product' => $product]) !!}
+                                        {!! view_render_event('bagisto.shop.products.view.add_to_cart.after', ['product' => $product]) !!}
+                                    @endif
                                 </div>
 
                                 <!-- Buy Now Button -->
-                                {!! view_render_event('bagisto.shop.products.view.buy_now.before', ['product' => $product]) !!}
+                                @if (core()->getConfigData('sales.checkout.shopping_cart.cart_page'))
+                                    {!! view_render_event('bagisto.shop.products.view.buy_now.before', ['product' => $product]) !!}
 
-                                @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
-                                    <x-shop::button
-                                        type="submit"
-                                        class="primary-button w-full max-w-[470px] mt-5"
-                                        button-type="secondary-button"
-                                        :title="trans('shop::app.products.view.buy-now')"
-                                        :disabled="! $product->isSaleable(1)"
-                                        ::loading="isStoring.buyNow"
-                                        @click="is_buy_now=1;"
-                                    />
+                                    @if (core()->getConfigData('catalog.products.storefront.buy_now_button_display'))
+                                        <x-shop::button
+                                            type="submit"
+                                            class="primary-button w-full max-w-[470px] mt-5"
+                                            button-type="primary-button"
+                                            :title="trans('shop::app.products.view.buy-now')"
+                                            :disabled="! $product->isSaleable(1)"
+                                            ::loading="isStoring.buyNow"
+                                            @click="is_buy_now=1;"
+                                        />
+                                    @endif
+
+                                    {!! view_render_event('bagisto.shop.products.view.buy_now.after', ['product' => $product]) !!}
                                 @endif
-
-                                {!! view_render_event('bagisto.shop.products.view.buy_now.after', ['product' => $product]) !!}
 
                                 {!! view_render_event('bagisto.shop.products.view.additional_actions.before', ['product' => $product]) !!}
 
                                 <!-- Share Buttons -->
-                                <div class="flex gap-9 mt-10 max-sm:flex-wrap max-sm:justify-center">
+                                <div class="mt-10 flex gap-9 max-md:mt-4 max-md:flex-wrap max-sm:justify-center max-sm:gap-3">
                                     {!! view_render_event('bagisto.shop.products.view.compare.before', ['product' => $product]) !!}
 
                                     <div
-                                        class="flex gap-2.5 justify-center items-center cursor-pointer"
+                                        class="flex cursor-pointer items-center justify-center gap-2.5 max-sm:gap-1.5 max-sm:text-base"
                                         role="button"
                                         tabindex="0"
                                         @click="is_buy_now=0; addToCompare({{ $product->id }})"
                                     >
-                                        @if (core()->getConfigData('general.content.shop.compare_option'))
+                                        @if (core()->getConfigData('catalog.products.settings.compare_option'))
                                             <span
                                                 class="icon-compare text-2xl"
                                                 role="presentation"
@@ -440,13 +446,9 @@
             app.component('v-product', {
                 template: '#v-product-template',
 
-                props: ['productId'],
-
                 data() {
                     return {
-                        isWishlist: Boolean(
-                            "{{ (bool) auth()->guard()->user()?->wishlist_items->where('channel_id', core()->getCurrentChannel()->id)->where('product_id', $product->id)->count() }}"
-                        ),
+                        isWishlist: Boolean("{{ (boolean) auth()->guard()->user()?->wishlist_items->where('channel_id', core()->getCurrentChannel()->id)->where('product_id', $product->id)->count() }}"),
 
                         isCustomer: '{{ auth()->guard('customer')->check() }}',
 
@@ -485,34 +487,32 @@
 
                         let formData = new FormData(this.$refs.formData);
 
-                        this.$axios.post('{{ route('shop.api.checkout.quote.store') }}', formData, {
+                        this.ensureQuantity(formData);
+
+                        this.$axios.post('{{ route("shop.api.checkout.cart.store") }}', formData, {
                                 headers: {
                                     'Content-Type': 'multipart/form-data'
                                 }
                             })
                             .then(response => {
                                 if (response.data.message) {
-                                    this.$emitter.emit('update-mini-quote', response.data.data);
+                                    this.$emitter.emit('update-mini-cart', response.data.data);
 
-                                    this.$emitter.emit('add-flash', {
-                                        type: 'success',
-                                        message: response.data.message
-                                    });
+                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
 
                                     if (response.data.redirect) {
-                                        window.location.href = response.data.redirect;
+                                        window.location.href= response.data.redirect;
                                     }
                                 } else {
-                                    this.$emitter.emit('add-flash', {
-                                        type: 'warning',
-                                        message: response.data.data.message
-                                    });
+                                    this.$emitter.emit('add-flash', { type: 'warning', message: response.data.data.message });
                                 }
 
                                 this.isStoring[operation] = false;
                             })
                             .catch(error => {
                                 this.isStoring[operation] = false;
+
+                                this.$emitter.emit('add-flash', { type: 'warning', message: error.response.data.message });
                             });
                     },
 
@@ -522,16 +522,13 @@
                                     product_id: "{{ $product->id }}"
                                 })
                                 .then(response => {
-                                    this.isWishlist = !this.isWishlist;
+                                    this.isWishlist = ! this.isWishlist;
 
-                                    this.$emitter.emit('add-flash', {
-                                        type: 'success',
-                                        message: response.data.data.message
-                                    });
+                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.data.message });
                                 })
                                 .catch(error => {});
                         } else {
-                            window.location.href = "{{ route('shop.customer.session.index') }}";
+                            window.location.href = "{{ route('shop.customer.session.index')}}";
                         }
                     },
 
@@ -540,29 +537,20 @@
                          * This will handle for customers.
                          */
                         if (this.isCustomer) {
-                            this.$axios.post('{{ route('shop.api.compare.store') }}', {
+                            this.$axios.post('{{ route("shop.api.compare.store") }}', {
                                     'product_id': productId
                                 })
                                 .then(response => {
-                                    this.$emitter.emit('add-flash', {
-                                        type: 'success',
-                                        message: response.data.data.message
-                                    });
+                                    this.$emitter.emit('add-flash', { type: 'success', message: response.data.data.message });
                                 })
                                 .catch(error => {
                                     if ([400, 422].includes(error.response.status)) {
-                                        this.$emitter.emit('add-flash', {
-                                            type: 'warning',
-                                            message: error.response.data.data.message
-                                        });
+                                        this.$emitter.emit('add-flash', { type: 'warning', message: error.response.data.data.message });
 
                                         return;
                                     }
 
-                                    this.$emitter.emit('add-flash', {
-                                        type: 'error',
-                                        message: error.response.data.message
-                                    });
+                                    this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message});
                                 });
 
                             return;
@@ -574,28 +562,19 @@
                         let existingItems = this.getStorageValue(this.getCompareItemsStorageKey()) ?? [];
 
                         if (existingItems.length) {
-                            if (!existingItems.includes(productId)) {
+                            if (! existingItems.includes(productId)) {
                                 existingItems.push(productId);
 
                                 this.setStorageValue(this.getCompareItemsStorageKey(), existingItems);
 
-                                this.$emitter.emit('add-flash', {
-                                    type: 'success',
-                                    message: "@lang('shop::app.products.view.add-to-compare')"
-                                });
+                                this.$emitter.emit('add-flash', { type: 'success', message: "@lang('shop::app.products.view.add-to-compare')" });
                             } else {
-                                this.$emitter.emit('add-flash', {
-                                    type: 'warning',
-                                    message: "@lang('shop::app.products.view.already-in-compare')"
-                                });
+                                this.$emitter.emit('add-flash', { type: 'warning', message: "@lang('shop::app.products.view.already-in-compare')" });
                             }
                         } else {
                             this.setStorageValue(this.getCompareItemsStorageKey(), [productId]);
 
-                            this.$emitter.emit('add-flash', {
-                                type: 'success',
-                                message: "@lang('shop::app.products.view.add-to-compare')"
-                            });
+                            this.$emitter.emit('add-flash', { type: 'success', message: "@lang('shop::app.products.view.add-to-compare')" });
                         }
                     },
 
@@ -616,8 +595,36 @@
 
                         return value;
                     },
+
+                    scrollToReview() {
+                        let accordianElement = document.querySelector('#review-accordian-button');
+
+                        if (accordianElement) {
+                            accordianElement.click();
+
+                            accordianElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+
+                        let tabElement = document.querySelector('#review-tab-button');
+
+                        if (tabElement) {
+                            tabElement.click();
+
+                            tabElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    },
+
+                    ensureQuantity(formData) {
+                        if (! formData.has('quantity')) {
+                            formData.append('quantity', 1);
+                        }
+                    },
                 },
             });
         </script>
-    @endPushOnce
+        @endPushOnce
 </x-shop::layouts>

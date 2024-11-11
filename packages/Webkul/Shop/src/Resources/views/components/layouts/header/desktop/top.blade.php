@@ -7,19 +7,12 @@
     <x-shop::dropdown>
         <!-- Dropdown Toggler -->
         <x-slot:toggle>
-            <div
-                class="flex gap-2.5 cursor-pointer"
-                role="button"
-                tabindex="0"
-            >
+            <div class="flex gap-2.5 cursor-pointer" role="button" tabindex="0">
                 <span>
                     {{ core()->getCurrentCurrency()->symbol . ' ' . core()->getCurrentCurrencyCode() }}
                 </span>
 
-                <span
-                    class="text-2xl icon-arrow-down"
-                    role="presentation"
-                ></span>
+                <span class="text-2xl icon-arrow-down" role="presentation"></span>
             </div>
         </x-slot>
 
@@ -32,7 +25,7 @@
     {!! view_render_event('bagisto.shop.components.layouts.header.desktop.top.currency_switcher.after') !!}
 
     <p class="text-[#0F5837] font-medium text-blu">
-        احصل بسهولة على عرض السعر المجاني الخاص بمنزلك او مكتبك او مشروعك التجاري
+        @lang('shop::app.components.layouts.header.header-title')
     </p>
 
     {!! view_render_event('bagisto.shop.components.layouts.header.desktop.top.locale_switcher.before') !!}
@@ -41,30 +34,17 @@
     <x-shop::dropdown position="bottom-{{ core()->getCurrentLocale()->direction === 'ltr' ? 'right' : 'left' }}">
         <x-slot:toggle>
             <!-- Dropdown Toggler -->
-            <div
-                class="flex items-center gap-2.5 cursor-pointer"
-                role="button"
-                tabindex="0"
-            >
-                <img
-                    src="{{ ! empty(core()->getCurrentLocale()->logo_url)
-                            ? core()->getCurrentLocale()->logo_url
-                            : bagisto_asset('images/default-language.svg')
-                        }}"
-                    class="h-full"
-                    alt="Default locale"
-                    width="24"
-                    height="16"
-                />
+            <div class="flex items-center gap-2.5 cursor-pointer" role="button" tabindex="0">
+                <img src="{{ !empty(core()->getCurrentLocale()->logo_url)
+                    ? core()->getCurrentLocale()->logo_url
+                    : bagisto_asset('images/default-language.svg') }}"
+                    class="h-full" alt="Default locale" width="24" height="16" />
 
                 <span>
                     {{ core()->getCurrentChannel()->locales()->orderBy('name')->where('code', app()->getLocale())->value('name') }}
                 </span>
 
-                <span
-                    class="icon-arrow-down text-2xl"
-                    role="presentation"
-                ></span>
+                <span class="icon-arrow-down text-2xl" role="presentation"></span>
             </div>
         </x-slot>
 
