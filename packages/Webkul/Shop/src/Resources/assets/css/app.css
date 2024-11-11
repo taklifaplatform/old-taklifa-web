@@ -563,6 +563,13 @@ img.lazy {
 	z-index: 1; /* Ensure the pseudo-element is behind the content */
 }
 
+
+.x-shop::media.images.lazy {
+    position: relative;
+    z-index: 1; /* Ensure the image is above the gradient */
+}
+
+
 @keyframes rotate {
 	from {
 		transform: rotate(0deg);

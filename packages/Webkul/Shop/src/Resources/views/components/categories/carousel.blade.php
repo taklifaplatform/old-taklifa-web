@@ -4,7 +4,7 @@
     navigation-link="{{ $navigationLink ?? '' }}"
 >
     <x-shop::shimmer.categories.carousel
-        :count="10"
+        :count="8"
         :navigation-link="$navigationLink ?? false"
     />
 </v-categories-carousel>
@@ -15,34 +15,30 @@
         id="v-categories-carousel-template"
     >
         <div
-            class="bg-[#0F5837] max-md:px-0 max-lg:px-8 py-6"
+            class="container mt-14 max-lg:px-8 max-md:mt-7 max-md:!px-0 max-sm:mt-5"
             v-if="! isLoading && categories?.length"
         >
-
-            <div class="relative max-md:px-0 px-16">
+            <div class="relative">
                 <div
                     ref="swiperContainer"
-                    class="flex max-md:gap-1 gap-2 overflow-auto scroll-smooth scrollbar-hide"
+                    class="scrollbar-hide flex gap-10 overflow-auto scroll-smooth max-lg:gap-4"
                 >
                     <div
-                        class="grid grid-cols-1 max-md:gap-1 gap-2 justify-items-center max-md:min-w-[80px] min-w-[100px] max-md:max-w-[80px] max-w-[100px] font-medium"
+                        class="grid min-w-[120px] max-w-[120px] grid-cols-1 justify-items-center gap-4 font-medium max-md:min-w-20 max-md:max-w-20 max-md:gap-2.5 max-md:first:ml-4 max-sm:min-w-[60px] max-sm:max-w-[60px] max-sm:gap-1.5"
                         v-for="category in categories"
                     >
                         <a
                             :href="category.slug"
-                            class="img-gradient max-md:w-[70px] w-[90px] max-md:h-[70px] h-[90px] rounded-full p-1"
+                            class="img-gradient h-[110px] w-[110px] rounded-full bg-zinc-100 max-md:h-20 max-md:w-20 max-sm:h-[60px] max-sm:w-[60px]"
                             :aria-label="category.name"
                         >
-                            <template v-if="category.images.logo_url">
-                                <x-shop::media.images.lazy
-                                    ::src="category.images.logo_url"
-                                    width="100%"
-                                    height="100%"
-                                    class="max-md:w-[64px] w-[84px] max-md:h-[64px] h-[84px] rounded-full"
-                                    ::alt="category.name"
-                                    style="z-index: 2;"
-                                />
-                            </template>
+                            <x-shop::media.images.lazy
+                                ::src="category.logo?.large_image_url || '{{ bagisto_asset('images/small-product-placeholder.webp') }}'"
+                                width="110"
+                                height="110"
+                                class="w-full rounded-full max-sm:h-[60px] max-sm:w-[60px]"
+                                ::alt="category.name"
+                            />
                         </a>
 
                         <a
@@ -50,7 +46,7 @@
                             class=""
                         >
                             <p
-                                class="text-center text-white text-sm max-sm:font-normal"
+                                class="text-center text-lg text-black max-md:text-base max-md:font-normal max-sm:text-sm"
                                 v-text="category.name"
                             >
                             </p>
@@ -59,7 +55,7 @@
                 </div>
 
                 <span
-                    class="max-md:hidden flex items-center justify-center absolute top-12 left-4 w-[40px] h-[40px] border border-white text-white rounded-full transition icon-arrow-left-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                    class="icon-arrow-left-stylish absolute -left-10 top-9 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full border border-black bg-white text-2xl transition hover:bg-black hover:text-white max-lg:-left-7 max-md:hidden"
                     role="button"
                     aria-label="@lang('shop::components.carousel.previous')"
                     tabindex="0"
@@ -68,7 +64,7 @@
                 </span>
 
                 <span
-                    class="max-md:hidden flex items-center justify-center absolute top-12 right-4 w-[40px] h-[40px] border border-white text-white rounded-full transition icon-arrow-right-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                    class="icon-arrow-right-stylish absolute -right-6 top-9 flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-full border border-black bg-white text-2xl transition hover:bg-black hover:text-white max-lg:-right-7 max-md:hidden"
                     role="button"
                     aria-label="@lang('shop::components.carousel.next')"
                     tabindex="0"

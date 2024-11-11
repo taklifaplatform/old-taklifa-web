@@ -5,24 +5,18 @@
 ])
 
 <!DOCTYPE html>
-
 <html lang="{{ app()->getLocale() }}" dir="{{ core()->getCurrentLocale()->direction }}">
 
 <head>
-
-    {!! view_render_event('bagisto.shop.layout.head.before') !!}
-
     <title>{{ $title ?? '' }}</title>
 
     <meta charset="UTF-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="content-language" content="{{ app()->getLocale() }}">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="base-url" content="{{ url()->to('/') }}">
-    <meta name="currency" content="{{ core()->getCurrentCurrency()->toJson() }}">
-
+    <meta name="currency-code" content="{{ core()->getCurrentCurrencyCode() }}">
+    <meta http-equiv="content-language" content="{{ app()->getLocale() }}">
+    <script defer data-domain="taklifa.com" src="https://plausible.io/js/script.js"></script>
     @stack('meta')
 
     <link rel="icon" sizes="16x16"
@@ -44,8 +38,7 @@
         {!! core()->getConfigData('general.content.custom_scripts.custom_css') !!}
     </style>
 
-    {!! view_render_event('bagisto.shop.layout.head.after') !!}
-
+    {!! view_render_event('bagisto.shop.layout.head') !!}
 </head>
 
 <body>
