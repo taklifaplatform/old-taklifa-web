@@ -64,27 +64,31 @@
         <!-- Right Navigation Links -->
         <div class="flex gap-x-8 mt-1.5 max-lg:gap-x-8 max-[1100px]:gap-x-6">
 
-            {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.compare.before') !!}
-
-            <!-- Compare -->
-            @if(core()->getConfigData('general.content.shop.compare_option'))
-            <a href="{{ route('shop.compare.index') }}"
-                aria-label="@lang('shop::app.components.layouts.header.compare')">
-                <span class="icon-compare inline-block text-2xl cursor-pointer" role="presentation"></span>
-            </a>
-            @endif
-
-            {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.compare.after') !!}
-
             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.mini_cart.before') !!}
 
             <!-- Mini cart -->
-            {{-- @include('shop::checkout.cart.mini-cart') --}}
             @include('shop::checkout.quote.mini-quote')
 
             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.mini_cart.after') !!}
 
             {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.profile.before') !!}
+
+            {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.compare.before') !!}
+
+            <!-- Compare -->
+            @if(core()->getConfigData('catalog.products.settings.compare_option'))
+                <a
+                    href="{{ route('shop.compare.index') }}"
+                    aria-label="@lang('shop::app.components.layouts.header.compare')"
+                >
+                    <span
+                        class="icon-compare inline-block cursor-pointer text-2xl"
+                        role="presentation"
+                    ></span>
+                </a>
+            @endif
+
+            {!! view_render_event('bagisto.shop.components.layouts.header.desktop.bottom.compare.after') !!}
 
             <!-- user profile -->
             <x-shop::dropdown

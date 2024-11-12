@@ -24,7 +24,8 @@ trait CurrencyFormatter
      */
     public function useDefaultCurrencyFormatter(?float $price, Currency $currency): string
     {
-        $formatter = new \NumberFormatter(app()->getLocale(), \NumberFormatter::CURRENCY);
+        // $formatter = new \NumberFormatter(app()->getLocale(), \NumberFormatter::CURRENCY);
+        $formatter = new \NumberFormatter('en', \NumberFormatter::CURRENCY);
 
         if ($currency->symbol) {
             /**
