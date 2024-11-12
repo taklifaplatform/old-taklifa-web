@@ -28,8 +28,6 @@ class QuoteController extends APIController
         protected CartRuleCouponRepository $cartRuleCouponRepository,
         protected OrderRepository $orderRepository,
         protected CustomerRepository $customerRepository
-
-
     ) {
     }
 

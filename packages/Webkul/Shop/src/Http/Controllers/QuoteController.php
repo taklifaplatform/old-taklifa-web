@@ -70,8 +70,6 @@ class QuoteController extends Controller
             return redirect()->back();
         }
 
-        // 1.
-
         return view('shop::checkout.onepage.quote-checkout', compact('cart'));
     }
 }

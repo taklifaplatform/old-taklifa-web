@@ -84,15 +84,17 @@
                     </div>
                 </div>
 
-                <span
-                    class="max-md:hidden flex items-center justify-center absolute top-12 left-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-left-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
-                    role="button" aria-label="@lang('shop::components.carousel.previous')" tabindex="0" @click="swipeLeft">
-                </span>
+                <div class="pb-6">
+                    <span
+                        class="max-md:hidden flex items-center justify-center absolute top-12 left-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-left-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                        role="button" aria-label="@lang('shop::components.carousel.previous')" tabindex="0" @click="swipeLeft">
+                    </span>
 
-                <span
-                    class="max-md:hidden flex items-center justify-center absolute top-12 right-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-right-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
-                    role="button" aria-label="@lang('shop::components.carousel.next')" tabindex="0" @click="swipeRight">
-                </span>
+                    <span
+                        class="max-md:hidden flex items-center justify-center absolute top-12 right-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-right-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                        role="button" aria-label="@lang('shop::components.carousel.next')" tabindex="0" @click="swipeRight">
+                    </span>
+                </div>
             </div>
         </div>
     @endif

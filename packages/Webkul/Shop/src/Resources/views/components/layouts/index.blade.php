@@ -8,6 +8,7 @@
 <html lang="{{ app()->getLocale() }}" dir="{{ core()->getCurrentLocale()->direction }}">
 
 <head>
+    {!! view_render_event('bagisto.shop.layout.head.before') !!}
     <title>{{ $title ?? '' }}</title>
 
     <meta charset="UTF-8">
@@ -38,7 +39,7 @@
         {!! core()->getConfigData('general.content.custom_scripts.custom_css') !!}
     </style>
 
-    {!! view_render_event('bagisto.shop.layout.head') !!}
+{!! view_render_event('bagisto.shop.layout.head.after') !!}
 </head>
 
 <body>
@@ -91,7 +92,7 @@
                 <div class="w-full bg-green-900">
                     <div class="grid grid-cols-2">
                         <div class="border-b-2 border-l-2 p-8">
-                            <h2 class="text-center text-white text-lg font-bold mb-8">مشاريع للبناء والتشطيب</h2>
+                            <h2 class="text-center text-white text-lg font-bold mb-8">@lang('shop::app.components.layouts.header.construction')</h2>
                             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
                                 @foreach ($parentCat->childs->slice(0, ceil($parentCat->childs->count() / 2)) as $category)
                                     <div class="flex flex-col items-center mb-4 text-center">

@@ -140,7 +140,7 @@
             /* Adjust as needed to align properly */
             top: 50%;
             transform: translateY(-50%);
-            z-index: 10;
+            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -165,7 +165,7 @@
             /* Adjust as needed to align properly */
             top: 50%;
             transform: translateY(-50%);
-            z-index: 10;
+            z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;

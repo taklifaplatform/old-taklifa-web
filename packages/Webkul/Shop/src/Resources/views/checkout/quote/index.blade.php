@@ -1,15 +1,11 @@
 <!-- SEO Meta Content -->
 @push('meta')
-    <meta name="description" content="@lang('shop::app.checkout.quote.index.quote')"/>
+    <meta name="description" content="@lang('shop::app.checkout.quote.index.quote')" />
 
-    <meta name="keywords" content="@lang('shop::app.checkout.quote.index.quote')"/>
+    <meta name="keywords" content="@lang('shop::app.checkout.quote.index.quote')" />
 @endPush
 
-<x-shop::layouts
-    :has-header="false"
-    :has-feature="false"
-    :has-footer="false"
->
+<x-shop::layouts :has-header="false" :has-feature="false" :has-footer="false">
     <!-- Page Title -->
     <x-slot:title>
         @lang('shop::app.checkout.quote.index.quote')
@@ -19,21 +15,14 @@
 
     <!-- Page Header -->
     <div class="flex flex-wrap">
-        <div class="w-full flex justify-between px-[60px] border border-t-0 border-b border-l-0 border-r-0 py-4 max-lg:px-8 max-sm:px-4">
+        <div
+            class="w-full flex justify-between px-[60px] border border-t-0 border-b border-l-0 border-r-0 py-4 max-lg:px-8 max-sm:px-4">
             <div class="flex items-center gap-x-14 max-[1180px]:gap-x-9">
                 {!! view_render_event('bagisto.shop.checkout.quote.logo.before') !!}
 
-                <a
-                    href="{{ route('shop.home.index') }}"
-                    class="flex min-h-[30px]"
-                    aria-label="@lang('shop::app.checkout.quote.index.bagisto')"
-                >
-                    <img
-                        src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
-                        alt="{{ config('app.name') }}"
-                        class="w-16 h-auto md:w-26 md:h-auto"
-                        height="29"
-                    >
+                <a href="{{ route('shop.home.index') }}" class="flex min-h-[30px]" aria-label="@lang('shop::app.checkout.quote.index.bagisto')">
+                    <img src="{{ core()->getCurrentChannel()->logo_url ?? bagisto_asset('images/logo.svg') }}"
+                        alt="{{ config('app.name') }}" class="w-16 h-auto md:w-26 md:h-auto" height="29">
                 </a>
 
                 {!! view_render_event('bagisto.shop.checkout.quote.logo.after') !!}
@@ -48,8 +37,7 @@
 
             {!! view_render_event('bagisto.shop.checkout.quote.breadcrumbs.before') !!}
 
-            <!-- Breadcrumbs -->
-            <x-shop::breadcrumbs name="quote" />
+            <x-shop::breadcrumbs name="cart" />
 
             {!! view_render_event('bagisto.shop.checkout.quote.breadcrumbs.after') !!}
 
@@ -63,10 +51,7 @@
     {!! view_render_event('bagisto.shop.checkout.quote.cross_sell_carousel.before') !!}
 
     <!-- Cross-sell Product Carousal -->
-    <x-shop::products.carousel
-        :title="trans('shop::app.checkout.quote.index.cross-sell.title')"
-        :src="route('shop.api.checkout.quote.cross-sell.index')"
-    >
+    <x-shop::products.carousel :title="trans('shop::app.checkout.quote.index.cross-sell.title')" :src="route('shop.api.checkout.quote.cross-sell.index')">
     </x-shop::products.carousel>
 
     {!! view_render_event('bagisto.shop.checkout.quote.cross_sell_carousel.after') !!}
@@ -377,7 +362,7 @@
                 template: '#v-quote-template',
 
                 data() {
-                    return  {
+                    return {
                         quote: [],
 
                         allSelected: false,
@@ -411,7 +396,10 @@
                                 this.isLoading = false;
 
                                 if (response.data.message) {
-                                    this.$emitter.emit('add-flash', { type: 'info', message: response.data.message });
+                                    this.$emitter.emit('add-flash', {
+                                        type: 'info',
+                                        message: response.data.message
+                                    });
                                 }
                             })
                             .catch(error => {});
@@ -430,11 +418,16 @@
                     update() {
                         this.isStoring = true;
 
-                        this.$axios.put('{{ route('shop.api.checkout.quote.update') }}', { qty: this.applied.quantity })
+                        this.$axios.put('{{ route('shop.api.checkout.quote.update') }}', {
+                                qty: this.applied.quantity
+                            })
                             .then(response => {
                                 this.quote = response.data.data;
 
-                                this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                this.$emitter.emit('add-flash', {
+                                    type: 'success',
+                                    message: response.data.message
+                                });
 
                                 this.isStoring = false;
 
@@ -458,7 +451,10 @@
                                     .then(response => {
                                         this.quote = response.data.data;
 
-                                        this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                        this.$emitter.emit('add-flash', {
+                                            type: 'success',
+                                            message: response.data.message
+                                        });
 
                                     })
                                     .catch(error => {});
@@ -469,18 +465,23 @@
                     removeSelectedItems() {
                         this.$emitter.emit('open-confirm-modal', {
                             agree: () => {
-                                const selectedItemsIds = this.quote.items.flatMap(item => item.selected ? item.id : []);
+                                const selectedItemsIds = this.quote.items.flatMap(item => item.selected ?
+                                    item.id : []);
 
-                                this.$axios.post('{{ route('shop.api.checkout.quote.destroy_selected') }}', {
+                                this.$axios.post(
+                                    '{{ route('shop.api.checkout.quote.destroy_selected') }}', {
                                         '_method': 'DELETE',
                                         'ids': selectedItemsIds,
                                     })
                                     .then(response => {
                                         this.quote = response.data.data;
 
-                                        this.$emitter.emit('update-mini-quote', response.data.data );
+                                        this.$emitter.emit('update-mini-quote', response.data.data);
 
-                                        this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                        this.$emitter.emit('add-flash', {
+                                            type: 'success',
+                                            message: response.data.message
+                                        });
 
                                     })
                                     .catch(error => {});
@@ -491,20 +492,26 @@
                     moveToWishlistSelectedItems() {
                         this.$emitter.emit('open-confirm-modal', {
                             agree: () => {
-                                const selectedItemsIds = this.quote.items.flatMap(item => item.selected ? item.id : []);
+                                const selectedItemsIds = this.quote.items.flatMap(item => item.selected ?
+                                    item.id : []);
 
-                                const selectedItemsQty = this.quote.items.filter(item => item.selected).map(item => this.applied.quantity[item.id] ?? item.quantity);
+                                const selectedItemsQty = this.quote.items.filter(item => item.selected).map(
+                                    item => this.applied.quantity[item.id] ?? item.quantity);
 
-                                this.$axios.post('{{ route('shop.api.checkout.quote.move_to_wishlist') }}', {
+                                this.$axios.post(
+                                    '{{ route('shop.api.checkout.quote.move_to_wishlist') }}', {
                                         'ids': selectedItemsIds,
                                         'qty': selectedItemsQty
                                     })
                                     .then(response => {
                                         this.quote = response.data.data;
 
-                                        this.$emitter.emit('update-mini-quote', response.data.data );
+                                        this.$emitter.emit('update-mini-quote', response.data.data);
 
-                                        this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
+                                        this.$emitter.emit('add-flash', {
+                                            type: 'success',
+                                            message: response.data.message
+                                        });
 
                                     })
                                     .catch(error => {});

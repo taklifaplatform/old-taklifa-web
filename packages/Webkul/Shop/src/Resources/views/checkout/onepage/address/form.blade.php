@@ -1,9 +1,6 @@
 @pushOnce('scripts')
-    <script
-        type="text/x-template"
-        id="v-checkout-address-form-template"
-    >
-        <div class="mt-2 max-sm:max-w-full max-sm:flex-auto">
+    <script type="text/x-template" id="v-checkout-address-form-template">
+    <div class="mt-2 max-sm:max-w-full max-sm:flex-auto">
             <x-shop::form.control-group class="hidden">
                 <x-shop::form.control-group.control
                     type="text"
@@ -100,7 +97,7 @@
 
         <div class="grid grid-cols-2 gap-x-5">
 
-             <!-- Country -->
+        <!-- Country -->
         <x-shop::form.control-group class="!mb-4">
             <x-shop::form.control-group.label class="required !mt-0">
                 @lang('shop::app.checkout.onepage.address.country')
@@ -196,9 +193,7 @@
                         .catch(() => {});
                 },
 
-                haveStates(countryCode) {
-                    return !!this.states[countryCode]?.length;
-                },
+
             }
         });
     </script>

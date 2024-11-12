@@ -417,6 +417,7 @@ return [
                 'welcome-guest'     => 'Welcome Guest',
                 'wishlist'          => 'Wishlist',
                 'header-title' => 'Get your free quote easily for your home, office, or business project',
+                'construction' => 'Construction and finishing projects',
 
                 'desktop' => [
                     'top' => [
