@@ -8,12 +8,13 @@
         <a href="{{ route('shop.marketplace.seller.account.dashboard.index') }}">
             @if ($seller->logo)
                 <img
-                    class="h-10"
+                     class="w-24 h-auto md:w-26 md:h-auto"
                     src="{{ Storage::url($seller->logo) }}"
                     alt="Seller Logo"
                 />
             @else
                 <img
+                 class="w-24 h-auto md:w-26 md:h-auto"
                     src="{{ bagisto_asset('images/logo.svg') }}"
                     alt="Seller Logo"
                 />
@@ -25,24 +26,24 @@
     </div>
 
     <div class="flex gap-7">
-        <a 
+        <a
             href="{{ route('shop.home.index') }}"
             target="_blank"
             class="flex"
         >
-            <span 
+            <span
                 class="mp-home-icon cursor-pointer rounded-md p-1 text-2xl transition-all hover:bg-gray-100"
                 title="@lang('marketplace::app.shop.components.layouts.header.home-page')"
             >
             </span>
         </a>
 
-        <a 
-            href="{{ route('marketplace.seller.show', $seller->shop_url)}}" 
+        <a
+            href="{{ route('marketplace.seller.show', $seller->shop_url)}}"
             target="_blank"
             class="flex"
         >
-            <span 
+            <span
                 class="mp-store-icon cursor-pointer rounded-md p-1 text-2xl transition-all hover:bg-gray-100"
                 title="@lang('marketplace::app.shop.components.layouts.header.visit-shop')"
             >

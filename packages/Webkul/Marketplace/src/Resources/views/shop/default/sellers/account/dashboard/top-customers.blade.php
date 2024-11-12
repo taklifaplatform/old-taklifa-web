@@ -34,7 +34,7 @@
 
                 <template v-if="report.statistics.length">
                     {!! view_render_event('marketplace.seller.dashboard.stats.top_customers.before') !!}
-                    
+
                     <div
                         class="flex items-center justify-between border-b py-4 last:border-b-0"
                         v-for="customer in report.statistics"
