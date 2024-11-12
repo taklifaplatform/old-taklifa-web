@@ -3,11 +3,8 @@
 </v-categories-carousel>
 
 @pushOnce('scripts')
-    <script
-        type="text/x-template"
-        id="v-categories-carousel-template"
-    >
-        <div
+    <script type="text/x-template" id="v-categories-carousel-template">
+    <div
             class="bg-[#0F5837] max-md:px-0 max-lg:px-8 py-6"
             v-if="! isLoading && categories?.length"
         >
@@ -22,17 +19,16 @@
                     >
                         <a
                             :href="category.slug"
-                            class="max-md:w-[70px] w-[90px] max-md:h-[70px] h-[90px] rounded-full p-1"
+                            class="img-gradient max-md:w-[70px] w-[90px] max-md:h-[70px] h-[90px] rounded-full p-1"
                             :aria-label="category.name"
                         >
                             <x-shop::media.images.lazy
                                 ::src="category.logo?.large_image_url || '{{ bagisto_asset('images/small-product-placeholder.webp') }}'"
-                                 width="100%"
-                                    height="100%"
-                                    class="max-md:w-[64px] w-[84px] max-md:h-[64px] h-[84px] rounded-full"
-
+                                width="100%"
+                                height="100%"
+                                class="max-md:w-[64px] w-[84px] max-md:h-[64px] h-[84px] rounded-full"
                                 ::alt="category.name"
-                                 style="z-index: 2;"
+                                style="z-index: 2;"
                             />
                         </a>
 
@@ -49,23 +45,23 @@
                     </div>
                 </div>
 
-                <span
-                    class="icon-arrow-left-stylish"
-                    role="button"
-                    aria-label="@lang('shop::components.carousel.previous')"
-                    tabindex="0"
-                    @click="swipeLeft"
-                >
-                </span>
+            <span
+                class="max-md:hidden flex items-center justify-center absolute top-1/2 left-2 w-10 h-10 border-2 border-[#0F5837] bg-white text-[#0F5837] rounded-full transition-all icon-arrow-left-stylish duration-300 transform -translate-y-1/2 text-xl hover:bg-[#0F5837] hover:text-white cursor-pointer"
+                role="button"
+                aria-label="@lang('shop::components.carousel.previous')"
+                tabindex="0"
+                @click="swipeLeft"
+            >
+            </span>
 
-                <span
-                    class="icon-arrow-right-stylish"
-                    role="button"
-                    aria-label="@lang('shop::components.carousel.next')"
-                    tabindex="0"
-                    @click="swipeRight"
-                >
-                </span>
+            <span
+                class="max-md:hidden flex items-center justify-center absolute top-1/2 right-2 w-10 h-10 border-2 border-[#0F5837] bg-white text-[#0F5837] rounded-full transition-all icon-arrow-right-stylish duration-300 transform -translate-y-1/2 text-xl hover:bg-[#0F5837] hover:text-white cursor-pointer"
+                role="button"
+                aria-label="@lang('shop::components.carousel.next')"
+                tabindex="0"
+                @click="swipeRight"
+            >
+            </span>
             </div>
         </div>
 
@@ -132,56 +128,4 @@
             },
         });
     </script>
-
-    <style>
-        .icon-arrow-left-stylish {
-            position: absolute;
-            left: 10px;
-            /* Adjust as needed to align properly */
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            border: 2px solid #0F5837;
-            background-color: white;
-            color: #0F5837;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-
-        .icon-arrow-left-stylish:hover {
-            background-color: #0F5837;
-            color: white;
-        }
-
-        .icon-arrow-right-stylish {
-            position: absolute;
-            right: 10px;
-            /* Adjust as needed to align properly */
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            border: 2px solid #0F5837;
-            background-color: white;
-            color: #0F5837;
-            font-size: 20px;
-            transition: all 0.3s;
-        }
-
-        .icon-arrow-right-stylish:hover {
-            background-color: #0F5837;
-            color: white;
-        }
-    </style>
 @endPushOnce

@@ -742,6 +742,7 @@ return [
                 'update-cart'              => 'Update Cart',
                 'view-cart'                => 'View Cart',
                 'add-to-quote'            => 'Add To Quote',
+                'view-quote'             => 'View Quote',
                 'subtotal'                => 'Subtotal',
                 'update-quote'           => 'Update Quote',
                 'quote-summary'            => 'Quote Summary',
@@ -799,8 +800,8 @@ return [
                 'shopping-cart'        => 'Shopping Cart',
                 'subtotal'             => 'Subtotal',
                 'view-cart'            => 'View Cart',
-                "shopping-quote"       => "Shopping Quote",
-                "view-quote"           => "View Quote",
+                'shopping-quote'      => 'Shopping Quote',
+                'view-quote'           => 'View Quote',
             ],
 
             'summary' => [

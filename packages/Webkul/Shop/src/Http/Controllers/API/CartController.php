@@ -2,15 +2,18 @@
 
 namespace Webkul\Shop\Http\Controllers\API;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
-use Webkul\CartRule\Repositories\CartRuleCouponRepository;
 use Webkul\Checkout\Facades\Cart;
-use Webkul\Checkout\Models\CartAddress;
-use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Shipping\Facades\Shipping;
+use Webkul\Checkout\Models\CartAddress;
 use Webkul\Shop\Http\Resources\CartResource;
 use Webkul\Shop\Http\Resources\ProductResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Webkul\Shop\Http\Requests\CartAddressRequest;
+use Webkul\Product\Repositories\ProductRepository;
+use Webkul\Customer\Repositories\CustomerRepository;
+use Webkul\Sales\Repositories\OrderRepository;
+use Webkul\CartRule\Repositories\CartRuleCouponRepository;
 
 class CartController extends APIController
 {
@@ -21,7 +24,9 @@ class CartController extends APIController
      */
     public function __construct(
         protected ProductRepository $productRepository,
-        protected CartRuleCouponRepository $cartRuleCouponRepository
+        protected CartRuleCouponRepository $cartRuleCouponRepository,
+        protected OrderRepository $orderRepository,
+        protected CustomerRepository $customerRepository
     ) {}
 
     /**
@@ -283,5 +288,37 @@ class CartController extends APIController
             ->get();
 
         return ProductResource::collection($products);
+    }
+
+    /**
+     * Store address.
+     */
+    public function processQuote(CartAddressRequest $cartAddressRequest): JsonResource
+    {
+        $params = $cartAddressRequest->all();
+
+        if (Cart::hasError()) {
+            return new JsonResource([
+                'redirect'     => true,
+                'redirect_url' => route('shop.checkout.cart.index'),
+            ]);
+        }
+
+        Cart::saveAddresses($params);
+
+        Cart::collectTotals();
+
+        $order = $this->orderRepository->create(Cart::prepareDataForOrderItem());
+
+        Cart::deActivateCart();
+
+        Cart::activateCartIfSessionHasDeactivatedCartId();
+
+        session()->flash('order', $order);
+
+        return new JsonResource([
+            'redirect'     => true,
+            'redirect_url' => route('shop.checkout.quote.pdf', ['order' => $order->id]),
+        ]);
     }
 }

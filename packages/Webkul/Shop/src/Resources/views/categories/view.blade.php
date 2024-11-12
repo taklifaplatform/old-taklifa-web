@@ -86,12 +86,12 @@
 
                 <div class="pb-6">
                     <span
-                        class="max-md:hidden flex items-center justify-center absolute top-12 left-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-left-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                        class="max-md:hidden flex items-center justify-center absolute top-1/2 left-2 w-10 h-10 border-2 border-[#0F5837] bg-white text-[#0F5837] rounded-full transition-all icon-arrow-left-stylish duration-300 transform -translate-y-1/2 text-xl hover:bg-[#0F5837] hover:text-white cursor-pointer"
                         role="button" aria-label="@lang('shop::components.carousel.previous')" tabindex="0" @click="swipeLeft">
                     </span>
 
                     <span
-                        class="max-md:hidden flex items-center justify-center absolute top-12 right-4 w-[40px] h-[40px] border border-black text-black rounded-full transition icon-arrow-right-stylish text-1xl hover:bg-black hover:text-white cursor-pointer"
+                        class="max-md:hidden flex items-center justify-center absolute top-1/2 right-2 w-10 h-10 border-2 border-[#0F5837] bg-white text-[#0F5837] rounded-full transition-all icon-arrow-right-stylish duration-300 transform -translate-y-1/2 text-xl hover:bg-[#0F5837] hover:text-white cursor-pointer"
                         role="button" aria-label="@lang('shop::components.carousel.next')" tabindex="0" @click="swipeRight">
                     </span>
                 </div>
