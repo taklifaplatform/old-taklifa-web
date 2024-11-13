@@ -12,7 +12,7 @@
     @endif
 @endPush
 
-<x-shop::layouts>
+<x-shop::layouts :category="$category">
     <!-- Page Title -->
     <x-slot:title>
         {{ trim($category->meta_title) != '' ? $category->meta_title : $category->name }}
