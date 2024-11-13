@@ -312,6 +312,8 @@ class QuoteController extends APIController
 
         Cart::deActivateCart();
 
+
+
         Cart::activateCartIfSessionHasDeactivatedCartId();
 
         session()->flash('order', $order);

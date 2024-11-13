@@ -205,6 +205,20 @@ class Cart
     }
 
     /**
+     * This method will reactivate the cart which is deactivated at the the time of buy now functionality.
+     */
+    public function activateCartIfSessionHasDeactivatedCartId(): void
+    {
+        if (session()->has('deactivated_cart_id')) {
+            $deactivatedCartId = session()->get('deactivated_cart_id');
+
+            $this->activateCart($deactivatedCartId);
+
+            session()->forget('deactivated_cart_id');
+        }
+    }
+
+    /**
      * This method handles when guest has some of cart products and then logs in.
      */
     public function mergeCart(CustomerContract $customer): void

@@ -312,7 +312,7 @@ class CartController extends APIController
 
         Cart::deActivateCart();
 
-        Cart::activateCartIfSessionHasDeactivatedCartId();
+        Cart::clear();
 
         session()->flash('order', $order);
 
