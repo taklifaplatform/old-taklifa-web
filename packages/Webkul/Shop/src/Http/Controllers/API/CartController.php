@@ -308,7 +308,7 @@ class CartController extends APIController
 
         Cart::collectTotals();
 
-        $order = $this->orderRepository->create(Cart::prepareDataForOrderItem());
+        $order = $this->orderRepository->create(Cart::prepareDataForOrder());
 
         Cart::deActivateCart();
 

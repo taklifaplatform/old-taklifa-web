@@ -15,7 +15,7 @@
     <x-slot:content class="mt-8 !p-0 max-md:mt-0 max-md:rounded-t-none max-md:border max-md:border-t-0 max-md:!p-4">
         <!-- If the customer is guest -->
         <template v-if="cart.is_guest">
-            @include('shop::checkout.onepage.address.guest')
+            @include('shop::checkout.onepage.address.quote-guest')
         </template>
 
         <!-- If the customer is logged in -->
