@@ -658,6 +658,7 @@ return [
         'view' => [
             'empty'     => 'No products available in this category',
             'load-more' => 'Load More',
+            'all'       => 'All',
         ],
     ],
 

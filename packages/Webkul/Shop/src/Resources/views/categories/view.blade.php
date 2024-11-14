@@ -52,7 +52,7 @@
                                 }"
                                     class="border border-navyBlue cursor-pointer transition-colors duration-300">
                                     <a href="{{ getTagUrl(null) }}">
-                                        All
+                                        @lang('shop::app.categories.view.all')
                                         ({{ $category->products->count() }})
                                     </a>
                                 </div>
