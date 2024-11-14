@@ -62,7 +62,7 @@ class Acl
         }
 
         $roles = collect($this->getAclConfig())
-            ->mapWithKeys(fn ($role) => [$role['route'] => $role['key']]);
+            ->mapWithKeys(fn($role) => [$role['route'] => $role['key']]);
 
         return $roles;
     }
@@ -100,15 +100,15 @@ class Acl
     {
         return collect($aclItem)
             ->sortBy('sort')
-            ->filter(fn ($value) => is_array($value))
+            ->filter(fn($value) => is_array($value) && isset($value['key'])) // Check if 'key' exists
             ->map(function ($subAclItem) {
                 $subSubAclItems = $this->processSubAclItems($subAclItem);
 
                 return new AclItem(
-                    key: $subAclItem['key'],
-                    name: trans($subAclItem['name']),
-                    route: $subAclItem['route'],
-                    sort: $subAclItem['sort'],
+                    key: $subAclItem['key'] ?? null,  // Use null if 'key' is missing
+                    name: isset($subAclItem['name']) ? trans($subAclItem['name']) : 'Undefined Name',
+                    route: $subAclItem['route'] ?? null,
+                    sort: $subAclItem['sort'] ?? 0,
                     children: $subSubAclItems,
                 );
             });
