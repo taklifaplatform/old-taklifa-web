@@ -141,42 +141,6 @@
             overflow: hidden;
             border: 1px solid #ddd;
         }
-
-        /* Fixed width for table columns */
-        th:nth-child(1),
-        td:nth-child(1) {
-            width: 30%;
-        }
-
-        th:nth-child(2),
-        td:nth-child(2) {
-            width: 30%;
-        }
-
-        th:nth-child(3),
-        td:nth-child(3) {
-            width: 30%;
-        }
-
-        th:nth-child(4),
-        td:nth-child(4) {
-            width: 10%;
-        }
-
-        th:nth-child(5),
-        td:nth-child(5) {
-            width: 30%;
-        }
-
-        th:nth-child(6),
-        td:nth-child(6) {
-            width: 35%;
-        }
-
-        th:nth-child(7),
-        td:nth-child(7) {
-            width: 10%;
-        }
     </style>
 </head>
 
@@ -200,7 +164,9 @@
                         </div>
                     @endif
                     <div class="invoice-text">
-                        <span>الفاتورة</span>
+                        <span>
+                            @lang('admin::app.sales.invoices.invoice-pdf.invoice')
+                        </span>
                     </div>
                 </div>
             </div>
@@ -212,7 +178,7 @@
                             <div class="row">
                                 <p style="margin: 0;">#{{ $invoice->increment_id ?? $invoice->id }}
                                     <span class="price">
-                                        &nbsp;&nbsp; رقم الفاتورة:
+                                        &nbsp;&nbsp; @lang('admin::app.sales.invoices.invoice-pdf.invoice-id'):
                                     </span>
                                 </p>
                             </div>
@@ -220,7 +186,7 @@
                             <div class="row">
                                 <p style="margin: 0;">{{ core()->formatDate($invoice->created_at, 'd-m-Y') }}
                                     <span class="price">
-                                        &nbsp;&nbsp; تاريخ الفاتورة:
+                                        &nbsp;&nbsp; @lang('admin::app.sales.invoices.invoice-pdf.date'):
                                     </span>
                                 </p>
                             </div>
@@ -231,7 +197,7 @@
                         <div class="row">
                             <p style="margin: 0;">#{{ $invoice->order->increment_id }}
                                 <span class="price">
-                                    &nbsp;&nbsp; رقم الطلب:
+                                    &nbsp;&nbsp;  @lang('admin::app.sales.invoices.invoice-pdf.order-id'):
                                 </span>
                             </p>
                         </div>
@@ -239,7 +205,7 @@
                         <div class="row">
                             <p style="margin: 0;">{{ core()->formatDate($invoice->order->created_at, 'd-m-Y') }}
                                 <span class="price">
-                                    &nbsp;&nbsp; تاريخ الطلب:
+                                    &nbsp;&nbsp; @lang('admin::app.sales.invoices.invoice-pdf.order-date'):
                                 </span>
                             </p>
                         </div>
@@ -254,7 +220,7 @@
                         <thead>
                             <tr style="background-color: #EFF7F3;">
                                 <th class="table-header">
-                                    الفاتورة إلى
+                                    @lang('admin::app.sales.invoices.invoice-pdf.invoice-to')
                                 </th>
 
                                 @if ($invoice->order->shipping_address)
@@ -279,14 +245,14 @@
                                                     <p style="margin: 0;">
                                                         {{ $invoice->order->$addressType->city }}
                                                         ,{{ $invoice->order->$addressType->country }}
-                                                        &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<b>العنوان:</b>
+                                                        &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<b>@lang('admin::app.sales.invoices.invoice-pdf.address'):</b>
                                                     </p>
                                                     <p style="margin: 0;">
                                                         {{ $invoice->order->$addressType->phone }}
-                                                        &nbsp;&nbsp; &nbsp;&nbsp; <b>التواصل:</b>
+                                                        &nbsp;&nbsp; &nbsp;&nbsp; <b>@lang('admin::app.sales.invoices.invoice-pdf.communication'):</b>
                                                     </p>
                                                     <p style="margin: 0;">{{ $invoice->order->$addressType->email }}
-                                                        &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<b> الأيميل:</b>
+                                                        &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<b>@lang('admin::app.sales.invoices.invoice-pdf.email'):</b>
                                                     </p>
                                                 </div>
                                             </div>
@@ -304,7 +270,7 @@
                         <thead>
                             <tr style="background-color: #EFF7F3;">
                                 <th class="table-header">
-                                    طريقة الدفع
+                                    @lang('admin::app.sales.invoices.invoice-pdf.payment-method')
                                 </th>
 
                                 @if ($invoice->order->shipping_address)
@@ -329,12 +295,12 @@
                 <table style="width: 100%; margin-bottom: 10px; margin-top: 20px" class="table-style">
                     <thead style="background-color: #06593a;">
                         <tr style="color: #FFFFFF;">
-                            <th class="th-style"> المجموع الكلي</th>
-                            <th class="th-style">مبلغ الضريبة</th>
-                            <th class="th-style">المجموع الفرعي</th>
-                            <th class="th-style">الكمية</th>
-                            <th class="th-style">السعر</th>
-                            <th class="th-style">اسم المنتج</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.total-all')</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.tax-amount')</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.subtotal')</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.qty')</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.price')</th>
+                            <th class="th-style">@lang('admin::app.sales.invoices.invoice-pdf.product-name')</th>
                             <th class="th-style">SKU</th>
                         </tr>
                     </thead>

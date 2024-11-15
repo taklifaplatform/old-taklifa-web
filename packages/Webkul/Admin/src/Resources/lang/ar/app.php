@@ -665,6 +665,11 @@ return [
                 'tax-amount'                 => 'مبلغ الضريبة',
                 'tax'                        => 'الضريبة',
                 'vat-number'                 => 'رقم الضريبة',
+                'invoice-to'                => 'الفاتورة إلى',
+                'address'                   => 'العنوان',
+                'communication'             => 'التواصل',
+                'email'                    => 'الأيميل',
+                'total-all' => 'المجموع الكلي',
             ],
         ],
 

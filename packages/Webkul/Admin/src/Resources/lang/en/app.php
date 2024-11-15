@@ -665,6 +665,11 @@ return [
                 'tax-amount'                 => 'Tax Amount',
                 'tax'                        => 'Tax',
                 'vat-number'                 => 'Vat Number',
+                'invoice-to'                => 'Invoice To',
+                'address'                   => 'Address',
+                'communication'            => 'Communication',
+                'email'                   => 'Email',
+                'total-all' => 'Total All',
             ],
         ],
 
