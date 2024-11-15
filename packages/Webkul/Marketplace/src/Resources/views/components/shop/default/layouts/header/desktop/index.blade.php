@@ -8,13 +8,12 @@
         <a href="{{ route('shop.marketplace.seller.account.dashboard.index') }}">
             @if ($seller->logo)
                 <img
-                     class="w-24 h-auto md:w-26 md:h-auto"
+                    class="h-14"
                     src="{{ Storage::url($seller->logo) }}"
                     alt="Seller Logo"
                 />
             @else
                 <img
-                 class="w-24 h-auto md:w-26 md:h-auto"
                     src="{{ bagisto_asset('images/logo.svg') }}"
                     alt="Seller Logo"
                 />

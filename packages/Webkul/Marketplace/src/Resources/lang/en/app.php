@@ -1198,6 +1198,11 @@ return [
                             'title'                      => 'Invoices',
                             'total'                      => 'Total',
                             'excl-tax'                   => 'Excl Tax:',
+                            'name-product'               => 'Name',
+                            'price-product'              => 'Price',
+                            'qty-product'                => 'Qty',
+                            'sku-product'                => 'SKU',
+                            'total-product'              => 'Total',
                         ],
 
                         'shipments' => [

@@ -2,12 +2,16 @@
 
 namespace Webkul\Marketplace\Http\Controllers\Shop\Seller\Account\Orders;
 
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Event;
+use Webkul\Sales\Models\Order;
 use Webkul\Core\Traits\PDFHandler;
-use Webkul\Marketplace\Http\Controllers\Shop\Controller;
-use Webkul\Marketplace\Repositories\InvoiceRepository;
+use Illuminate\Support\Facades\Event;
+use Webkul\Marketplace\Models\Seller;
+use Webkul\Marketplace\Models\Invoice;
 use Webkul\Marketplace\Repositories\OrderRepository;
+use Webkul\Marketplace\Repositories\InvoiceRepository;
+use Webkul\Marketplace\Http\Controllers\Shop\Controller;
 use Webkul\Sales\Repositories\InvoiceRepository as BaseInvoiceRepository;
 
 class InvoiceController extends Controller
@@ -79,13 +83,24 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function print(int $id)
+    public function print(int $id, Order $order, Invoice $invoice)
     {
         $invoice = $this->invoiceRepository->findOrFail($id);
 
-        return $this->downloadPDF(
-            view('marketplace::shop.sellers.account.orders.invoices.pdf', compact('invoice'))->render(),
-            'invoice-'.$invoice->created_at->format('d-m-Y').'.pdf'
-        );
+        $seller = Seller::first();
+
+        $html = view('marketplace::shop.sellers.account.orders.invoices.pdf', [
+            'invoice' => $invoice,
+            'seller' => $seller,
+            'order'  => $order,
+
+        ])->toArabicHTML();
+
+
+        $pdf = app(PDF::class)
+            ->loadHTML($html)
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream();
     }
 }

@@ -1195,6 +1195,7 @@ return [
                             'tax-amount'                 => 'مبلغ الضريبة',
                             'title'                      => 'الفواتير',
                             'total'                      => 'الإجمالي',
+                            'show-title'                 => 'عرض الفاتورة',
                         ],
 
                         'shipments' => [
@@ -1244,6 +1245,8 @@ return [
                         'sub-total'        => 'الإجمالي الفرعي',
                         'title'            => 'إنشاء فاتورة',
                         'total'            => 'الإجمالي',
+                        'name-product'     => 'الاسم',
+                        'tax-amount'         => 'مبلغ الضريبة',
                     ],
 
                     'shipments' => [
