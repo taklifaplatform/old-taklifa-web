@@ -94,7 +94,7 @@ class SystemConfig
     {
         return collect($configItem)
             ->sortBy('sort')
-            ->filter(fn ($value) => is_array($value) && isset($value['name']))
+            ->filter(fn($value) => is_array($value) && isset($value['name']))
             ->map(function ($subConfigItem) {
                 $configItemChildren = $this->processSubConfigItems($subConfigItem);
 
@@ -144,7 +144,7 @@ class SystemConfig
             }
 
             foreach ($coreData['fields'] as $field) {
-                $name = $coreData['key'].'.'.$field['name'];
+                $name = $coreData['key'] . '.' . $field['name'];
 
                 if ($name == $fieldName) {
                     return $field;
@@ -212,20 +212,24 @@ class SystemConfig
      */
     public function getConfigData(string $field, ?string $currentChannelCode = null, ?string $currentLocaleCode = null): mixed
     {
-        if (empty($currentChannelCode)) {
-            $currentChannelCode = core()->getRequestedChannelCode();
+        try {
+            if (empty($currentChannelCode)) {
+                $currentChannelCode = core()->getRequestedChannelCode();
+            }
+
+            if (empty($currentLocaleCode)) {
+                $currentLocaleCode = core()->getRequestedLocaleCode();
+            }
+
+            $coreConfig = $this->getCoreConfig($field, $currentChannelCode, $currentLocaleCode);
+
+            if (! $coreConfig) {
+                return $this->getDefaultConfig($field);
+            }
+
+            return $coreConfig->value;
+        } catch (\Throwable $th) {
+            return null;
         }
-
-        if (empty($currentLocaleCode)) {
-            $currentLocaleCode = core()->getRequestedLocaleCode();
-        }
-
-        $coreConfig = $this->getCoreConfig($field, $currentChannelCode, $currentLocaleCode);
-
-        if (! $coreConfig) {
-            return $this->getDefaultConfig($field);
-        }
-
-        return $coreConfig->value;
     }
 }
