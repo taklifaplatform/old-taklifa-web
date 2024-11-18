@@ -68,9 +68,14 @@
                                 </p>
 
                                 <!-- Total Product Stock -->
-                                <p :class="[product.total_qty > {{ core()->getConfigData('catalog.inventory.stock_options.out_of_stock_threshold') }} ? 'text-emerald-500' : 'text-red-500']">
+
+                                <p :class="[product.ttal_qty > 10 ? 'text-emerald-500' : 'text-red-500']">
                                     @{{ "@lang('admin::app.dashboard.index.total-stock', ['total_stock' => ':replace'])".replace(':replace', product.total_qty) }}
                                 </p>
+
+                                <!--<p :class="[product.total_qty > {{ core()->getConfigData('catalog.inventory.stock_options.out_of_stock_threshold') }} ? 'text-emerald-500' : 'text-red-500']">
+                                    @{{ "@lang('admin::app.dashboard.index.total-stock', ['total_stock' => ':replace'])".replace(':replace', product.total_qty) }}
+                                </p>-->
                             </div>
 
                             <!-- View More Icon -->
@@ -89,12 +94,12 @@
             >
                 <div class="grid justify-center justify-items-center gap-3.5 px-2.5 py-10">
                     <img src="{{ bagisto_asset('images/icon-add-product.svg') }}" class="h-20 w-20 dark:mix-blend-exclusion dark:invert">
-                    
+
                     <div class="flex flex-col items-center">
                         <p class="text-base font-semibold text-gray-400">
                             @lang('admin::app.dashboard.index.empty-threshold')
                         </p>
-    
+
                         <p class="text-gray-400">
                             @lang('admin::app.dashboard.index.empty-threshold-description')
                         </p>
