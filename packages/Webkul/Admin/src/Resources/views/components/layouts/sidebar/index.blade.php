@@ -5,7 +5,7 @@
             @foreach (menu()->getItems('admin') as $menuItem)
                 <div
                     class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}"
-                    {{-- onmouseenter="adjustSubMenuPosition(event)" --}}
+                    onmouseenter="adjustSubMenuPosition(event)"
                 >
                     <a
                         href="{{ $menuItem->getUrl() }}"
