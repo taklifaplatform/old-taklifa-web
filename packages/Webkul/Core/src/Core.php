@@ -143,8 +143,8 @@ class Core
 
         $this->currentChannel = $this->channelRepository->findWhereIn('hostname', [
             $hostname,
-            'http://'.$hostname,
-            'https://'.$hostname,
+            'http://' . $hostname,
+            'https://' . $hostname,
         ])->first();
 
         if (! $this->currentChannel) {
@@ -542,7 +542,7 @@ class Core
     {
         $code = $currency instanceof \Webkul\Core\Contracts\Currency ? $currency->code : $currency;
 
-        $formatter = new \NumberFormatter(app()->getLocale().'@currency='.$code, \NumberFormatter::CURRENCY);
+        $formatter = new \NumberFormatter(app()->getLocale() . '@currency=' . $code, \NumberFormatter::CURRENCY);
 
         return $formatter->getSymbol(\NumberFormatter::CURRENCY_SYMBOL);
     }
@@ -910,7 +910,7 @@ class Core
     {
         $adminName = $this->getConfigData('emails.configure.email_settings.admin_name')
             ?: (config('mail.admin.name')
-            ?: config('mail.from.name'));
+                ?: config('mail.from.name'));
 
         $adminEmail = $this->getConfigData('emails.configure.email_settings.admin_email')
             ?: config('mail.admin.address');
@@ -930,7 +930,7 @@ class Core
     {
         $contactName = $this->getConfigData('emails.configure.email_settings.contact_name')
             ?: (config('mail.contact.name')
-            ?: config('mail.from.name'));
+                ?: config('mail.from.name'));
 
         $contactEmail = $this->getConfigData('emails.configure.email_settings.contact_email')
             ?: config('mail.contact.address');
@@ -949,5 +949,139 @@ class Core
     public function getMaxUploadSize()
     {
         return ini_get('upload_max_filesize');
+    }
+
+    /**
+     * Array set.
+     *
+     * @param  array  $items
+     * @param  string  $key
+     * @param  string|int|float  $value
+     * @return array
+     */
+    public function array_set(&$array, $key, $value)
+    {
+        if (is_null($key)) {
+            return $array = $value;
+        }
+
+        $keys = explode('.', $key);
+        $count = count($keys);
+
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+
+            if (
+                ! isset($array[$key])
+                || ! is_array($array[$key])
+            ) {
+                $array[$key] = [];
+            }
+
+            $array = &$array[$key];
+        }
+
+        $finalKey = array_shift($keys);
+
+        if (isset($array[$finalKey])) {
+            $array[$finalKey] = $this->arrayMerge($array[$finalKey], $value);
+        } else {
+            $array[$finalKey] = $value;
+        }
+
+        return $array;
+    }
+    /**
+     * Array merge.
+     *
+     * @return array
+     */
+    protected function arrayMerge(array &$array1, array &$array2)
+    {
+        $merged = $array1;
+
+        foreach ($array2 as $key => &$value) {
+            if (
+                is_array($value)
+                && isset($merged[$key])
+                && is_array($merged[$key])
+            ) {
+                $merged[$key] = $this->arrayMerge($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+
+        return $merged;
+    }
+
+    /**
+     * Method to sort through the acl items and put them in order.
+     *
+     * @param  array  $items
+     * @return array
+     */
+    public function sortItems($items)
+    {
+        foreach ($items as &$item) {
+            if (count($item['children'])) {
+                $item['children'] = $this->sortItems($item['children']);
+            }
+        }
+
+        usort($items, function ($a, $b) {
+            if ($a['sort'] == $b['sort']) {
+                return 0;
+            }
+
+            return ($a['sort'] < $b['sort']) ? -1 : 1;
+        });
+
+        return $this->convertToAssociativeArray($items);
+    }
+
+    /**
+     * Convert to associative array.
+     *
+     * @param  array  $items
+     * @return array
+     */
+    public function convertToAssociativeArray($items)
+    {
+        foreach ($items as $key1 => $level1) {
+            unset($items[$key1]);
+
+            $items[$level1['key']] = $level1;
+
+            if (! count($level1['children'])) {
+                continue;
+            }
+
+            foreach ($level1['children'] as $key2 => $level2) {
+                $temp2 = explode('.', $level2['key']);
+
+                $finalKey2 = end($temp2);
+
+                unset($items[$level1['key']]['children'][$key2]);
+
+                $items[$level1['key']]['children'][$finalKey2] = $level2;
+
+                if (! count($level2['children'])) {
+                    continue;
+                }
+
+                foreach ($level2['children'] as $key3 => $level3) {
+                    $temp3 = explode('.', $level3['key']);
+
+                    $finalKey3 = end($temp3);
+
+                    unset($items[$level1['key']]['children'][$finalKey2]['children'][$key3]);
+
+                    $items[$level1['key']]['children'][$finalKey2]['children'][$finalKey3] = $level3;
+                }
+            }
+        }
+
+        return $items;
     }
 }
