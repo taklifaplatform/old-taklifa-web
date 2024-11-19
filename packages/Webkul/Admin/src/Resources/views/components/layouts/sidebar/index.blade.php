@@ -5,14 +5,14 @@
             @foreach (menu()->getItems('admin') as $menuItem)
                 <div
                     class="px-4 group/item {{ $menuItem->isActive() ? 'active' : 'inactive' }}"
-                    onmouseenter="adjustSubMenuPosition(event)"
+                    {{-- onmouseenter="adjustSubMenuPosition(event)" --}}
                 >
                     <a
                         href="{{ $menuItem->getUrl() }}"
                         class="flex gap-2.5 p-1.5 items-center cursor-pointer hover:rounded-lg {{ $menuItem->isActive() == 'active' ? 'bg-blue-600 rounded-lg' : ' hover:bg-gray-100 hover:dark:bg-gray-950' }} peer"
                     >
                         <span class="{{ $menuItem->getIcon() }} text-2xl {{ $menuItem->isActive() ? 'text-white' : ''}}"></span>
-                        
+
                         <p class="text-gray-600 dark:text-gray-300 font-semibold whitespace-nowrap group-[.sidebar-collapsed]/container:hidden {{ $menuItem->isActive() ? 'text-white' : ''}}">
                             {{ $menuItem->getName() }}
                         </p>
@@ -91,7 +91,7 @@
                             return value;
                         }
                     }
-                    
+
                     return 0;
                 },
             },

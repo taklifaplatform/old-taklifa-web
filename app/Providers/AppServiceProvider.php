@@ -31,18 +31,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $allowedIPs = array_map('trim', explode(',', config('app.debug_allowed_ips')));
+        // $allowedIPs = array_map('trim', explode(',', config('app.debug_allowed_ips')));
 
-        $allowedIPs = array_filter($allowedIPs);
+        // $allowedIPs = array_filter($allowedIPs);
 
-        if (empty($allowedIPs)) {
-            return;
-        }
+        // if (empty($allowedIPs)) {
+        //     return;
+        // }
 
-        if (in_array(Request::ip(), $allowedIPs)) {
-            \Debugbar::enable();
-        } else {
-            \Debugbar::disable();
-        }
+        // if (in_array(Request::ip(), $allowedIPs)) {
+        //     \Debugbar::enable();
+        // } else {
+        //     \Debugbar::disable();
+        // }
     }
 }
