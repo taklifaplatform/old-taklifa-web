@@ -7,6 +7,7 @@
     <div class='grid gap-2.5 content-start w-full relative bg-gray-100 rounded-[10px]' v-if="mode != 'list'">
         <div
             class="relative overflow-hidden group max-md:min-w-[150px] max-md:max-w-[190px] max-w-[300px] max-h-[300px] rounded">
+
             {!! view_render_event('bagisto.shop.components.products.card.image.before') !!}
 
             <!-- Product Image -->
@@ -22,23 +23,17 @@
 
             {!! view_render_event('bagisto.shop.components.products.card.average_ratings.before') !!}
 
-                @if (core()->getConfigData('catalog.products.review.summary') == 'star_counts')
-                    <x-shop::products.ratings
-                        class="absolute bottom-1.5 items-center !border-white bg-white/80 !px-2 !py-1 text-xs max-sm:!px-1.5 max-sm:!py-0.5 ltr:left-1.5 rtl:right-1.5"
-                        ::average="product.ratings.average"
-                        ::total="product.ratings.total"
-                        ::rating="false"
-                        v-if="product.ratings.total"
-                    />
-                @else
-                    <x-shop::products.ratings
-                        class="absolute bottom-1.5 items-center !border-white bg-white/80 !px-2 !py-1 text-xs max-sm:!px-1.5 max-sm:!py-0.5 ltr:left-1.5 rtl:right-1.5"
-                        ::average="product.ratings.average"
-                        ::total="product.reviews.total"
-                        ::rating="false"
-                        v-if="product.reviews.total"
-                    />
-                @endif
+            @if (core()->getConfigData('catalog.products.review.summary') == 'star_counts')
+            <x-shop::products.ratings
+                class="absolute bottom-1.5 items-center !border-white bg-white/80 !px-2 !py-1 text-xs max-sm:!px-1.5 max-sm:!py-0.5 ltr:left-1.5 rtl:right-1.5"
+                ::average="product.ratings.average" ::total="product.ratings.total" ::rating="false"
+                v-if="product.ratings.total" />
+            @else
+            <x-shop::products.ratings
+                class="absolute bottom-1.5 items-center !border-white bg-white/80 !px-2 !py-1 text-xs max-sm:!px-1.5 max-sm:!py-0.5 ltr:left-1.5 rtl:right-1.5"
+                ::average="product.ratings.average" ::total="product.reviews.total" ::rating="false"
+                v-if="product.reviews.total" />
+            @endif
 
             {!! view_render_event('bagisto.shop.components.products.card.average_ratings.after') !!}
 
@@ -88,7 +83,7 @@
             </div>
         </div>
 
-        <!-- Product Information Section -->
+
         <div class="grid gap-2.5 content-start max-w-[291px] p-2">
 
             {!! view_render_event('bagisto.shop.components.products.card.name.before') !!}
@@ -97,7 +92,6 @@
 
             {!! view_render_event('bagisto.shop.components.products.card.name.after') !!}
 
-            <!-- Pricing -->
             {!! view_render_event('bagisto.shop.components.products.card.price.before') !!}
 
             <div class="flex flex-wrap max-md:h-12 gap-2.5 items-center font-semibold text-sm"
@@ -133,16 +127,11 @@
                     </button>
                 </div>
 
-                @if (core()->getConfigData('sales.checkout.shopping_cart.cart_page'))
-                        {!! view_render_event('bagisto.shop.components.products.card.add_to_cart.before') !!}
 
-                        <x-shop::button
-                        class="primary-button max-md:px-2 max-md:py-1.5 max-md:text-xs max-md:rounded-md px-8 py-2.5 whitespace-nowrap max-w-[140px] max-sm:w-full"
-                        :title="trans('shop::app.components.products.card.add-to-quote')" ::loading="isAddingToQuote"
-                        ::disabled="! product.is_saleable || isAddingToQuote" @click="addToQuote()" />
-
-                        {!! view_render_event('bagisto.shop.components.products.card.add_to_cart.after') !!}
-                @endif
+                <x-shop::button
+                    class="primary-button max-md:px-2 max-md:py-1.5 max-md:text-xs max-md:rounded-md px-8 py-2.5 whitespace-nowrap max-w-[140px] max-sm:w-full"
+                    :title="trans('shop::app.components.products.card.add-to-quote')" ::loading="isAddingToQuote"
+                    ::disabled="! product.is_saleable || isAddingToQuote" @click="addToQuote()" />
             </div>
 
             <!-- Needs to implement that in future -->
@@ -156,13 +145,13 @@
 
     <!-- List Card -->
     <div class="flex gap-4 grid-cols-2 max-w-max relative max-sm:flex-wrap rounded overflow-hidden" v-else>
-        <div class="group relative max-h-[258px] max-w-[250px] overflow-hidden">
+        <div class="relative max-w-[250px] max-h-[258px] overflow-hidden group">
 
             {!! view_render_event('bagisto.shop.components.products.card.image.before') !!}
 
             <a :href="`{{ route('shop.product_or_category.index', '') }}/${product.url_key}`">
                 <x-shop::media.images.lazy
-                    class="after:content-[' '] relative min-w-[250px] bg-zinc-100 transition-all duration-300 after:block after:pb-[calc(100%+9px)] group-hover:scale-105"
+                    class="min-w-[250px] relative after:content-[' '] after:block after:pb-[calc(100%+9px)] bg-[#F5F5F5] group-hover:scale-105 transition-all duration-300"
                     ::src="product.base_image.medium_image_url" ::key="product.id" ::index="product.id" width="291"
                     height="300" ::alt="product.name" />
             </a>
@@ -184,7 +173,6 @@
                     class="group-hover:bottom-0 opacity-0 transition-all duration-300 max-sm:opacity-100 group-hover:opacity-100">
 
                     {!! view_render_event('bagisto.shop.components.products.card.wishlist_option.before') !!}
-
 
                     @if (core()->getConfigData('general.content.shop.wishlist_option'))
                     <span
@@ -223,21 +211,25 @@
 
             {!! view_render_event('bagisto.shop.components.products.card.price.before') !!}
 
-            <div class="flex gap-2.5 text-lg font-semibold" v-html="product.price_html">
+            <div class="flex gap-2.5 text-sm font-semibold" v-html="product.price_html">
             </div>
 
             {!! view_render_event('bagisto.shop.components.products.card.price.after') !!}
 
             <!-- Needs to implement that in future -->
-            <div class="flex hidden gap-4">
-                <span class="block h-[30px] w-[30px] rounded-full bg-[#B5DCB4]">
+            <div class="hidden flex gap-4">
+                <span class="block w-[30px] h-[30px] rounded-full bg-[#B5DCB4]">
                 </span>
 
-                <span class="block h-[30px] w-[30px] rounded-full bg-zinc-500">
+                <span class="block w-[30px] h-[30px] rounded-full bg-[#5C5C5C]">
                 </span>
             </div>
 
             {!! view_render_event('bagisto.shop.components.products.card.price.after') !!}
+
+            <p class="text-sm text-[#6E6E6E]" v-if="! product.avg_ratings">
+                @lang('shop::app.components.products.card.review-description')
+            </p>
 
             {!! view_render_event('bagisto.shop.components.products.card.average_ratings.before') !!}
 
@@ -434,7 +426,7 @@
 
                     this.isAddingToQuote = true;
 
-                    this.$axios.post('{{ route('shop.api.checkout.cart.store') }}', {
+                    this.$axios.post('{{ route('shop.api.checkout.quote.store') }}', {
                             'quantity': this.quantity,
                             'product_id': this.product.id,
                         })
@@ -471,6 +463,7 @@
             },
         });
     </script>
+
 
     <style>
         input[type="number"].no-arrows::-webkit-outer-spin-button,

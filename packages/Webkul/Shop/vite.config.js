@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
     return {
         build: {
             emptyOutDir: true,
+            sourcemap: true,
         },
 
         envDir,
