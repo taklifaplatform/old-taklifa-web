@@ -8,7 +8,6 @@ use Webkul\Core\Models\Channel;
 use Webkul\Checkout\Facades\Cart;
 use Illuminate\Support\Facades\Event;
 use Webkul\Sales\Models\Order;
-use Webkul\Sales\Models\OrderAddress;
 
 class QuoteController extends Controller
 {
@@ -22,14 +21,15 @@ class QuoteController extends Controller
         return view('shop::checkout.quote.index');
     }
 
-    public function generateQuotePDF(Request $request, Order $order, OrderAddress $orderAddress)
+    public function generateQuotePDF(Request $request, $order)
     {
+        $order = Order::find($order);
         $channel = Channel::first();
 
         $html = view('shop::checkout.quote.pdf.export-pdf', [
             'channel' => $channel,
             'order' => $order,
-            'orderAddress' => $orderAddress
+            'orderAddress' => $order->billing_address()
         ])
             ->toArabicHTML();
 

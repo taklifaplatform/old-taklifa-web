@@ -32,11 +32,11 @@
                     {{ $order->shipping_address->company_name ?? '' }}<br/>
 
                     {{ $order->shipping_address->name }}<br/>
-                    
+
                     {{ $order->shipping_address->address }}<br/>
-                    
+
                     {{ $order->shipping_address->postcode . " " . $order->shipping_address->city }}<br/>
-                    
+
                     {{ $order->shipping_address->state }}<br/>
 
                     ---<br/>
@@ -64,11 +64,11 @@
                     {{ $order->billing_address->company_name ?? '' }}<br/>
 
                     {{ $order->billing_address->name }}<br/>
-                    
+
                     {{ $order->billing_address->address }}<br/>
-                    
+
                     {{ $order->billing_address->postcode . " " . $order->billing_address->city }}<br/>
-                    
+
                     {{ $order->billing_address->state }}<br/>
 
                     ---<br/>
@@ -84,7 +84,14 @@
                     {{ core()->getConfigData('sales.payment_methods.' . $order->payment->method . '.title') }}
                 </div>
 
-                @php $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method); @endphp
+                @php
+                    $additionalDetails = null;
+                    try {
+                        $additionalDetails = \Webkul\Payment\Payment::getAdditionalDetails($order->payment->method);
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
+                @endphp
 
                 @if (! empty($additionalDetails))
                     <div style="font-size: 16px; color: #384860;">
@@ -222,7 +229,7 @@
                         {{ core()->formatPrice($order->shipping_amount, $order->order_currency_code) }}
                     </span>
                 </div>
-                
+
                 <div style="display: grid;gap: 20px;grid-template-columns: repeat(2, minmax(0, 1fr));">
                     <span>
                         @lang('shop::app.emails.orders.shipping-handling-incl-tax')

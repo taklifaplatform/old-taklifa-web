@@ -21,7 +21,7 @@ Route::group(['middleware' => ['locale', 'theme', 'currency']], function () {
     Route::controller(QuoteController::class)->prefix('checkout/quote')->group(function () {
         Route::get('', 'index')->name('shop.checkout.quote.index');
         Route::get('address', 'address')->name('shop.checkout.quote.address');
-        Route::get('generate/{order}', 'generateQuotePDF')->name('shop.checkout.quote.pdf');
+        Route::get('generate/{id}', 'generateQuotePDF')->name('shop.checkout.quote.pdf');
     });
 
     Route::controller(OnepageController::class)->prefix('checkout/onepage')->group(function () {

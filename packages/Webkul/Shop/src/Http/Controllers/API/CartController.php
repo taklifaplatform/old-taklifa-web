@@ -289,36 +289,4 @@ class CartController extends APIController
 
         return ProductResource::collection($products);
     }
-
-    /**
-     * Store address.
-     */
-    public function processQuote(CartAddressRequest $cartAddressRequest): JsonResource
-    {
-        $params = $cartAddressRequest->all();
-
-        if (Cart::hasError()) {
-            return new JsonResource([
-                'redirect'     => true,
-                'redirect_url' => route('shop.checkout.cart.index'),
-            ]);
-        }
-
-        Cart::saveAddresses($params);
-
-        Cart::collectTotals();
-
-        $order = $this->orderRepository->create(Cart::prepareDataForOrder());
-
-        Cart::deActivateCart();
-
-        Cart::clear();
-
-        session()->flash('order', $order);
-
-        return new JsonResource([
-            'redirect'     => true,
-            'redirect_url' => route('shop.checkout.quote.pdf', ['order' => $order->id]),
-        ]);
-    }
 }

@@ -6,13 +6,14 @@ use Illuminate\Http\Response;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Shipping\Facades\Shipping;
 use Webkul\Checkout\Models\CartAddress;
+use Webkul\Sales\Transformers\OrderResource;
 use Webkul\Shop\Http\Resources\CartResource;
+use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Shop\Http\Resources\ProductResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Webkul\Shop\Http\Requests\CartAddressRequest;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
-use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\CartRule\Repositories\CartRuleCouponRepository;
 
 class QuoteController extends APIController
@@ -308,11 +309,13 @@ class QuoteController extends APIController
 
         Cart::collectTotals();
 
-        $order = $this->orderRepository->create(Cart::prepareDataForOrder());
+        $cart = Cart::getCart();
+
+        $data = (new OrderResource($cart))->jsonSerialize();
+
+        $order = $this->orderRepository->create($data);
 
         Cart::deActivateCart();
-
-
 
         Cart::activateCartIfSessionHasDeactivatedCartId();
 

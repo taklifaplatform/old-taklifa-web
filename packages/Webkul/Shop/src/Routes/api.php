@@ -98,7 +98,6 @@ Route::group(['middleware' => ['locale', 'theme', 'currency'], 'prefix' => 'api'
         Route::get('cross-sell', 'crossSellProducts')->name('shop.api.checkout.quote.cross-sell.index');
 
         Route::post('process-quote', 'processQuote')->name('shop.api.checkout.quote.process');
-
     });
 
     Route::controller(OnepageController::class)->prefix('checkout/onepage')->group(function () {
