@@ -155,7 +155,7 @@
                         @if (core()->getConfigData('sales.invoice_settings.pdf_print_outs.invoice_id'))
                             <td style="width: 50%; padding: 2px 18px;border:none;">
                                 <span>
-                                    #{{ $order->id }}
+                                    #{{ $marketplaceOrder->id }}
                                 </span>
                                 <b>
                                     @lang('marketplace::app.shop.sellers.account.orders.view.invoices.invoice-id'):
@@ -166,7 +166,7 @@
                         @if (core()->getConfigData('sales.invoice_settings.pdf_print_outs.order_id'))
                             <td style="width: 50%; padding: 2px 18px;border:none;">
                                 <span>
-                                    #{{ $order->order_id }}
+                                    #{{ $marketplaceOrder->order_id }}
                                 </span>
                                 <b>
                                     @lang('marketplace::app.shop.sellers.account.orders.view.invoices.order-id'):
@@ -178,7 +178,7 @@
                     <tr>
                         <td style="width: 50%; padding: 2px 18px;border:none;">
                             <span>
-                                {{ core()->formatDate($order->created_at, 'd-m-Y') }}
+                                {{ core()->formatDate($marketplaceOrder->created_at, 'd-m-Y') }}
                             </span>
                             <b>
                                 @lang('marketplace::app.shop.sellers.account.orders.view.invoices.created-on', ['date_time' => '']):
@@ -187,7 +187,7 @@
 
                         <td style="width: 50%; padding: 2px 18px;border:none;">
                             <span>
-                                {{ core()->formatDate($order->created_at, 'd-m-Y') }}
+                                {{ core()->formatDate($marketplaceOrder->created_at, 'd-m-Y') }}
                             </span>
                             <b>
                                 @lang('marketplace::app.shop.sellers.account.orders.view.invoices.order-date'):
@@ -196,6 +196,34 @@
                     </tr>
                 </tbody>
             </table>
+            <!-- Billing & Shipping Address Details -->
+            <div class="table address">
+                <table style="width: 100%; margin-top: 20px">
+                    <thead>
+                        <tr style="background-color: #F5F5F5;">
+                            <th class="table-header">
+                                @lang('admin::app.sales.invoices.invoice-pdf.invoice-from')
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                @if ($marketplaceOrder->billing_address)
+                                    <div style="margin: 10px 0;">
+                                        <p style="margin: 0;">
+                                            @include('admin::sales.address-customer', [
+                                                'address' => $marketplaceOrder->billing_address,
+                                            ])
+                                        </p>
+                                    </div>
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Billing & Shipping Address Details -->
             <div class="table address">
@@ -211,11 +239,12 @@
                     <tbody>
                         <tr>
                             <td>
-                                @if ($sellerOrder->order->billing_address)
+                                {{-- @dd($marketplaceOrder->order); --}}
+                                @if ($marketplaceOrder->order->billing_address)
                                     <div style="margin: 10px 0;">
                                         <p style="margin: 0;">
                                             @include('admin::sales.address-customer', [
-                                                'address' => $sellerOrder->order->billing_address,
+                                                'address' => $marketplaceOrder->order->billing_address,
                                             ])
                                         </p>
                                     </div>
@@ -252,58 +281,56 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sellerOrder->invoices as $invoice)
-                        @foreach ($invoice->items as $orderItem)
-                            <tr class="color">
-                                <!-- Total (Base Total + Tax Amount) -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ core()->formatPrice($orderItem->item->total + $orderItem->item->tax_amount, $sellerOrder->order->order_currency_code) }}
-                                </td>
+                    @foreach ($marketplaceOrder->items as $marketplaceOrderItem)
+                        <tr class="color">
+                            <!-- Total (Base Total + Tax Amount) -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ core()->formatPrice($marketplaceOrderItem->item->total + $marketplaceOrderItem->item->tax_amount, $marketplaceOrder->order_currency_code) }}
+                            </td>
 
-                                <!-- Discount Amount -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ core()->formatPrice($orderItem->item->discount_amount, $sellerOrder->order->order_currency_code) }}
-                                </td>
+                            <!-- Discount Amount -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ core()->formatPrice($marketplaceOrderItem->item->discount_amount, $marketplaceOrder->order_currency_code) }}
+                            </td>
 
-                                <!-- Tax Amount -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ core()->formatPrice($orderItem->item->tax_amount, $sellerOrder->order->order_currency_code) }}
-                                </td>
+                            <!-- Tax Amount -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ core()->formatPrice($marketplaceOrderItem->item->tax_amount, $marketplaceOrder->order_currency_code) }}
+                            </td>
 
-                                <!-- Price Display Based on Configuration -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ core()->formatPrice($orderItem->item->total, $sellerOrder->order->order_currency_code) }}
-                                </td>
+                            <!-- Price Display Based on Configuration -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ core()->formatPrice($marketplaceOrderItem->item->total, $marketplaceOrder->order_currency_code) }}
+                            </td>
 
-                                <!-- Quantity Ordered -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ $orderItem->item->qty }}
-                                </td>
+                            <!-- Quantity Ordered -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ $marketplaceOrderItem->item->qty }}
+                            </td>
 
-                                <!-- Price Display Based on Configuration -->
-                                <td style="padding: 12px; padding-right: 18px">
-                                    {{ core()->formatPrice($orderItem->item->price, $sellerOrder->order->order_currency_code) }}
-                                </td>
+                            <!-- Price Display Based on Configuration -->
+                            <td style="padding: 12px; padding-right: 18px">
+                                {{ core()->formatPrice($marketplaceOrderItem->item->price, $marketplaceOrder->order_currency_code) }}
+                            </td>
 
-                                <td style="padding: 12px; padding-right: 18px">
-                                    <p class="text-sm font-medium">
-                                        {{ $orderItem->item->name }}
-                                    </p>
-                                    <p class="text-sm font-normal">
-                                        @lang('marketplace::app.shop.sellers.account.orders.view.invoices.sku', ['sku' => $orderItem->item->sku])
-                                    </p>
+                            <td style="padding: 12px; padding-right: 18px">
+                                <p class="text-sm font-medium">
+                                    {{ $marketplaceOrderItem->item->name }}
+                                </p>
+                                <p class="text-sm font-normal">
+                                    @lang('marketplace::app.shop.sellers.account.orders.view.invoices.sku', ['sku' => $marketplaceOrderItem->item->sku])
+                                </p>
 
-                                    @if (isset($orderItem->item->additional['attributes']))
-                                        <div>
-                                            @foreach ($orderItem->item->additional['attributes'] as $attribute)
-                                                <b>{{ $attribute['attribute_name'] }} :
-                                                </b>{{ $attribute['option_label'] }}<br>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                                @if (isset($marketplaceOrderItem->item->additional['attributes']))
+                                    <div>
+                                        @foreach ($marketplaceOrderItem->item->additional['attributes'] as $attribute)
+                                            <b>{{ $attribute['attribute_name'] }} :
+                                            </b>{{ $attribute['option_label'] }}<br>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -314,27 +341,27 @@
                     <tbody>
                         @if (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'including_tax')
                             <tr>
-                                <td>{!! core()->formatBasePrice($order->base_sub_total_incl_tax, true) !!}</td>
+                                <td>{!! core()->formatBasePrice($marketplaceOrder->base_sub_total_incl_tax, true) !!}</td>
                                 <td>-</td>
                                 <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total')</td>
                             </tr>
                         @elseif (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'both')
                             <tr>
-                                <td>{!! core()->formatBasePrice($order->base_sub_total_incl_tax, true) !!}</td>
+                                <td>{!! core()->formatBasePrice($marketplaceOrder->base_sub_total_incl_tax, true) !!}</td>
                                 <td>-</td>
                                 <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total-incl-tax')
                                 </td>
                             </tr>
 
                             <tr>
-                                <td>{!! core()->formatBasePrice($order->base_sub_total, true) !!}</td>
+                                <td>{!! core()->formatBasePrice($marketplaceOrder->base_sub_total, true) !!}</td>
                                 <td>-</td>
                                 <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total-excl-tax')
                                 </td>
                             </tr>
                         @else
                             <tr>
-                                <td>{!! core()->formatBasePrice($order->base_sub_total, true) !!}</td>
+                                <td>{!! core()->formatBasePrice($marketplaceOrder->base_sub_total, true) !!}</td>
                                 <td>-</td>
                                 <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total')</td>
                             </tr>
@@ -363,7 +390,7 @@
                             </tr>
                         @else
                             <tr>
-                                <td>{!! core()->formatBasePrice($order->base_shipping_amount, true) !!}
+                                <td>{!! core()->formatBasePrice($marketplaceOrder->base_shipping_amount, true) !!}
                                 </td>
                                 <td>-</td>
                                 <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.shipping-handling')
@@ -372,20 +399,20 @@
                         @endif
 
                         <tr>
-                            <td>{!! core()->formatBasePrice($order->base_tax_amount, true) !!}</td>
+                            <td>{!! core()->formatBasePrice($marketplaceOrder->base_tax_amount, true) !!}</td>
                             <td>-</td>
                             <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.tax')</td>
                         </tr>
 
                         <tr>
-                            <td>{!! core()->formatBasePrice($order->base_discount_amount, true) !!}</td>
+                            <td>{!! core()->formatBasePrice($marketplaceOrder->base_discount_amount, true) !!}</td>
                             <td>-</td>
                             <td>@lang('marketplace::app.shop.sellers.account.orders.view.invoices.discount')</td>
                         </tr>
 
                         <tr>
                             <td style="border-top: 1px solid #FFFFFF;">
-                                <b>{!! core()->formatBasePrice($order->base_grand_total - $order->base_shipping_amount, true) !!}</b>
+                                <b>{!! core()->formatBasePrice($marketplaceOrder->base_grand_total - $marketplaceOrder->base_shipping_amount, true) !!}</b>
                             </td>
                             <td style="border-top: 1px solid #FFFFFF;">-</td>
                             <td style="border-top: 1px solid #FFFFFF;">
