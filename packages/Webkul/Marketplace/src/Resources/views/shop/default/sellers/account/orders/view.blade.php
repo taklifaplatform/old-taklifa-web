@@ -15,10 +15,10 @@
         <p class="text-2xl font-medium">
             @lang('marketplace::app.shop.sellers.account.orders.view.title', ['order_id' => $sellerOrder->order_id])
         </p>
-        
+
         <div class="flex items-center gap-2.5">
             {!! view_render_event('marketplace.seller.order.view.cancel_order_button.before', ['order' => $sellerOrder]) !!}
-            
+
             <!-- Cancel Button -->
             @if (
                 core()->getConfigData('marketplace.settings.general.can_cancel_order')
@@ -72,7 +72,7 @@
 
     <div class="mt-4 flex items-center gap-2.5 max-xl:flex-wrap">
         <p class="label-{{ $sellerOrder->status }} text-xs">
-            @lang("marketplace::app.shop.sellers.account.orders.view.$sellerOrder->status")  
+            @lang("marketplace::app.shop.sellers.account.orders.view.$sellerOrder->status")
         </p>
 
         <span class="text-xs font-medium">
@@ -98,7 +98,7 @@
                 </x-shop::tabs.item>
 
                 @if ($sellerOrder->invoices->count())
-                    <x-shop::tabs.item 
+                    <x-shop::tabs.item
                         class="mt-5 !p-0"
                         :title="trans('marketplace::app.shop.sellers.account.orders.view.invoices.title')"
                     >
@@ -134,7 +134,7 @@
                         @lang('marketplace::app.shop.sellers.account.orders.view.info')
                     </h2>
                 </x-slot:header>
-        
+
                 <x-slot:content class="!p-0">
                     @include('marketplace::shop.sellers.account.orders.views.view')
                 </x-slot:content>
@@ -147,7 +147,7 @@
                             @lang('marketplace::app.shop.sellers.account.orders.view.invoices.title')
                         </h2>
                     </x-slot:header>
-            
+
                     <x-slot:content class="!p-0">
                         @include('marketplace::shop.sellers.account.orders.views.invoice')
                     </x-slot:content>
@@ -161,7 +161,7 @@
                             @lang('marketplace::app.shop.sellers.account.orders.view.shipments.title')
                         </h2>
                     </x-slot:header>
-            
+
                     <x-slot:content class="!p-0">
                         @include('marketplace::shop.sellers.account.orders.views.shipment')
                     </x-slot:content>
@@ -175,7 +175,7 @@
                             @lang('marketplace::app.shop.sellers.account.orders.view.refunds.title')
                         </h2>
                     </x-slot:header>
-            
+
                     <x-slot:content class="!p-0">
                         @include('marketplace::shop.sellers.account.orders.views.refunds')
                     </x-slot:content>

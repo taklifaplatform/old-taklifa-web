@@ -120,8 +120,8 @@
     <div>
         @php
             $base64Image = null;
-            if ($channel && $channel->logo) {
-                $path = storage_path('app/public/' . $channel->logo);
+            if ($seller && $seller->logo) {
+                $path = storage_path('app/public/' . $seller->logo);
                 if (file_exists($path)) {
                     $base64Image = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
                 }
@@ -311,7 +311,7 @@
     </table>
 
     <!-- Footer section -->
-    <table class="footer-section">
+    {{-- <table class="footer-section">
         <tbody>
             <tr>
                 <td style="border: none; padding-right: 10pt;">
@@ -321,7 +321,7 @@
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table> --}}
 
 </body>
 

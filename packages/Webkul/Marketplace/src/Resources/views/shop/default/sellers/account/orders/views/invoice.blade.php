@@ -163,7 +163,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice($invoice->sub_total, $sellerOrder->order->order_currency_code) }}
                                 </p>
@@ -181,7 +181,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice($invoice->sub_total_incl_tax, $sellerOrder->order->order_currency_code) }}
                                 </p>
@@ -202,7 +202,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice(0, $sellerOrder->order->order_currency_code) }}
                                 </p>
@@ -220,7 +220,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice(0, $sellerOrder->order->order_currency_code) }}
                                 </p>

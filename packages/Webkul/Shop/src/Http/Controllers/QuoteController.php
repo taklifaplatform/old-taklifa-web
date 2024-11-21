@@ -3,14 +3,22 @@
 namespace Webkul\Shop\Http\Controllers;
 
 use Barryvdh\DomPDF\PDF;
-use Illuminate\Http\Request;
-use Webkul\Core\Models\Channel;
 use Webkul\Checkout\Facades\Cart;
+use Webkul\Marketplace\Models\Order;
 use Illuminate\Support\Facades\Event;
-use Webkul\Sales\Models\Order;
+use Webkul\Marketplace\Models\Seller;
+use Webkul\Marketplace\Repositories\OrderRepository;
+use Webkul\Marketplace\Repositories\InvoiceRepository;
+use Webkul\Marketplace\Http\Controllers\Shop\Controller;
+use Webkul\Sales\Repositories\InvoiceRepository as BaseInvoiceRepository;
 
 class QuoteController extends Controller
 {
+    public function __construct(
+        protected BaseInvoiceRepository $baseInvoiceRepository,
+        protected InvoiceRepository $invoiceRepository,
+        protected OrderRepository $orderRepository
+    ) {}
     /**
      * Cart page.
      *
@@ -21,18 +29,20 @@ class QuoteController extends Controller
         return view('shop::checkout.quote.index');
     }
 
-    public function generateQuotePDF(Request $request, $order)
+    public function generateQuotePDF(Order $order)
     {
-        $order = Order::find($order);
-        $channel = Channel::first();
+        $seller = Seller::findOrFail($order->marketplace_seller_id);
 
-        $html = view('shop::checkout.quote.pdf.export-pdf', [
-            'channel' => $channel,
-            'order' => $order,
-            'orderAddress' => $order->billing_address()
-        ])
-            ->toArabicHTML();
+        $sellerOrder = $this->orderRepository->with('order')
+            ->findOneWhere([
+                'marketplace_seller_id' => auth()->guard('seller')->user()->seller_id,
+            ]);
 
+        $html = view('shop::checkout.quote.pdf.pdf-seller', [
+            'seller' => $seller,
+            'order'  => $order,
+           'sellerOrder' => $sellerOrder
+        ])->toArabicHTML();
 
         $pdf = app(PDF::class)
             ->loadHTML($html)
@@ -41,11 +51,9 @@ class QuoteController extends Controller
         return $pdf->stream();
     }
 
-
     public function address()
     {
         Event::dispatch('checkout.load.index');
-
 
         /**
          * If cart has errors then redirect back to the cart page

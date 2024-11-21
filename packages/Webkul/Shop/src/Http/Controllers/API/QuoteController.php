@@ -321,9 +321,11 @@ class QuoteController extends APIController
 
         session()->flash('order', $order);
 
+        $marketPlaceOrder = \Webkul\Marketplace\Models\Order::where('order_id', $order->id)->first();
+
         return new JsonResource([
             'redirect'     => true,
-            'redirect_url' => route('shop.checkout.quote.pdf', ['order' => $order->id]),
+            'redirect_url' => route('shop.checkout.quote.pdf', ['order' => $marketPlaceOrder->id]),
         ]);
     }
 }
