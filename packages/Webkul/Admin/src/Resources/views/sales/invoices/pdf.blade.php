@@ -197,7 +197,7 @@
                         <div class="row">
                             <p style="margin: 0;">#{{ $invoice->order->increment_id }}
                                 <span class="price">
-                                    &nbsp;&nbsp;  @lang('admin::app.sales.invoices.invoice-pdf.order-id'):
+                                    &nbsp;&nbsp; @lang('admin::app.sales.invoices.invoice-pdf.order-id'):
                                 </span>
                             </p>
                         </div>

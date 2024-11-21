@@ -8,7 +8,6 @@ use Webkul\Sales\Models\Order;
 use Webkul\Core\Traits\PDFHandler;
 use Illuminate\Support\Facades\Event;
 use Webkul\Marketplace\Models\Seller;
-use Webkul\Marketplace\Models\Invoice;
 use Webkul\Marketplace\Repositories\OrderRepository;
 use Webkul\Marketplace\Repositories\InvoiceRepository;
 use Webkul\Marketplace\Http\Controllers\Shop\Controller;
@@ -83,7 +82,7 @@ class InvoiceController extends Controller
      *
      * @return Response
      */
-    public function print(int $id, Order $order, Invoice $invoice)
+    public function print(int $id, Order $order)
     {
         $invoice = $this->invoiceRepository->findOrFail($id);
 

@@ -1195,7 +1195,7 @@ return [
                             'tax-amount'                 => 'مبلغ الضريبة',
                             'title'                      => 'الفواتير',
                             'total'                      => 'الإجمالي',
-                            'show-title'                 => 'عرض الفاتورة',
+                            'show-invoice'                 => 'عرض الفاتورة',
                         ],
 
                         'shipments' => [

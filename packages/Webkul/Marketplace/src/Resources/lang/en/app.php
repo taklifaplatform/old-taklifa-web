@@ -1203,6 +1203,7 @@ return [
                             'qty-product'                => 'Qty',
                             'sku-product'                => 'SKU',
                             'total-product'              => 'Total',
+                            'show-invoice' => 'Show Invoice',
                         ],
 
                         'shipments' => [

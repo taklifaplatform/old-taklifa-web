@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\Shop\Http\Resources;
+namespace Webkul\Marketplace\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
