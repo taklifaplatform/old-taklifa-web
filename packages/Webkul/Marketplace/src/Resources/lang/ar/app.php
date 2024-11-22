@@ -1196,6 +1196,7 @@ return [
                             'title'                      => 'الفواتير',
                             'total'                      => 'الإجمالي',
                             'show-invoice'                 => 'عرض الفاتورة',
+                            'view-quote'                => 'عرض السعر',
                         ],
 
                         'shipments' => [

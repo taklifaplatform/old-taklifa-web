@@ -171,7 +171,7 @@
             @endif
             <div class="invoice-text">
                 <span>
-                    @lang('marketplace::app.shop.sellers.account.orders.view.invoices.show-invoice')
+                    @lang('marketplace::app.shop.sellers.account.orders.view.invoices.view-quote')
                 </span>
             </div>
         </div>
