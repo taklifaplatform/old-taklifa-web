@@ -262,12 +262,22 @@ class SellerController extends Controller
             'country',
         ];
 
-        foreach ($requiredFields as $field) {
-            if (empty($seller->{$field})) {
-                return back()
-                    ->with('warning', trans('marketplace::app.admin.sellers.index.shop-validation', ['name' => str_replace('_', ' ', $field)]));
+        try {
+            foreach ($requiredFields as $field) {
+                if (empty($seller->{$field})) {
+                    return response()->json([
+                        'warning' => trans('marketplace::app.admin.sellers.index.shop-validation', ['name' => str_replace('_', ' ', $field)]),
+                    ], 400); // Return a JSON response if used in an API context
+                }
             }
+
+            // Continue with your search logic
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
         }
+
 
         if (request()->input('query')) {
             $results = [];
