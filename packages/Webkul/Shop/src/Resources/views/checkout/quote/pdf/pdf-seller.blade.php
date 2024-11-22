@@ -27,7 +27,7 @@
     th,
     td,
     h5 {
-        font-family: ' IBM Plex Sans Arabic', 'DejaVu Sans', sans-serif;
+        font-family: 'IBM Plex Sans Arabic', 'DejaVu Sans', sans-serif;
         direction: rtl;
         text-align: right;
     }
@@ -37,14 +37,29 @@
         display: block;
     }
 
+
     .table thead th:last-child {
-        border-right: solid 1px #E9E9E9;
+        border-right: solid 1px #d3d3d3;
     }
 
     .table tbody td {
         padding: 5px 10px;
         color: #3A3A3A;
         vertical-align: middle;
+    }
+
+    .sale-summary {
+        margin-top: 20px;
+        float: left;
+        background-color: #EFF7F3;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .sale-summary tr td {
+        padding: 2px 12px;
     }
 
     .label {
@@ -58,17 +73,41 @@
 
     .col-6 {
         width: 42%;
-        display:
-            inline-block;
+        display: inline-block;
         vertical-align: top;
         margin: 0px 5px;
+    }
+
+    .table-header {
+        color: #14532d;
+        padding-right: 6pt;
+        padding: 6px
     }
 
     .align-left {
         text-align: left;
     }
 
+    .invoice-text {
+        font-size: 35px;
+        color: #14532d;
+        font-weight: bold;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+        top: -28px;
+        margin-bottom: 10px
+    }
+
+    .price {
+        font-size: 12pt;
+        font-weight: bold;
+        color: #14532d;
+    }
+
     .table-style {
+
         border-collapse: collapse;
         font-size: 11pt;
     }
@@ -82,8 +121,7 @@
     }
 
     .td-style {
-        border:
-            1px solid #ddd;
+        border: 1px solid #ddd;
         text-align: right;
         word-wrap: break-word;
         padding: 6px;
@@ -100,21 +138,11 @@
         overflow: hidden;
         border: 1px solid #ddd;
     }
-
-    .page-header {
-        border-bottom: 1px solid #E9EFFC;
-        text-align: center;
-        font-size: 24px;
-        text-transform: uppercase;
-        /* color: #000DBB; */
-        padding: 24px 0;
-        margin: 0;
-    }
 </style>
 </head>
 
 
-<body>
+<body style="background-image: none; background-color: #fff;">
     @php
         $base64Image = null;
         if ($seller && $seller->logo) {
@@ -125,31 +153,35 @@
         }
     @endphp
 
-    <table style="width: 100%; border-collapse: collapse;">
-        <tbody>
-            <tr>
-                <td colspan="3" style="border: none;">
-                    <h1 style=" font-size: 24pt; margin: 0;">
-                        @lang('marketplace::app.shop.sellers.account.orders.view.invoices.show-invoice')
-                    </h1>
-                </td>
-                <td colspan="7" style="border: none; padding: 0;">
-                    @if ($base64Image)
-                        <img src="{{ $base64Image }}" style="width: 110px; height: auto;">
-                    @else
-                        <img
-                            src="data:image/png;base64,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" />
-                    @endif
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="direction: rtl;">
+        <div class="col-12 header">
+            @php
+                $base64Image = null;
+                if ($seller && $seller->logo) {
+                    $path = storage_path('app/public/' . $seller->logo);
+                    if (file_exists($path)) {
+                        $base64Image = 'data:image/png;base64,' . base64_encode(file_get_contents($path));
+                    }
+                }
+            @endphp
+            @if ($base64Image)
+                <div style="border: none; padding: 0;">
+                    <img src="{{ $base64Image }}" style="width: 110px; height: auto;">
+                </div>
+            @endif
+            <div class="invoice-text">
+                <span>
+                    @lang('marketplace::app.shop.sellers.account.orders.view.invoices.show-invoice')
+                </span>
+            </div>
+        </div>
+    </div>
 
     <div class="page">
         <!-- Header -->
         <div class="page-content">
             <!-- Invoice Information -->
-            <table style="width: 100%; padding-bottom: 22pt; padding-top: 23px">
+            <table style="width: 100%;">
                 <tbody>
                     <tr>
                         @if (core()->getConfigData('sales.invoice_settings.pdf_print_outs.invoice_id'))
@@ -157,7 +189,7 @@
                                 <span>
                                     #{{ $marketplaceOrder->id }}
                                 </span>
-                                <b>
+                                <b class="price">
                                     @lang('marketplace::app.shop.sellers.account.orders.view.invoices.invoice-id'):
                                 </b>
                             </td>
@@ -168,7 +200,7 @@
                                 <span>
                                     #{{ $marketplaceOrder->order_id }}
                                 </span>
-                                <b>
+                                <b class="price">
                                     @lang('marketplace::app.shop.sellers.account.orders.view.invoices.order-id'):
                                 </b>
                             </td>
@@ -180,7 +212,7 @@
                             <span>
                                 {{ core()->formatDate($marketplaceOrder->created_at, 'd-m-Y') }}
                             </span>
-                            <b>
+                            <b class="price">
                                 @lang('marketplace::app.shop.sellers.account.orders.view.invoices.created-on', ['date_time' => '']):
                             </b>
                         </td>
@@ -189,7 +221,7 @@
                             <span>
                                 {{ core()->formatDate($marketplaceOrder->created_at, 'd-m-Y') }}
                             </span>
-                            <b>
+                            <b class="price">
                                 @lang('marketplace::app.shop.sellers.account.orders.view.invoices.order-date'):
                             </b>
                         </td>
@@ -198,9 +230,9 @@
             </table>
             <!-- Billing & Shipping Address Details -->
             <div class="table address">
-                <table style="width: 100%; margin-top: 20px">
+                <table style="width: 100%; margin-top: 5px">
                     <thead>
-                        <tr style="background-color: #F5F5F5;">
+                        <tr style="background-color: #EFF7F3;">
                             <th class="table-header">
                                 @lang('admin::app.sales.invoices.invoice-pdf.invoice-from')
                             </th>
@@ -210,11 +242,12 @@
                     <tbody>
                         <tr>
                             <td>
-                                @if ($marketplaceOrder->billing_address)
+                                {{-- @dd($seller) --}}
+                                @if ($seller)
                                     <div style="margin: 10px 0;">
                                         <p style="margin: 0;">
-                                            @include('admin::sales.address-customer', [
-                                                'address' => $marketplaceOrder->billing_address,
+                                            @include('admin::sales.address-seller', [
+                                                'address' => $seller,
                                             ])
                                         </p>
                                     </div>
@@ -227,9 +260,9 @@
 
             <!-- Billing & Shipping Address Details -->
             <div class="table address">
-                <table style="width: 100%; margin-top: 20px">
+                <table style="width: 100%; margin-top: 5px">
                     <thead>
-                        <tr style="background-color: #F5F5F5;">
+                        <tr style="background-color: #EFF7F3;">
                             <th class="table-header">
                                 @lang('admin::app.sales.invoices.invoice-pdf.invoice-to')
                             </th>
@@ -239,7 +272,6 @@
                     <tbody>
                         <tr>
                             <td>
-                                {{-- @dd($marketplaceOrder->order); --}}
                                 @if ($marketplaceOrder->order->billing_address)
                                     <div style="margin: 10px 0;">
                                         <p style="margin: 0;">
@@ -257,9 +289,9 @@
 
             <!-- Items -->
             <div class="table address">
-                <table style="width: 100%; margin-top: 20px">
+                <table style="width: 100%; margin-top: 5px">
                     <thead>
-                        <tr style="background-color: #F5F5F5;">
+                        <tr style="background-color: #EFF7F3;">
                             <th class="table-header">
                                 @lang('marketplace::app.shop.sellers.account.orders.view.invoices.payment-method')
                             </th>
@@ -268,64 +300,66 @@
                 </table>
             </div>
 
-            <table style="width: 100%; padding-top: 22px"" class="table-style">
-                <thead style="background-color: #F5F5F5;">
-                    <tr style="color: #0d0c0c;">
-                        <th style="padding: 12px; ">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total')</th>
-                        <th style="padding: 3px; ">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.discount')</th>
-                        <th style="padding: 3px;">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.tax-amount')</th>
-                        <th style="padding: 3px;">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.total')</th>
-                        <th style="padding: 3px;">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.qty')</th>
-                        <th style="padding: 12px;">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.price')</th>
-                        <th style="padding: 12px; text-align: center">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.name')</th>
+            <table style="width: 100%; margin-bottom: 5px; margin-top: 5px" class="table-style">
+                <thead style="background-color: #06593a;">
+                    <tr style="color: #FFFFFF;">
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.sub-total')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.discount')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.tax-amount')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.total')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.qty')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.price')</th>
+                        <th class="th-style">@lang('marketplace::app.shop.sellers.account.orders.view.invoices.product-name')</th>
+                        <th class="th-style">SKU</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($marketplaceOrder->items as $marketplaceOrderItem)
-                        <tr class="color">
+                        <tr class="color td-style">
                             <!-- Total (Base Total + Tax Amount) -->
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 {{ core()->formatPrice($marketplaceOrderItem->item->total + $marketplaceOrderItem->item->tax_amount, $marketplaceOrder->order_currency_code) }}
                             </td>
 
                             <!-- Discount Amount -->
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 {{ core()->formatPrice($marketplaceOrderItem->item->discount_amount, $marketplaceOrder->order_currency_code) }}
                             </td>
 
                             <!-- Tax Amount -->
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 {{ core()->formatPrice($marketplaceOrderItem->item->tax_amount, $marketplaceOrder->order_currency_code) }}
                             </td>
 
                             <!-- Price Display Based on Configuration -->
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 {{ core()->formatPrice($marketplaceOrderItem->item->total, $marketplaceOrder->order_currency_code) }}
                             </td>
 
                             <!-- Quantity Ordered -->
-                            <td style="padding: 12px; padding-right: 18px">
-                                {{ $marketplaceOrderItem->item->qty }}
+                            <td class="td-style">
+                                {{ $marketplaceOrderItem->item->qty_ordered }}
                             </td>
 
                             <!-- Price Display Based on Configuration -->
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 {{ core()->formatPrice($marketplaceOrderItem->item->price, $marketplaceOrder->order_currency_code) }}
                             </td>
 
-                            <td style="padding: 12px; padding-right: 18px">
+                            <td class="td-style">
                                 <p class="text-sm font-medium">
                                     {{ $marketplaceOrderItem->item->name }}
                                 </p>
+                            </td>
+                            <td class="td-style">
                                 <p class="text-sm font-normal">
                                     @lang('marketplace::app.shop.sellers.account.orders.view.invoices.sku', ['sku' => $marketplaceOrderItem->item->sku])
                                 </p>
-
                                 @if (isset($marketplaceOrderItem->item->additional['attributes']))
                                     <div>
                                         @foreach ($marketplaceOrderItem->item->additional['attributes'] as $attribute)
                                             <b>{{ $attribute['attribute_name'] }} :
-                                            </b>{{ $attribute['option_label'] }}<br>
+                                            </b>{{ $attribute['option_label'] }}
                                         @endforeach
                                     </div>
                                 @endif
@@ -336,7 +370,7 @@
             </table>
 
             <!-- Summary Table -->
-            <div style="padding-top: 22px">
+            <div class="sale-summary">
                 <table class="{{ core()->getCurrentLocale()->direction }}">
                     <tbody>
                         @if (core()->getConfigData('sales.taxes.sales.display_subtotal') == 'including_tax')

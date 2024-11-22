@@ -7,8 +7,11 @@
                 &nbsp;&nbsp; &nbsp; <b>@lang('admin::app.sales.invoices.invoice-pdf.Mr'):</b>
             </p>
             <p style="margin: 0;">
-                {{ $address->city }}
-                ,{{ $address->country }}
+                {{ $address->url }}
+                &nbsp;&nbsp; &nbsp; <b>@lang('admin::app.sales.invoices.invoice-pdf.shop-name'):</b>
+            </p>
+            <p style="margin: 0;">
+                {{ $address->shop_title }},  {{ $address->city }},  {{ $address->state }}
                 &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<b>@lang('admin::app.sales.invoices.invoice-pdf.address'):</b>
             </p>
             <p style="margin: 0;">

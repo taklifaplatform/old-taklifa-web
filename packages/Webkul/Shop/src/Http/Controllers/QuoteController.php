@@ -31,18 +31,11 @@ class QuoteController extends Controller
 
     public function generateQuotePDF(Order $order)
     {
-        // dd($order);
         $seller = Seller::findOrFail($order->marketplace_seller_id);
-
-        // $sellerOrder = $this->orderRepository->with('order')
-        //     ->findOneWhere([
-        //         'marketplace_seller_id' => auth()->guard('seller')->user()->seller_id,
-        //     ]);
 
         $html = view('shop::checkout.quote.pdf.pdf-seller', [
             'seller' => $seller,
             'marketplaceOrder'  => $order,
-        //    'sellerOrder' => $sellerOrder
         ])->toArabicHTML();
 
         $pdf = app(PDF::class)

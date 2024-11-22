@@ -666,10 +666,13 @@ return [
                 'tax'                        => 'Tax',
                 'vat-number'                 => 'Vat Number',
                 'invoice-to'                => 'Invoice To',
+                'invoice-from'             => 'Invoice From',
                 'address'                   => 'Address',
                 'communication'            => 'Communication',
                 'email'                   => 'Email',
                 'total-all' => 'Total All',
+                'Mr' => 'Mr(s)',
+                'shop-name' => 'Shop Name',
             ],
         ],
 
