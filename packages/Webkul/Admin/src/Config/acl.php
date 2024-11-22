@@ -205,26 +205,6 @@ return [
         'name'  => 'admin::app.acl.delete',
         'route' => 'admin.catalog.families.delete',
         'sort'  => 3,
-    ],[
-        'key'   => 'catalog.tags',
-        'name'  => 'admin::app.acl.tags',
-        'route' => 'admin.catalog.tags.index',
-        'sort'  => 2,
-    ], [
-        'key'   => 'catalog.tags.create',
-        'name'  => 'admin::app.acl.create',
-        'route' => 'admin.catalog.tags.create',
-        'sort'  => 1,
-    ], [
-        'key'   => 'catalog.tags.edit',
-        'name'  => 'admin::app.acl.edit',
-        'route' => 'admin.catalog.tags.edit',
-        'sort'  => 2,
-    ], [
-        'key'   => 'catalog.tags.delete',
-        'name'  => 'admin::app.acl.delete',
-        'route' => 'admin.catalog.tags.delete',
-        'sort'  => 3,
     ],
 
     /*
@@ -831,7 +811,7 @@ return [
         'route' => 'admin.settings.taxes.rates.edit',
         'sort'  => 2,
     ], [
-        'key'   => 'settings.data_transger',
+        'key'   => 'settings.data_transfer',
         'name'  => 'admin::app.acl.data-transfer',
         'route' => 'admin.settings.data_transfer.imports.index',
         'sort'  => 10,

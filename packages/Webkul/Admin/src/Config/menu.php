@@ -86,18 +86,6 @@ return [
         'route'      => 'admin.catalog.families.index',
         'sort'       => 4,
         'icon'       => '',
-    ],[
-        'key'        => 'catalog.tags',
-        'name'       => 'admin::app.components.layouts.sidebar.tags',
-        'route'      => 'admin.catalog.tags.index',
-        'sort'       => 2,
-        'icon'       => '',
-    ], [
-        'key'        => 'catalog.tags',
-        'name'       => 'admin::app.components.layouts.sidebar.tags',
-        'route'      => 'admin.catalog.tags.index',
-        'sort'       => 2,
-        'icon'       => '',
     ],
 
     /**
