@@ -205,6 +205,26 @@ return [
         'name'  => 'admin::app.acl.delete',
         'route' => 'admin.catalog.families.delete',
         'sort'  => 3,
+    ], [
+        'key'   => 'catalog.tags',
+        'name'  => 'admin::app.acl.tags',
+        'route' => 'admin.catalog.tags.index',
+        'sort'  => 2,
+    ], [
+        'key'   => 'catalog.tags.create',
+        'name'  => 'admin::app.acl.create',
+        'route' => 'admin.catalog.tags.create',
+        'sort'  => 1,
+    ], [
+        'key'   => 'catalog.tags.edit',
+        'name'  => 'admin::app.acl.edit',
+        'route' => 'admin.catalog.tags.edit',
+        'sort'  => 2,
+    ], [
+        'key'   => 'catalog.tags.delete',
+        'name'  => 'admin::app.acl.delete',
+        'route' => 'admin.catalog.tags.delete',
+        'sort'  => 3,
     ],
 
     /*
