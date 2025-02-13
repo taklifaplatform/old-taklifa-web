@@ -780,7 +780,7 @@ return [
 
         'seller-central' => [
             'index' => [
-                'days-payment'        => 'الدفع في :days يوم',
+                'days-payment'        => 'الدفع في  يوم',
                 'deals-in'            => 'تعامل في',
                 'featured-seller'     => 'بائعون مميزون لدينا',
                 'online-business'     => 'الأعمال عبر الإنترنت',
