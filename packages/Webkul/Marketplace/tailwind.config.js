@@ -28,13 +28,12 @@ module.exports = {
         },
 
         extend: {
-            spacing: {
-                '15': '3.75rem',
-            },
-
             colors: {
-                navyBlue: "#060C3B",
+                navyBlue: "#0F5837",
                 lightOrange: "#F6F2EB",
+                darkGreen: '#40994A',
+                darkBlue: '#0044F2',
+                darkPink: '#F85156',
             },
 
             fontFamily: {
@@ -44,13 +43,11 @@ module.exports = {
         }
     },
 
-    darkMode: 'class',
-
     plugins: [],
 
     safelist: [
         {
-            pattern: /mp-/,
+            pattern: /icon-/,
         }
     ]
 };

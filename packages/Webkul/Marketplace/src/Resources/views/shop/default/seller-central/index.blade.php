@@ -28,7 +28,7 @@
     <div class="container px-[60px] max-lg:px-8 max-sm:px-4">
         <div class="grid gap-16 md:mt-8">
             <!-- Banner -->
-            <div class="grid items-center justify-between bg-[#E6E9EE] max-sm:flex-row-reverse md:flex">
+            <div class="grid items-center justify-between bg-[#fff] max-sm:flex-row-reverse md:flex">
                 <div class="grid w-full gap-y-5 max-sm:mt-8 max-sm:px-4 md:w-[480px] ltr:md:ml-9 rtl:md:mr-9">
                     <h1 class="font-dmserif text-5xl font-normal leading-[68px] text-navyBlue">
                         {{ core()->getConfigData('marketplace.settings.landing_page.banner_title') }}
@@ -61,8 +61,8 @@
                     src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.banner_image')) }}"
                     class="mt-6 md:mr-14"
                     alt="marketplace banner"
-                    width="556"
-                    height="779"
+                    width="320"
+                    height="320"
                 />
             </div>
 
