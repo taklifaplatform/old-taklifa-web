@@ -2,27 +2,18 @@
     $channel = core()->getCurrentChannel();
 @endphp
 
-@push ('meta')
-    <meta
-        name="title"
-        content="{{ $channel->home_seo['meta_title'] ?? '' }}"
-    />
+@push('meta')
+    <meta name="title" content="{{ $channel->home_seo['meta_title'] ?? '' }}" />
 
-    <meta
-        name="description"
-        content="{{ $channel->home_seo['meta_description'] ?? '' }}"
-    />
+    <meta name="description" content="{{ $channel->home_seo['meta_description'] ?? '' }}" />
 
-    <meta
-        name="keywords"
-        content="{{ $channel->home_seo['meta_keywords'] ?? '' }}"
-    />
+    <meta name="keywords" content="{{ $channel->home_seo['meta_keywords'] ?? '' }}" />
 @endPush
 
 <x-marketplace::shop.layouts.full>
     <!-- Page Title -->
     <x-slot:title>
-        {{  $channel->home_seo['meta_title'] ?? '' }}
+        {{ $channel->home_seo['meta_title'] ?? '' }}
     </x-slot>
 
     <div class="container px-[60px] max-lg:px-8 max-sm:px-4">
@@ -30,46 +21,37 @@
             <!-- Banner -->
             <div class="grid items-center justify-between bg-[#fff] max-sm:flex-row-reverse md:flex">
                 <div class="grid w-full gap-y-5 max-sm:mt-8 max-sm:px-4 md:w-[480px] ltr:md:ml-9 rtl:md:mr-9">
-                    <h1 class="font-dmserif text-5xl font-normal leading-[68px] text-navyBlue">
+                    <h1 class="font-dmserif text-5xl font-normal leading-[68px] text-[#0F5837]">
                         {{ core()->getConfigData('marketplace.settings.landing_page.banner_title') }}
                     </h1>
 
-                    <h2 class="text-base font-medium text-navyBlue">
+                    <h2 class="text-base font-medium text-black text-wrap">
                         {{ core()->getConfigData('marketplace.settings.landing_page.banner_description') }}
                     </h2>
 
                     @if (auth()->guard('seller')->check())
-                        <a
-                            href="{{route('shop.marketplace.seller.account.dashboard.index')}}"
-                            class="primary-button flex items-center gap-2.5"
-                        >
+                        <a href="{{ route('shop.marketplace.seller.account.dashboard.index') }}"
+                            class="flex gap-x-3.5 max-md:text-xs max-md:rounded-md whitespace-nowrap max-w-[150px] max-sm:w-full  border rounded-[54px] border-[#0F5837] bg-[#0F5837] py-2.5 px-2.5 w-34 max-md:px-2 max-md:py-1 text-white max-md:w-38 justify-between">
                             @lang('marketplace::app.shop.seller-central.index.visit-shop')
                             <span class="icon-arrow-right-stylish cursor-pointer text-2xl"></span>
                         </a>
                     @else
-                        <a
-                            href="{{route('marketplace.seller.register.create')}}"
-                            class="primary-button flex items-center gap-2.5"
-                        >
+                        <a href="{{ route('marketplace.seller.register.create') }}"
+                            class="flex gap-x-2.5 border rounded-[54px] border-[#0F5837] bg-[#0F5837] py-1.5 px-2.5 w-32 max-md:px-2 max-md:py-1 text-white max-md:w-32 justify-between">
                             {{ core()->getConfigData('marketplace.settings.landing_page.banner_btn_title') }}
                             <span class="icon-arrow-right-stylish cursor-pointer text-2xl"></span>
                         </a>
                     @endif
                 </div>
 
-                <img
-                    src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.banner_image')) }}"
-                    class="mt-6 md:mr-14"
-                    alt="marketplace banner"
-                    width="320"
-                    height="320"
-                />
+                <img src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.banner_image')) }}"
+                    class="mt-6 md:mr-14" alt="marketplace banner" width="320" height="320" />
             </div>
 
             <!-- Banner Bottom Content -->
             <div class="grid justify-center justify-items-center gap-[130px] max-lg:flex-wrap max-sm:gap-4 md:flex">
                 <div class="grid">
-                    <p class="text-center font-dmserif text-5xl font-normal leading-[70px] text-navyBlue">
+                    <p class="text-center font-dmserif text-5xl font-normal leading-[70px] text-[#0F5837]">
                         {{ core()->getConfigData('marketplace.settings.landing_page.community_count') }}+
                     </p>
 
@@ -79,7 +61,7 @@
                 </div>
 
                 <div class="grid">
-                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-navyBlue">
+                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-[#0F5837]">
                         {{ core()->getConfigData('marketplace.settings.landing_page.business_hour') }}
                     </p>
 
@@ -89,7 +71,7 @@
                 </div>
 
                 <div class="grid">
-                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-navyBlue">
+                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-[#0F5837]">
                         {{ core()->getConfigData('marketplace.settings.landing_page.payment_duration') }}
                     </p>
 
@@ -99,7 +81,7 @@
                 </div>
 
                 <div class="grid">
-                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-navyBlue">
+                    <p class="text-center font-dmserif text-5xl font-medium leading-[70px] text-[#0F5837]">
                         {{ core()->getConfigData('marketplace.settings.landing_page.serviceable_pincode') }}+
                     </p>
 
@@ -112,87 +94,86 @@
             <!-- Featured Section -->
             <div class="grid gap-6 max-sm:p-4">
                 <div class="grid max-w-[848px] md:gap-6">
-                    <h2 class="text-2xl font-medium leading-10">
+                    <h2 class="text-2xl font-medium leading-10 max-sm:text-lg max-sm:leading-8 max-sm:text-wrap">
                         {{ core()->getConfigData('marketplace.settings.landing_page.feature_title') }}
                     </h2>
 
-                    <p class="mt-2.5 text-base font-normal leading-7">
+                    <p class="mt-2.5 text-base font-normal leading-7 max-sm:text-sm max-sm:leading-6 max-sm:text-wrap">
                         {{ core()->getConfigData('marketplace.settings.landing_page.feature_description') }}
                     </p>
                 </div>
 
-                <div class="grid items-end gap-6 md:flex 2xl:gap-12">
-                    <div class="grid max-w-[848px] gap-6 md:grid-cols-2">
-                        @foreach(collect(['box1', 'box2', 'box3', 'box4']) as $item)
-                            <div class="grid content-start gap-2 rounded-md border border-[#ffff] p-4">
-                                <div class="flex h-18 min-h-16 w-16 min-w-16 rounded-full bg-[#ffff] p-5">
-                                    <img
-                                        src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_'.$item.'_icon')) }}"
-                                        alt="vector icon"
-                                        width="24"
-                                        height="24"
-                                    >
+                <div class="grid items-end gap-6 md:flex md:flex-wrap 2xl:gap-12">
+                    <div class="grid max-w-[848px] gap-6 md:grid-cols-2 sm:grid-cols-1">
+                        @foreach (collect(['box1', 'box2', 'box3', 'box4']) as $item)
+                            <div class="grid content-start gap-2 rounded-md border border-[#ffff] p-4 max-sm:p-3">
+                                <div
+                                    class="flex h-18 min-h-16 w-16 min-w-16 rounded-full bg-[#ffff] p-5 max-sm:h-14 max-sm:w-14 max-sm:p-4">
+                                    <img src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_icon')) }}"
+                                        alt="vector icon" width="24" height="24">
                                 </div>
 
-                                <h2 class="text-xl font-medium leading-10">
-                                    {{ core()->getConfigData('marketplace.settings.landing_page.feature_'.$item.'_title') }}
+                                <h2
+                                    class="text-xl font-medium leading-10 max-sm:text-lg max-sm:leading-8 max-sm:text-wrap">
+                                    {{ core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_title') }}
                                 </h2>
 
-                                <p class="mt-px text-base font-normal leading-7">
-                                    {{ core()->getConfigData('marketplace.settings.landing_page.feature_'.$item.'_desc') }}
+                                <p
+                                    class="mt-px text-base font-normal leading-7 max-sm:text-sm max-sm:leading-6 max-sm:text-wrap">
+                                    {{ core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_desc') }}
                                 </p>
                             </div>
                         @endforeach
                     </div>
 
-                    <x-shop::media.images.lazy
-                        :src="Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_image'))"
-                        class="w-full"
-                        alt="women holding flowers"
-                        width="417"
-                        height="608"
-                    >
+                    <x-shop::media.images.lazy :src="Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_image'))" class="w-full max-sm:max-w-[300px] max-sm:mx-auto"
+                        alt="women holding flowers" width="417" height="608">
                     </x-shop::media.images.lazy>
                 </div>
             </div>
+
         </div>
 
         <!-- Populer Sellers -->
         <v-popular-sellers></v-popular-sellers>
 
-        <div class="mt-20 grid gap-6 bg-[#F5F5F5] px-16 py-24 max-sm:mt-8">
+
+        <div class="mt-20 grid gap-6 bg-[#F5F5F5] px-4 py-12 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+            <!-- Heading Section -->
             <div class="grid">
-                <h2 class="text-center text-2xl font-medium leading-10">
+                <h2 class="text-center text-xl font-medium leading-8 sm:text-2xl sm:leading-10">
                     {{ core()->getConfigData('marketplace.settings.landing_page.journey_title') }}
                 </h2>
 
-                <p class="mb-7 mt-2.5 text-center text-base font-normal leading-7">
+                <p class="mb-7 mt-2.5 text-center text-sm font-normal leading-6 sm:text-base sm:leading-7">
                     {{ core()->getConfigData('marketplace.settings.landing_page.journey_description') }}
                 </p>
             </div>
 
-            <div class="grid gap-5 text-center md:grid-cols-5">
+            <!-- Steps Section -->
+            <div class="grid gap-5 text-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
                 @foreach (collect(['step1', 'step2', 'step3', 'step4', 'step5']) as $key => $step)
-                    <div class="grid justify-items-center gap-2">
-                        <div class="flex h-20 w-20 rounded-full bg-[#fff] p-5">
-                            <img
-                                src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.journey_'.$step.'_icon')) }}"
-                                alt="profile icon"
-                                width="40"
-                                height="40"
-                            >
+                    <div class="grid justify-items-center gap-2 p-4">
+                        <!-- Icon -->
+                        <div
+                            class="flex h-16 w-16 items-center justify-center rounded-full bg-[#fff] p-4 sm:h-20 sm:w-20">
+                            <img src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.journey_' . $step . '_icon')) }}"
+                                alt="profile icon" class="h-8 w-8 sm:h-10 sm:w-10">
                         </div>
 
-                        <p class="text-base font-normal leading-8 text-[#6E6E6E]">
+                        <!-- Step Number -->
+                        <p class="text-sm font-normal leading-6 text-[#6E6E6E] sm:text-base sm:leading-8">
                             @lang('marketplace::app.shop.seller-central.index.step', ['count' => ++$key])
                         </p>
 
-                        <h3 class="text-xl font-medium leading-8 text-navyBlue">
-                            {{ core()->getConfigData('marketplace.settings.landing_page.journey_'.$step.'_title') }}
+                        <!-- Step Title -->
+                        <h3 class="text-lg font-medium leading-7 text-[#0F5837] sm:text-xl sm:leading-8">
+                            {{ core()->getConfigData('marketplace.settings.landing_page.journey_' . $step . '_title') }}
                         </h3>
 
-                        <p class="text-base font-normal leading-6 text-[#6E6E6E]">
-                            {{ core()->getConfigData('marketplace.settings.landing_page.journey_'.$step.'_desc') }}
+                        <!-- Step Description -->
+                        <p class="text-sm font-normal leading-5 text-[#6E6E6E] sm:text-base sm:leading-6">
+                            {{ core()->getConfigData('marketplace.settings.landing_page.journey_' . $step . '_desc') }}
                         </p>
                     </div>
                 @endforeach
@@ -238,7 +219,7 @@
                                 >
                                 </a>
 
-                                <p class="text-base font-medium text-[#6E6E6E]">
+                                <p class="text-base font-medium text-[#6E6E6E] text-wrap">
                                     @{{ seller.full_address }}
                                 </p>
 
@@ -294,12 +275,11 @@
 
                 methods: {
                     get() {
-                        this.$axios.get("{{route('marketplace.seller_central.popular_sellers')}}")
+                        this.$axios.get("{{ route('marketplace.seller_central.popular_sellers') }}")
                             .then((response) => {
                                 this.sellers = response.data;
                             })
-                            .catch(error => {
-                            });
+                            .catch(error => {});
                     }
                 }
             });

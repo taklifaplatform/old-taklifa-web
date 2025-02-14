@@ -18,9 +18,12 @@
                 {!! view_render_event('bagisto.shop.checkout.mini-quote.drawer.toggle.before') !!}
 
                 <x-shop::button
-                class="primary-button max-md:px-2 max-md:py-1.5 max-md:text-xs max-md:rounded-md px-8 py-2.5 whitespace-nowrap max-w-[150px] max-sm:w-full"
+                class="bg-[#0F5837] text-white font-small text-base px-6 py-2 rounded-full
+                       hover:bg-[#0D4E31] transition-all duration-300 ease-in-out
+                       max-md:px-4 max-md:py-1.5 max-md:text-sm max-sm:w-full whitespace-nowrap"
                 :title="trans('shop::app.components.products.card.show-quote')"
             />
+
 
                 {!! view_render_event('bagisto.shop.checkout.mini-quote.drawer.toggle.after') !!}
             </x-slot>
@@ -35,9 +38,9 @@
                     </p>
                 </div>
 
-                {{-- <p class="text-base">
+               <p class="text-base">
                     @lang('shop::app.checkout.quote.mini-quote.offer-on-orders')
-                </p> --}}
+                </p>
 
                 {!! view_render_event('bagisto.shop.checkout.mini-quote.drawer.header.after') !!}
             </x-slot>
@@ -240,7 +243,7 @@
 
                         <a
                             href="{{ route('shop.checkout.quote.index') }}"
-                            class="block w-11/12 mx-auto py-4 px-11 bg-navyBlue rounded-2xl text-white text-base font-medium text-center cursor-pointer max-sm:px-5"
+                            class="block w-11/12 mx-auto py-4 px-11 border-[#0F5837] bg-[#0F5837] rounded-2xl text-white text-base font-medium text-center cursor-pointer max-sm:px-5"
                         >
                         @lang('shop::app.checkout.cart.index.view-quote')
                         </a>

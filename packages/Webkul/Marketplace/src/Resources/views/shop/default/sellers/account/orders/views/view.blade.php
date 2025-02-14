@@ -52,7 +52,7 @@
                                 <p class="text-sm font-medium">
                                     {{ $orderItem->item->name }}
                                 </p>
-                                
+
                                 <p class="text-sm font-normal">
                                     @lang('marketplace::app.shop.sellers.account.orders.view.sku', ['sku' => $orderItem->item->sku])
                                 </p>
@@ -120,28 +120,28 @@
                                             <p class="text-sm">
                                                 @lang('marketplace::app.shop.sellers.account.orders.view.total')
                                             </p>
-        
+
                                             <div class="flex gap-5">
                                                 <p class="text-sm">-</p>
-        
+
                                                 <p class="text-sm">
                                                     {{ core()->formatPrice($orderItem->seller_total, $sellerOrder->order->order_currency_code) }}
                                                 </p>
                                             </div>
                                         </div>
-        
+
                                         <div class="flex w-full justify-between gap-5">
                                             <p class="text-sm">
                                                 @lang('marketplace::app.shop.sellers.account.orders.view.discount')
-    
+
                                                 @if ($sellerOrder->order->coupon_code)
                                                     ({{ $sellerOrder->order->coupon_code }})
                                                 @endif
                                             </p>
-    
+
                                             <div class="flex gap-5">
                                                 <p class="text-sm">-</p>
-    
+
                                                 <p class="text-sm">
                                                     {{ core()->formatPrice($orderItem->item->discount_amount, $sellerOrder->order->order_currency_code) }}
                                                 </p>
@@ -152,24 +152,24 @@
                                             <p class="text-sm">
                                                 @lang('marketplace::app.shop.sellers.account.orders.view.admin-commission')
                                             </p>
-        
+
                                             <div class="flex gap-5">
                                                 <p class="text-sm">-</p>
-        
+
                                                 <p class="text-sm">
                                                     {{ core()->formatPrice($orderItem->commission, $sellerOrder->order->order_currency_code) }}
                                                 </p>
                                             </div>
                                         </div>
-        
+
                                         <div class="flex w-full justify-between gap-5">
                                             <p class="text-sm">
                                                 @lang('marketplace::app.shop.sellers.account.orders.view.tax')
                                             </p>
-        
+
                                             <div class="flex gap-5">
                                                 <p class="text-sm">-</p>
-        
+
                                                 <p class="text-sm">
                                                     {{ core()->formatPrice($orderItem->item->tax_amount, $sellerOrder->order->order_currency_code) }}
                                                 </p>
@@ -186,10 +186,10 @@
                                                         @lang('marketplace::app.shop.sellers.account.orders.view.price')
                                                     @endif
                                                 </p>
-            
+
                                                 <div class="flex gap-5">
                                                     <p class="text-sm">-</p>
-                                                    
+
                                                     <p class="text-sm">
                                                         {{ core()->formatPrice($orderItem->item->price, $sellerOrder->order->order_currency_code) }}
                                                     </p>
@@ -204,17 +204,17 @@
                                                 <p class="text-sm">
                                                     @lang('marketplace::app.shop.sellers.account.orders.view.price-incl-tax')
                                                 </p>
-            
+
                                                 <div class="flex gap-5">
                                                     <p class="text-sm">-</p>
-                                                    
+
                                                     <p class="text-sm">
                                                         {{ core()->formatPrice($orderItem->item->price_incl_tax, $sellerOrder->order->order_currency_code) }}
                                                     </p>
                                                 </div>
                                             </div>
                                         @endif
-                                        
+
                                         <!-- Sub Total -->
                                         @if (core()->getConfigData('sales.taxes.sales.display_subtotal') != 'including_tax')
                                             <div class="flex w-full justify-between gap-5">
@@ -225,10 +225,10 @@
                                                         @lang('marketplace::app.shop.sellers.account.orders.view.sub-total')
                                                     @endif
                                                 </p>
-            
+
                                                 <div class="flex gap-5">
                                                     <p class="text-sm">-</p>
-                                                    
+
                                                     <p class="text-sm">
                                                         {{ core()->formatPrice($orderItem->item->total, $sellerOrder->order->order_currency_code) }}
                                                     </p>
@@ -243,10 +243,10 @@
                                                 <p class="text-sm">
                                                     @lang('marketplace::app.shop.sellers.account.orders.view.sub-total-incl-tax')
                                                 </p>
-            
+
                                                 <div class="flex gap-5">
                                                     <p class="text-sm">-</p>
-                                                    
+
                                                     <p class="text-sm">
                                                         {{ core()->formatPrice($orderItem->item->total_incl_tax, $sellerOrder->order->order_currency_code) }}
                                                     </p>
@@ -281,7 +281,7 @@
 
                         <div class="flex gap-5">
                             <p class="text-sm">-</p>
-                            
+
                             <p class="text-sm">
                                 {{ core()->formatPrice($sellerOrder->sub_total, $sellerOrder->order->order_currency_code) }}
                             </p>
@@ -299,7 +299,7 @@
 
                         <div class="flex gap-5">
                             <p class="text-sm">-</p>
-                            
+
                             <p class="text-sm">
                                 {{ core()->formatPrice($sellerOrder->sub_total_incl_tax, $sellerOrder->order->order_currency_code) }}
                             </p>
@@ -321,7 +321,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice(0, $sellerOrder->order->order_currency_code) }}
                                 </p>
@@ -339,7 +339,7 @@
 
                             <div class="flex gap-5">
                                 <p class="text-sm">-</p>
-                                
+
                                 <p class="text-sm">
                                     {{ core()->formatPrice(0, $sellerOrder->order->order_currency_code) }}
                                 </p>
@@ -387,13 +387,13 @@
 
                     <div class="flex gap-5">
                         <p class="text-sm">-</p>
-                        
+
                         <p class="text-sm">
                             {{ core()->formatPrice($sellerOrder->grand_total_refunded - $sellerOrder->shipping_refunded, $sellerOrder->order->order_currency_code) }}
                         </p>
                     </div>
                 </div>
-                
+
                 <div class="flex w-full justify-between gap-5">
                     <p class="text-sm">
                         @lang('marketplace::app.shop.sellers.account.orders.view.total-seller-amt')
@@ -407,7 +407,7 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <div class="flex w-full justify-between gap-5">
                     <p class="text-sm">
                         @lang('marketplace::app.shop.sellers.account.orders.view.admin-commission')

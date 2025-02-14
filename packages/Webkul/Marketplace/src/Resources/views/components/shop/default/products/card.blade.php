@@ -34,7 +34,7 @@
                 </a>
 
                 {!! view_render_event('bagisto.shop.components.products.card.image.after') !!}
-                
+
                 <!-- Product Ratings -->
                 {!! view_render_event('bagisto.shop.components.products.card.average_ratings.before') !!}
 
@@ -116,7 +116,7 @@
             <div class="-mt-9 grid max-w-[291px] translate-y-9 content-start gap-2.5 bg-white p-2.5 transition-transform duration-300 ease-out group-hover:-translate-y-0 group-hover:rounded-t-lg max-md:relative max-md:mt-0 max-md:translate-y-0 max-md:gap-0 max-md:px-0 max-md:py-1.5 max-sm:min-w-[170px] max-sm:max-w-[192px]">
 
                 {!! view_render_event('bagisto.shop.components.products.card.name.before') !!}
-                    
+
                 <p class="text-base font-medium max-md:mb-1.5 max-md:max-w-56 max-md:whitespace-break-spaces max-md:leading-6 max-sm:max-w-[192px] max-sm:text-sm max-sm:leading-4">
                     @{{ product.name }}
                 </p>
@@ -149,7 +149,7 @@
 
                         {!! view_render_event('bagisto.shop.components.products.card.add_to_cart.after') !!}
                     @endif
-                    
+
                     {!! view_render_event('bagisto.shop.components.products.card.wishlist_option.before') !!}
 
                     @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
@@ -189,7 +189,7 @@
             class="relative flex max-w-max grid-cols-2 gap-4 overflow-hidden rounded max-sm:flex-wrap"
             v-else
         >
-            <div class="group relative max-h-[258px] max-w-[250px] overflow-hidden"> 
+            <div class="group relative max-h-[258px] max-w-[250px] overflow-hidden">
 
                 {!! view_render_event('bagisto.shop.components.products.card.image.before') !!}
 
@@ -227,7 +227,7 @@
                         {!! view_render_event('bagisto.shop.components.products.card.wishlist_option.before') !!}
 
                         @if (core()->getConfigData('customer.settings.wishlist.wishlist_option'))
-                            <span 
+                            <span
                                 class="absolute top-5 flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-md bg-white text-2xl ltr:right-5 rtl:left-5"
                                 role="button"
                                 aria-label="@lang('shop::app.components.products.card.add-to-wishlist')"
@@ -425,7 +425,7 @@
                 },
 
                 addToCart() {
-                    this.isAddingToCart = true;                    
+                    this.isAddingToCart = true;
 
                     this.$axios.post('{{ route("marketplace.api.cart.store") }}', {
                             'quantity': 1,

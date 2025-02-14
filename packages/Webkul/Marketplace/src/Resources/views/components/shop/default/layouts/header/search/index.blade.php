@@ -2,10 +2,10 @@
     <div class="relative flex items-center md:w-[440px] md:max-w-[440px] md:max-lg:w-[400px] md:ltr:ml-2.5 md:rtl:mr-2.5">
         <i class="icon-search absolute top-1.5 flex items-center text-2xl ltr:left-2 rtl:right-2"></i>
 
-        <input 
-            type="text" 
+        <input
+            type="text"
             class="block w-full rounded-lg border border-transparent bg-[#F5F5F5] px-11 py-2.5 text-xs font-medium text-gray-900 transition-all hover:border-gray-400 focus:border-gray-400"
-            placeholder="@lang('marketplace::app.shop.components.layouts.header.mega-search.title')" 
+            placeholder="@lang('marketplace::app.shop.components.layouts.header.mega-search.title')"
         >
     </div>
 </v-mega-search>
@@ -15,7 +15,7 @@
         <div class="relative flex items-center md:w-[440px] md:max-w-[440px] md:max-lg:w-[400px] md:ltr:ml-2.5 md:rtl:mr-2.5">
             <i class="icon-search absolute top-1.5 flex items-center text-2xl ltr:left-2 rtl:right-2"></i>
 
-            <input 
+            <input
                 type="text"
                 class="block w-full rounded-lg border border-transparent bg-[#F5F5F5] px-11 py-2.5 text-xs font-medium text-gray-900 transition-all hover:border-gray-400 focus:border-gray-400"
                 :class="{'border-gray-400': isDropdownOpen}"
@@ -63,7 +63,7 @@
                                     >
                                         <template v-if="! product.images.length">
                                             <img src="{{ bagisto_asset('images/product-placeholders/front.svg', 'marketplace') }}">
-                                        
+
                                             <p class="absolute bottom-1.5 w-full text-center text-[6px] font-semibold text-gray-400">
                                                 @lang('marketplace::app.shop.catalog.products.edit.types.grouped.image-placeholder')
                                             </p>
@@ -222,13 +222,13 @@
                             is_active: true,
                             endpoint: "{{ route('marketplace.account.mega_search.products') }}"
                         },
-                        
+
                         orders: {
                             key: 'orders',
                             title: "@lang('marketplace::app.shop.components.layouts.header.mega-search.orders')",
                             endpoint: "{{ route('marketplace.account.mega_search.orders') }}"
                         },
-                        
+
                         customers: {
                             key: 'customers',
                             title: "@lang('marketplace::app.shop.components.layouts.header.mega-search.customers')",
@@ -277,7 +277,7 @@
                     let self = this;
 
                     this.isLoading = true;
-                    
+
                     this.$axios.get(this.tabs[this.activeTab].endpoint, {
                             params: {query: this.searchTerm}
                         })

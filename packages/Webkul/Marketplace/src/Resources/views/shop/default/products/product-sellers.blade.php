@@ -50,7 +50,7 @@
                 }
             @endphp
 
-            <v-other-seller></v-other-seller>        
+            <v-other-seller></v-other-seller>
 
             @pushOnce('scripts')
                 <script type="text/x-template" id="v-other-seller-template">
@@ -62,11 +62,11 @@
                         @{{ "@lang('marketplace::app.shop.products.seller-count')".replace(':count', count) }}
                     </a>
                 </script>
-                
+
                 <script type="module">
                     app.component('v-other-seller', {
                         template: '#v-other-seller-template',
-        
+
                         data() {
                             return {
                                 visible: false,
@@ -79,17 +79,17 @@
                         created() {
                             this.listenEvents();
                         },
-        
+
                         methods: {
                             listenEvents(key) {
                                 this.$emitter.on('configurable-variant-selected-event', (variantId) => {
                                     if (this.variants[variantId]) {
                                         let url = "{{ route('marketplace.product.offers.index', ':product_id') }}";
-                                        
+
                                         this.actionUrl = url.replace(':product_id', variantId);
 
                                         this.count = this.variants[variantId];
-                                        
+
                                         this.visible = true;
                                     } else {
                                         this.visible = false;

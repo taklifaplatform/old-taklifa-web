@@ -45,7 +45,7 @@
                     @{{ cart.formatted_sub_total }}
                 </p>
             </div>
-            
+
             <div class="flex justify-between text-right">
                 <p class="text-base max-sm:text-sm">
                     @lang('shop::app.checkout.cart.summary.sub-total-incl-tax')
@@ -74,7 +74,7 @@
         <!-- Discount -->
         {!! view_render_event('bagisto.shop.checkout.cart.summary.discount_amount.before') !!}
 
-        <div 
+        <div
             class="flex justify-between text-right"
             v-if="cart.discount_amount && parseFloat(cart.discount_amount) > 0"
         >
@@ -91,14 +91,14 @@
 
         <!-- Apply Coupon -->
         {!! view_render_event('bagisto.shop.checkout.cart.summary.coupon.before') !!}
-        
+
         @include('shop::checkout.coupon')
 
         {!! view_render_event('bagisto.shop.checkout.cart.summary.coupon.after') !!}
 
         <!-- Shipping Rates -->
         {!! view_render_event('bagisto.shop.checkout.onepage.summary.delivery_charges.before') !!}
-        
+
         <template v-if="displayTax.shipping == 'including_tax'">
             <div class="flex justify-between text-right">
                 <p class="text-base max-sm:text-sm">
@@ -121,7 +121,7 @@
                     @{{ cart.formatted_shipping_amount }}
                 </p>
             </div>
-            
+
             <div class="flex justify-between text-right">
                 <p class="text-base max-sm:text-sm">
                     @lang('shop::app.checkout.cart.summary.delivery-charges-incl-tax')
@@ -177,7 +177,7 @@
 
                 <p class="flex items-center gap-1 text-base font-medium max-md:font-medium max-sm:text-sm">
                     @{{ cart.formatted_tax_total }}
-                    
+
                     <span
                         class="text-xl"
                         :class="{'icon-arrow-up': cart.show_taxes, 'icon-arrow-down': ! cart.show_taxes}"
@@ -205,7 +205,7 @@
         </div>
 
         {!! view_render_event('bagisto.shop.checkout.cart.summary.tax.after') !!}
-   
+
         <!-- Cart Grand Total -->
         {!! view_render_event('bagisto.shop.checkout.cart.summary.grand_total.before') !!}
 

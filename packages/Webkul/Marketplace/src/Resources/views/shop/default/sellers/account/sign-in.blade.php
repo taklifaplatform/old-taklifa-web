@@ -17,7 +17,7 @@
 
     <div class="container mt-20 max-1180:px-5">
         {!! view_render_event('marketplace.seller.account.sign_in.logo.before') !!}
-        
+
         <!-- Company Logo -->
         <div class="flex items-center gap-x-14 max-[1180px]:gap-x-9">
             <a
@@ -43,17 +43,17 @@
             <h1 class="font-dmserif text-4xl max-sm:text-2xl">
                 @lang('marketplace::app.shop.sellers.account.login.page-title')
             </h1>
-            
+
             <p class="mt-4 text-xl text-[#6E6E6E] max-sm:text-base">
                 @lang('marketplace::app.shop.sellers.account.login.form-login-text')
             </p>
 
             {!! view_render_event('marketplace.seller.account.sign_in.before') !!}
-            
+
             <div class="mt-14 rounded max-sm:mt-8">
                 <x-shop::form :action="route('marketplace.seller.session.create')">
                     {!! view_render_event('marketplace.seller.account.sign_in.form_controls.before') !!}
-                    
+
                     <!-- Email -->
                     <x-shop::form.control-group>
                         <x-shop::form.control-group.label class="required">
@@ -153,7 +153,7 @@
                     <!-- Submit Button -->
                     <div class="mt-8 flex flex-wrap items-center gap-9">
                         <button
-                            class="primary-button m-0 block w-full max-w-[374px] rounded-2xl px-11 py-4 text-center text-base ltr:ml-0 rtl:mr-0"
+                            class="border border-[#0F5837] bg-[#0F5837] text-white m-0 block w-full max-w-[374px] rounded-2xl px-11 py-4 text-center text-base ltr:ml-0 rtl:mr-0"
                             type="submit"
                         >
                             @lang('marketplace::app.shop.sellers.account.login.button-title')
@@ -165,12 +165,12 @@
             </div>
 
             {!! view_render_event('marketplace.seller.account.sign_in.after') !!}
-            
+
             <p class="mt-5 font-medium text-[#6E6E6E]">
                 @lang('marketplace::app.shop.sellers.account.login.new-seller')
 
                 <a
-                    class="text-navyBlue"
+                    class="text-[#0F5837]"
                     href="{{ route('marketplace.seller.register.create') }}"
                 >
                     @lang('marketplace::app.shop.sellers.account.login.create-your-account')

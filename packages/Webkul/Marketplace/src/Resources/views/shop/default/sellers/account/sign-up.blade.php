@@ -145,7 +145,7 @@
 
                     <div class="mt-8 flex">
                         <button
-                            class="primary-button m-0 block w-full max-w-[374px] rounded-2xl px-11 py-4 text-center text-base ltr:ml-0 rtl:mr-0"
+                            class="border border-[#0F5837] bg-[#0F5837] m-0 block w-full max-w-[374px] text-white rounded-2xl px-11 py-4 text-center text-base ltr:ml-0 rtl:mr-0"
                             type="submit">
                             @lang('marketplace::app.shop.sellers.account.signup.button-title')
                         </button>
@@ -160,7 +160,7 @@
             <p class="mt-5 font-medium text-[#6E6E6E]">
                 @lang('marketplace::app.shop.sellers.account.signup.account-exists')
 
-                <a class="text-navyBlue" href="{{ route('marketplace.seller.session.index') }}">
+                <a class="text-[#0F5837]" href="{{ route('marketplace.seller.session.index') }}">
                     @lang('marketplace::app.shop.sellers.account.signup.sign-in-button')
                 </a>
 
