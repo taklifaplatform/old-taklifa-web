@@ -25,7 +25,7 @@
                         {{ core()->getConfigData('marketplace.settings.landing_page.banner_title') }}
                     </h1>
 
-                    <h2 class="text-base font-medium text-black text-wrap">
+                    <h2 class="text-base font-medium text-black text-w">
                         {{ core()->getConfigData('marketplace.settings.landing_page.banner_description') }}
                     </h2>
 
@@ -94,51 +94,47 @@
             <!-- Featured Section -->
             <div class="grid gap-6 max-sm:p-4">
                 <div class="grid max-w-[848px] md:gap-6">
-                    <h2 class="text-2xl font-medium leading-10 max-sm:text-lg max-sm:leading-8 max-sm:text-wrap">
+                    <h2 class="text-2xl font-medium leading-10 text-wrap">
                         {{ core()->getConfigData('marketplace.settings.landing_page.feature_title') }}
                     </h2>
 
-                    <p class="mt-2.5 text-base font-normal leading-7 max-sm:text-sm max-sm:leading-6 max-sm:text-wrap">
+                    <p class="mt-2.5 text-base font-normal leading-7 text-wrap max-sm:text-sm">
                         {{ core()->getConfigData('marketplace.settings.landing_page.feature_description') }}
                     </p>
                 </div>
 
-                <div class="grid items-end gap-6 md:flex md:flex-wrap 2xl:gap-12">
-                    <div class="grid max-w-[848px] gap-6 md:grid-cols-2 sm:grid-cols-1">
+                <div class="grid items-end gap-6 md:flex 2xl:gap-12">
+                    <div class="grid max-w-[848px] gap-6 md:grid-cols-2">
                         @foreach (collect(['box1', 'box2', 'box3', 'box4']) as $item)
-                            <div class="grid content-start gap-2 rounded-md border border-[#ffff] p-4 max-sm:p-3">
-                                <div
-                                    class="flex h-18 min-h-16 w-16 min-w-16 rounded-full bg-[#ffff] p-5 max-sm:h-14 max-sm:w-14 max-sm:p-4">
+                            <div class="grid content-start gap-2 rounded-md border border-[#ffff] p-4">
+                                <div class="flex h-18 min-h-16 w-16 min-w-16 rounded-full bg-[#ffff] p-5">
                                     <img src="{{ Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_icon')) }}"
                                         alt="vector icon" width="24" height="24">
                                 </div>
 
-                                <h2
-                                    class="text-xl font-medium leading-10 max-sm:text-lg max-sm:leading-8 max-sm:text-wrap">
+                                <h2 class="text-xl font-medium leading-10">
                                     {{ core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_title') }}
                                 </h2>
 
-                                <p
-                                    class="mt-px text-base font-normal leading-7 max-sm:text-sm max-sm:leading-6 max-sm:text-wrap">
+                                <p class="mt-px text-base font-normal leading-7 text-wrap">
                                     {{ core()->getConfigData('marketplace.settings.landing_page.feature_' . $item . '_desc') }}
                                 </p>
                             </div>
                         @endforeach
                     </div>
 
-                    <x-shop::media.images.lazy :src="Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_image'))" class="w-full max-sm:max-w-[300px] max-sm:mx-auto"
-                        alt="women holding flowers" width="417" height="608">
+                    <x-shop::media.images.lazy :src="Storage::url(core()->getConfigData('marketplace.settings.landing_page.feature_image'))" class="w-full" alt="women holding flowers"
+                        width="417" height="608">
                     </x-shop::media.images.lazy>
                 </div>
             </div>
-
         </div>
 
         <!-- Populer Sellers -->
         <v-popular-sellers></v-popular-sellers>
 
 
-        <div class="mt-20 grid gap-6 bg-[#F5F5F5] px-4 py-12 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+        <div class="mt-20 grid gap-6 bg-[#fff] px-4 py-12 sm:px-8 md:px-16 lg:px-24 xl:px-32">
             <!-- Heading Section -->
             <div class="grid">
                 <h2 class="text-center text-xl font-medium leading-8 sm:text-2xl sm:leading-10">
@@ -172,7 +168,7 @@
                         </h3>
 
                         <!-- Step Description -->
-                        <p class="text-sm font-normal leading-5 text-[#6E6E6E] sm:text-base sm:leading-6">
+                        <p class="text-sm font-normal leading-5 text-[#6E6E6E] sm:text-base sm:leading-6 text-wrap">
                             {{ core()->getConfigData('marketplace.settings.landing_page.journey_' . $step . '_desc') }}
                         </p>
                     </div>
