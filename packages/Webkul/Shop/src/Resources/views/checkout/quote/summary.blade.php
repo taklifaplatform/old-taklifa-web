@@ -3,6 +3,7 @@
     {!! view_render_event('bagisto.shop.checkout.quote.summary.title.before') !!}
 
     <p class="text-2xl font-medium" role="heading">
+        dfgf
         @lang('shop::app.checkout.cart.index.quote-summary')
     </p>
 

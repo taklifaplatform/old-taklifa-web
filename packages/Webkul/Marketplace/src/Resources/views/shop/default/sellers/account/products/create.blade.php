@@ -7,7 +7,7 @@
     @section('breadcrumbs')
         <x-marketplace::shop.breadcrumbs name="seller_product_add" />
     @endSection
-
+   
     <div class="flex items-baseline justify-between gap-4">
         <div class="grid gap-4">
             <p class="text-2xl font-medium">
@@ -18,25 +18,24 @@
             </p>
         </div>
 
-        <div class="flex items-center gap-x-2.5">
+        <div class="flex items-center gap-x-2.5">            
             <a
                 href="{{ route('shop.marketplace.seller.account.products.index') }}"
                 class="primary-button px-5 py-2.5"
             >
                 @lang('marketplace::app.shop.sellers.account.products.create.back')
             </a>
-            //
         </div>
     </div>
 
     <div class="mt-8 flex justify-center gap-6 max-xl:flex-wrap">
-
+        
         @php
             $canAssignProduct = ! empty(core()->getConfigData('marketplace.settings.general.seller_can_assign_product'));
-
+            
             $canCreateProduct = ! empty(core()->getConfigData('marketplace.settings.general.seller_can_create_product'));
         @endphp
-
+        
         @if ($canAssignProduct)
             <div @class([
                 'grid',
@@ -48,7 +47,7 @@
                         <p class="text-xl font-medium text-navyBlue">
                             @lang('marketplace::app.shop.sellers.account.products.create.search-product')
                         </p>
-
+                        
                         <p class="text-lg font-normal text-[#757575]">
                             @lang('marketplace::app.shop.sellers.account.products.create.sell-admin-product-prices')
                         </p>
@@ -59,14 +58,14 @@
                             <p class="text-base font-normal">
                                 @lang('marketplace::app.shop.sellers.account.products.create.search-product')
                             </p>
-
-                            <div class="relative flex w-full items-center">
-                                <input
-                                    type="text"
+        
+                            <div class="relative flex w-full items-center">                        
+                                <input 
+                                    type="text" 
                                     class="peer block h-11 w-full rounded-lg border-2 border-[#E9E9E9] bg-white px-2.5 py-3 text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400"
                                     placeholder="@lang('marketplace::app.shop.sellers.account.products.create.search-product')"
                                 >
-
+        
                                 <i class="icon-search absolute top-2.5 text-2xl ltr:right-3 rtl:left-3"></i>
                             </div>
                         </div>
@@ -150,7 +149,7 @@
                     </v-create-product-form>
 
                     {!! view_render_event('bagisto.shop.sellers.account.products.create_form.controls.before') !!}
-                </div>
+                </div> 
             </div>
         @endif
     </div>
@@ -162,14 +161,14 @@
             @lang('marketplace::app.shop.sellers.account.products.create.disable-product-message')
         </div>
     @endif
-
+    
     @pushOnce('scripts')
         <script type="text/x-template" id="v-create-product-form-template">
             <x-admin::form
                 v-slot="{ meta, errors, handleSubmit }"
                 as="div"
             >
-                <form @submit="handleSubmit($event, create)">
+                <form @submit="handleSubmit($event, create)">                   
                     <x-marketplace::shop.form.control-group>
                         <x-marketplace::shop.form.control-group.label class="required">
                             @lang('marketplace::app.shop.sellers.account.products.create.product-type')
@@ -190,7 +189,7 @@
 
                         <x-marketplace::shop.form.control-group.error control-name="type" />
                     </x-marketplace::shop.form.control-group>
-
+                
                     {!! view_render_event('bagisto.shop.sellers.account.products.create_form.type.controls.after') !!}
 
                     <x-marketplace::shop.form.control-group>
@@ -213,7 +212,7 @@
 
                         <x-marketplace::shop.form.control-group.error control-name="attribute_family_id" />
                     </x-marketplace::shop.form.control-group>
-
+                
                     {!! view_render_event('bagisto.shop.sellers.account.products.create_form.attribute_family.controls.after') !!}
 
                     <x-marketplace::shop.form.control-group>
@@ -230,12 +229,12 @@
 
                         <x-marketplace::shop.form.control-group.error control-name="sku" />
                     </x-marketplace::shop.form.control-group>
-
+                
                     {!! view_render_event('bagisto.shop.sellers.account.products.create_form.sku.controls.after') !!}
 
                     <div v-show="attributes.length">
                         <div
-
+                           
                             v-for="attribute in attributes"
                         >
                             <label class="block text-xs font-medium leading-6 text-gray-800">
@@ -271,7 +270,7 @@
         </script>
 
         <script
-            type="text/x-template"
+            type="text/x-template" 
             id="v-product-search-template"
         >
             <div class="mt-4 grid gap-2">
@@ -281,7 +280,7 @@
 
                 <div class="relative flex w-full items-center">
                     <input
-                        type="text"
+                        type="text" 
                         class="peer block h-11 w-full rounded-lg border-2 border-[#E9E9E9] bg-white py-3 text-gray-600 transition-all hover:border-gray-400 focus:border-gray-400 ltr:pl-2.5 ltr:pr-11 rtl:pl-11 rtl:pr-2.5"
                         placeholder="@lang('marketplace::app.shop.sellers.account.products.create.search-product')"
                         v-model="searchTerm"
@@ -290,7 +289,7 @@
                     >
 
                     <i class="icon-search absolute top-2.5 text-2xl ltr:right-3 rtl:left-3"></i>
-
+                
                     <div
                         class="absolute top-14 z-10 max-h-72 w-full overflow-y-scroll rounded-xl border bg-white shadow-[0px_0px_0px_0px_rgba(0,0,0,0.10),0px_1px_3px_0px_rgba(0,0,0,0.10),0px_5px_5px_0px_rgba(0,0,0,0.09),0px_12px_7px_0px_rgba(0,0,0,0.05),0px_22px_9px_0px_rgba(0,0,0,0.01),0px_34px_9px_0px_rgba(0,0,0,0.00)]"
                         v-if="isDropdownOpen"
@@ -317,7 +316,7 @@
                                             >
                                                 <template v-if="! product.base_image">
                                                     <img src="{{ bagisto_asset('images/small-product-placeholder.webp') }}">
-
+                                                
                                                     <p class="absolute bottom-1 w-full text-center text-[6px] font-semibold text-gray-400">
                                                         @lang('marketplace::app.shop.sellers.account.products.create.image-placeholder')
                                                     </p>
@@ -334,7 +333,7 @@
                                                     @{{ product.name }}
                                                 </p>
 
-                                                <p
+                                                <p  
                                                     class="font-normal text-[14x]" v-html="product.formatted_price">
                                                 </p>
                                             </div>
@@ -456,7 +455,7 @@
                     search() {
                         if (this.searchTerm.length > 2) {
                             this.isLoading = this.isDropdownOpen = true;
-
+                            
                             this.$axios.get("{{ route('marketplace.account.products.search') }}", {params: {query: this.searchTerm}})
                                 .then ((response) => {
 
@@ -469,7 +468,7 @@
                                 .then (() => {
                                     this.isLoading = false;
                                 });
-
+                            
                             return;
                         }
 
